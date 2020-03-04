@@ -1,3 +1,13 @@
+.page-header {
+    margin: 0;
+    background: rgba(0,0,10,0.9);
+}
+
+.navbar {
+    background: rgba(0,0,10,0.9);
+    font-size: 20px;
+}
+
 @keyframes FadeIn {
     0% {
         opacity: 0;
