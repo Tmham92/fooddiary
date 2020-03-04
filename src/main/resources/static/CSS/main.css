@@ -12,3 +12,7 @@ body {
 .sub-text {
     color: rgb(255, 110, 25);
 }
+
+#sticky-footer {
+    flex-shrink: none;
+}
