@@ -9,15 +9,21 @@
 
 <!--these can be conditionally selected-->
 <div th:fragment="home-menu">
-    <nav class="navbar navbar-expand-sm navbar-dark justify-content-center">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link active" th:href="@{/home}">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="@{/contact}">Contact</a>
-            </li>
-        </ul>
+    <nav class="navbar navbar-expand-sm navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link active" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@{/contact}">Contact</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </div>
 
