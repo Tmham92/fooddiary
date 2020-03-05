@@ -4,3 +4,35 @@
     padding: 20px;
 }
 
+.login-submit {
+    background-color: rgb(255, 110, 25);
+    border: none;
+    color: rgb(10,10,15);
+    width: 100%;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.login-submit:hover {
+    background-color: rgba(255, 110, 25, 0.9);
+}
+
+.forgot-pwd  {
+    padding-top: 10px;
+    font-size: 15px;
+    color: rgb(255, 110, 25);
+}
+
+.forgot-pwd a {
+    text-decoration: none;
+    color: rgb(255, 110, 25);
+}
+
+.forgot-pwd a:hover {
+    color: rgba(255, 110, 25, 0.8);
+}
