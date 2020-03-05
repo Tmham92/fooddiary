@@ -7,8 +7,28 @@
 </head>
 <body>
 
+<div th:fragment="rsp-whitespace">
+    <div class="container-fluid">
+        <div class="d-none d-xl-block">
+            <br><br><br><br><br>
+        </div>
+        <div class="d-none d-lg-block d-xl-none">
+            <br><br><br><br>
+        </div>
+        <div class="d-none d-md-block d-lg-none">
+            <br><br><br>
+        </div>
+        <div class="d-none d-sm-block d-md-none">
+            <br><br>
+        </div>
+        <div class="d-block d-sm-none">
+            <br>
+        </div>
+    </div>
+</div>
+
 <!--these can be conditionally selected-->
-<div th:fragment="home-menu">
+<div th:fragment="home-navbar">
     <nav class="navbar navbar-expand-sm navbar-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -28,9 +48,9 @@
 </div>
 
 <div th:fragment="footer">
-    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+    <footer class="footer">
         <div class="container text-center">
-            <small>Copyright &copy; Your Website</small>
+            <span class="text-muted">Copyright &copy; Your Website</span>
         </div>
     </footer>
 </div>

@@ -19,29 +19,45 @@
     </div>
 </div>
 
-<div th:insert="template :: home-menu"></div>
+<div th:insert="template :: home-navbar"></div>
+
+<div th:insert="template :: rsp-whitespace"></div>
 
 <div class="container-fluid">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-0 col-md-1 col-lg-2 col-xl-3"></div>
+
             <div class="col-sm-6 col-md-5 col-lg-5 col-xl-4" id="home-page-text">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </div>
 
             <div class="col-sm-6 col-md-5 col-lg-3 col-xl-2">
-                <div class="container login-card">
-                    <div class="card" >
-                        <div class="card-body">
-                        </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="email" placeholder="Username" class="form-control" id="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Password:</label>
+                                <input type="password" placeholder="Password" class="form-control" id="pwd">
+                            </div>
+                            <input class="login-submit" type="submit" value="Login">
+                        </form>
+                        <p class="forgot-pwd"><a href=""><i class="fa fa-chevron-right"></i> Forgot password</a> </p>
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-0 col-md-1 col-lg-2 col-xl-3"></div>
         </div>
     </div>
 </div>
+
+<div th:insert="template :: rsp-whitespace"></div>
 
 <div th:insert="template :: footer"></div>
 
