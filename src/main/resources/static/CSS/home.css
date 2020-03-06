@@ -36,3 +36,7 @@
 .forgot-pwd a:hover {
     color: rgba(255, 110, 25, 0.8);
 }
+
+.card {
+    background-color: rgb(190,190,190);
+}
