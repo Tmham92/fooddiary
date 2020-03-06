@@ -27,7 +27,6 @@
     </div>
 </div>
 
-<!--these can be conditionally selected-->
 <div th:fragment="home-navbar">
     <nav class="navbar navbar-expand-sm navbar-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -40,7 +39,7 @@
                     <a class="nav-link active" th:href="@{/home}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@{/contact}">Contact</a>
+                    <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
         </div>
@@ -50,7 +49,7 @@
 <div th:fragment="footer">
     <footer class="footer">
         <div class="container text-center">
-            <span class="text-muted">Copyright &copy; Your Website</span>
+            <span class="text-muted">Copyright &copy; Our Website</span>
         </div>
     </footer>
 </div>
