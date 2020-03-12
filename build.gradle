@@ -19,9 +19,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    // Implementation used to secure the web-application by configuring Spring security.
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security:spring-security-test'
+    // Dependency for reading / parsing the NevoOnline2019 csv file.
+    compile "com.opencsv:opencsv:4.0"
+
 }
 
 test {
