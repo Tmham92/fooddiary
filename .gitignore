@@ -33,3 +33,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Ingore the spring.log file
+src/main/java/nl/bioinf/fooddiary/logger/spring.log
