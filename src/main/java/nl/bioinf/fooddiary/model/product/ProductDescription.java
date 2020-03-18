@@ -6,8 +6,9 @@ package nl.bioinf.fooddiary.model.product;
  * date: 18-03-2020
  *
  *
+ * See explanation about the use of the builder pattern in the javadoc from the ProductGroup.java.
  */
-public class ProductDescription {
+public final class ProductDescription {
     // Instance variable declaration
     private String descriptionDutch;
     private String descriptionEnglish;
