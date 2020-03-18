@@ -12,7 +12,8 @@ repositories {
     mavenCentral()
 }
 
-dependencies {    // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
+dependencies {
+    // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.2.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-jdbc', version: '4.1.1.RELEASE'
