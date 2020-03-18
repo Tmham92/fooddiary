@@ -30,7 +30,7 @@ public class UserDAO implements IUserDAO {
         RowMapper<User> rowMapper = new UserRowMapper();
         User user = jdbcTemplate.queryForObject(sql, rowMapper, userName, password);
         return user;
-        }
     }
+}
 
 

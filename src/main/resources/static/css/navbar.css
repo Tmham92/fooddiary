@@ -1,5 +1,10 @@
+@media screen and (min-width: 576px){
+    .navbar {
+        height: 60px;
+    }
+}
+
 .navbar {
-    height: 60px;
     background-color: #343a40;
     font-size: 20px;
 }

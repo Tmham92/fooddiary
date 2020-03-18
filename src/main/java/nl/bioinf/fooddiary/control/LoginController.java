@@ -13,10 +13,9 @@ import java.util.Locale;
 @Controller
 public class LoginController {
 
-
-
     @RequestMapping(value = {"", "/", "/home"}, method = RequestMethod.GET)
-    public String homeWithoutLocale(Locale locale) {
+    public String homeWithoutLocale(Locale locale, Model model) {
+        model.addAttribute("page_name", "home");
         return "redirect:" + locale.getLanguage() + "/home";
 
     }
@@ -28,9 +27,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/{locale}/home")
-    public String  homeWithLocale() {
+    public String  homeWithLocale(Model model) {
+        model.addAttribute("page_name", "home");
         return "/home";
     }
-
-
 }
