@@ -1,0 +1,73 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>_TITLE_</title>
+</head>
+<body>
+
+<div th:fragment="rsp-whitespace">
+    <div class="container-fluid">
+        <div class="d-none d-xl-block">
+            <br><br><br><br><br>
+        </div>
+        <div class="d-none d-lg-block d-xl-none">
+            <br><br><br><br>
+        </div>
+        <div class="d-none d-md-block d-lg-none">
+            <br><br><br>
+        </div>
+        <div class="d-none d-sm-block d-md-none">
+            <br><br>
+        </div>
+        <div class="d-block d-sm-none">
+            <br>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="home-navbar">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link active" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        th:href="@{/(locale=nl)}">
+                        <img src="images/nl-flag-icon.png">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/(locale=nl)}">
+                            <img src="images/nl-flag-icon.png"></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/(locale=en)}">
+                            <img src="images/en-flag-icon.png"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="footer">
+    <footer class="footer">
+        <div class="container text-center">
+            <span class="text-muted">Copyright &copy; Our Website</span>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
+
