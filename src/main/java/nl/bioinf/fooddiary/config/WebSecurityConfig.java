@@ -21,20 +21,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JdbcTemplate jdbcTemplate;
 
 
-    @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(this.jdbcTemplate.getDataSource())
-                .usersByUsernameQuery(
-                        "select email, password, enabled from users where email = ? and enabled = true")
-                .authoritiesByUsernameQuery(
-                        "select email, authority from users where email = ?");
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
+        auth.jdbcAuthentication().dataSource(this.jdbcTemplate.getDataSource())
+                .passwordEncoder(passwordEncoder)
+                .usersByUsernameQuery(
+                        "select user_code, password, enabled from user where user_code = ? and enabled = true")
+                .authoritiesByUsernameQuery(
+                        "select user_code, role from user where user_code = ?");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
