@@ -9,8 +9,12 @@ import java.util.List;
 
 public class NewProductDAO implements IProductDAO{
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public NewProductDAO(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<NewProduct> getAllNewProducts() {
@@ -21,9 +25,16 @@ public class NewProductDAO implements IProductDAO{
 
     @Override
     public NewProduct getNewProduct(Integer id, String description) {
-        String sql = "select id, discription from unverified_product_entry";
+        String sql = "select id, discription from unverified_product_entry where id = ? and description = ?";
         RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
         NewProduct newProduct = jdbcTemplate.queryForObject(sql, rowMapper, id, description);
         return newProduct;
+    }
+
+    public void addNewProduct(NewProduct newProduct) {
+        String sql = "INSERT INTO unverified_product_entry " +
+                "(user_id, date, time_of_day, mealtime, description values (?,?,?,?,?,?);";
+        jdbcTemplate.update(sql, newProduct.getUser_id(), newProduct.getDate(), newProduct.getTime_of_day(),
+                newProduct.getMealtime(), newProduct.getDate());
     }
 }
