@@ -1,3 +1,4 @@
+-- @Author Tom Wagenaar
 -- Copy all the code underneath this comment and put it into a sql console to make the fooddiary schema.
 
 CREATE SCHEMA IF NOT EXISTS fooddiary;
@@ -61,6 +62,8 @@ CREATE TABLE IF NOT EXISTS product_entry
     id          int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id     int(10),
     product_id  int(25),
+    unit        varchar(255)                       NOT NULL,
+    amount      int(10)                            NOT NULL,
     date        date                               NOT NULL,
     time_of_day datetime                           NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
@@ -74,6 +77,8 @@ CREATE TABLE IF NOT EXISTS unverified_product_entry
 (
     id          int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id     int(10),
+    unit        varchar(255)                       NOT NULL,
+    amount      int(10)                            NOT NULL,
     date        date                               NOT NULL,
     time_of_day datetime                           NOT NULL,
     mealtime    varchar(25)                        NOT NULL,

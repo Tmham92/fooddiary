@@ -13,11 +13,13 @@ public class Product {
     // Instance variable declaration
     private final int code;
     private final ProductGroup productGroup;
+    private ProductDescription productDescription;
 
 
-    public Product(int code, ProductGroup productGroup) {
+    public Product(int code, ProductGroup productGroup, ProductDescription productDescription) {
         this.code = code;
         this.productGroup = productGroup;
+        this.productDescription = productDescription;
     }
 
 
@@ -26,6 +28,7 @@ public class Product {
         return "Product{" +
                 "code=" + code +
                 ", productGroup=" + productGroup +
+                ", productDescription=" + productDescription +
                 '}';
     }
 }
