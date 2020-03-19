@@ -1,9 +1,7 @@
 package nl.bioinf.fooddiary.model.csvparser;
 
 import com.opencsv.CSVReader;
-import nl.bioinf.fooddiary.model.product.Product;
-import nl.bioinf.fooddiary.model.product.ProductDescription;
-import nl.bioinf.fooddiary.model.product.ProductGroup;
+import nl.bioinf.fooddiary.model.product.*;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -68,8 +66,17 @@ public class ProductCsvParser {
                 .synonymous(line[5])
                 .build();
 
-        Product product = new Product(code, productGroup, productDescription);
-        System.out.println(product.toString());
+        ProductMeasurement productMeasurement = ProductMeasurement.builder(line[6], Integer.parseInt(line[7]))
+                .measurementComment(line[8])
+                .build();
+
+        ProductInfoExtra productInfoExtra = ProductInfoExtra.builder()
+                .enrichedWith(line[9])
+                .tracesOf(line[10])
+                .build();
+
+        Product product = new Product(code, productGroup, productDescription, productMeasurement, productInfoExtra);
+        System.out.println(product.getProductInfoExtra().toString());
 
     }
 

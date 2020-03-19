@@ -1,8 +1,11 @@
 package nl.bioinf.fooddiary.model.product;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author Tom Wagenaar
- * @version 0.0.1
+ * @version 0.0.2
  * date: 18-03-2020
  *
  * Class that represents the description in Dutch and in English and synonymous for each individual product. See the
@@ -11,7 +14,7 @@ package nl.bioinf.fooddiary.model.product;
  * furthermore this variable has a setter. All the other variables are final and have no setters to ensure immutability.
  *
  */
-public final class ProductDescription {
+public class ProductDescription {
     // Instance variable declaration
     private final String descriptionDutch;
     private final String descriptionEnglish;
@@ -57,7 +60,7 @@ public final class ProductDescription {
 
     @Override
     public String toString() {
-        return "ProductDescription{" +
+        return "{" +
                 "descriptionDutch='" + descriptionDutch + '\'' +
                 ", descriptionEnglish='" + descriptionEnglish + '\'' +
                 ", synonymous='" + synonymous + '\'' +
@@ -72,7 +75,12 @@ public final class ProductDescription {
      */
     public static class ProductDescriptionBuilder {
         // Required parameters
+        @NotNull
+        @Size(min = 1, max = 255)
         private final String descriptionDutch;
+
+        @NotNull
+        @Size(min = 1, max = 255)
         private final String descriptionEnglish;
 
         // Optional parameter

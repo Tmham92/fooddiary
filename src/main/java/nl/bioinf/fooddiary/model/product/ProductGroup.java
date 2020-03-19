@@ -58,7 +58,7 @@ public final class ProductGroup {
 
     @Override
     public String toString() {
-        return "ProductGroup{" +
+        return "{" +
                 "groupCode=" + groupCode +
                 ", groupCodeDescription='" + groupCodeDescription + '\'' +
                 '}';

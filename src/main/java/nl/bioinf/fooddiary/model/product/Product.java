@@ -14,14 +14,38 @@ public class Product {
     private final int code;
     private final ProductGroup productGroup;
     private ProductDescription productDescription;
+    private ProductMeasurement productMeasurement;
+    private ProductInfoExtra productInfoExtra;
 
 
-    public Product(int code, ProductGroup productGroup, ProductDescription productDescription) {
+    public Product(int code, ProductGroup productGroup, ProductDescription productDescription,
+                   ProductMeasurement productMeasurement, ProductInfoExtra productInfoExtra) {
         this.code = code;
         this.productGroup = productGroup;
         this.productDescription = productDescription;
+        this.productMeasurement = productMeasurement;
+        this.productInfoExtra = productInfoExtra;
     }
 
+    public int getCode() {
+        return code;
+    }
+
+    public ProductGroup getProductGroup() {
+        return productGroup;
+    }
+
+    public ProductDescription getProductDescription() {
+        return productDescription;
+    }
+
+    public ProductMeasurement getProductMeasurement() {
+        return productMeasurement;
+    }
+
+    public ProductInfoExtra getProductInfoExtra() {
+        return productInfoExtra;
+    }
 
     @Override
     public String toString() {
@@ -29,6 +53,8 @@ public class Product {
                 "code=" + code +
                 ", productGroup=" + productGroup +
                 ", productDescription=" + productDescription +
+                ", productMeasurement=" + productMeasurement +
+                ", productInfoExtra=" + productInfoExtra +
                 '}';
     }
 }
