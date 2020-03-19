@@ -37,4 +37,26 @@ public class NewProductDAO implements IProductDAO{
         jdbcTemplate.update(sql, newProduct.getUser_id(), newProduct.getDate(), newProduct.getTime_of_day(),
                 newProduct.getMealtime(), newProduct.getDate());
     }
+
+    public NewProduct getNewProductById(int newProductId) {
+        String sql = "SELECT id, description FROM unverified_product_entry WHERE id = ?";
+        RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
+        NewProduct newProduct = jdbcTemplate.queryForObject(sql, rowMapper, newProductId);
+        return newProduct;
+    }
+
+    public void deleteNewProduct(int newProductId) {
+        String sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        jdbcTemplate.update(sql, newProductId);
+    }
+
+    public boolean newProductExists(int newProductId) {
+        String sql = "SELECT count FROM unverified_product_entry WHERE id = ?";
+        List<Integer> count = jdbcTemplate.queryForList(sql, Integer.class, newProductId);
+        if(count.get(0) == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

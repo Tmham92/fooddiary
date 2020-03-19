@@ -1,16 +1,17 @@
 package nl.bioinf.fooddiary.dao.productdoa;
 
 import nl.bioinf.fooddiary.model.NewProduct;
+
 import java.util.List;
 
-public interface IProductDAO {
+public interface INewProductService {
     List<NewProduct> getAllNewProducts();
 
     NewProduct getNewProductById(int newProductId);
 
-    void deleteNewProduct(int newProductId);
+    boolean addNewProduct(NewProduct newProduct);
 
-    NewProduct getNewProduct(Integer id, String description);
+    void deleteNewProduct(int newProductId);
 
 
 }

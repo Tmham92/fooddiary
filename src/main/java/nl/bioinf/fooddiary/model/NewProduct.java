@@ -5,12 +5,29 @@ import java.util.Date;
 
 public class NewProduct {
 
+    private Integer id;
     private Integer user_id;
     private Date date;
     private Time time_of_day;
     private String mealtime;
     private String description;
+/* No constructor?
+    public NewProduct(Integer user_id, Date date, Time time_of_day, String mealtime, String description) {
+        this.user_id = user_id;
+        this.date = date;
+        this.time_of_day = time_of_day;
+        this.mealtime = mealtime;
+        this.description = description;
+    }
+*/
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getUser_id() {
         return user_id;

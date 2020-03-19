@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class NewProductService implements IProductDAO {
+public class NewProductService implements INewProductService {
     @Autowired
     private NewProductDAO newProductDAO;
 
@@ -15,7 +15,23 @@ public class NewProductService implements IProductDAO {
     }
 
     @Override
-    public NewProduct getNewProduct(Integer id, String description) {
-        return newProductDAO.getNewProduct(id, description);
+    public NewProduct getNewProductById(int newProductId) {
+        return null;
     }
+
+    @Override
+    public synchronized boolean addNewProduct(NewProduct newProduct) {
+        if(newProductDAO.newProductExists(newProduct.getId())) {
+            return false;
+        } else {
+            newProductDAO.addNewProduct(newProduct);
+            return true;
+        }
+    }
+
+    @Override
+    public void deleteNewProduct(int newProductId) {
+
+    }
+
 }
