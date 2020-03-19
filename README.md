@@ -21,9 +21,9 @@
 	- add a good commit message.
 	- clicking commit will commit the changes without pushing them, clicking the dropdown menu arrow on the commit button gives you the option to commit and push
 
-**Add the upstream master repository to the remote hosts:**
+**Add the upstream repository to the remote hosts:**
 
-- Go to the _upstream master repository_ on [bitbucket](bitbucket.org/)
+- Go to the _upstream repository_ on [bitbucket](bitbucket.org/)
 - Click "Clone" in the top right.
 - Copy the link after "git clone " (git@...).
 
@@ -37,22 +37,30 @@
 7. Click "OK".
 	- You should see two remotes in the list, origin (your forked repository) and the remote you just added.
 
-**Fetching updates from the upstream master repository:**
+**Pulling updates from the upstream master repository:**
 
 ***Always create a backup before merging so you don't accidentally lose progress!***
 
 1. After creating a backup! (i.e. copy paste the repository in a different directory.)
 2. Click "VCS" in the top bar.
 3. Click "Git".
-4. Click "Fetch".
-5. Go to the same menu and click "Merge changes".
-6. In "branches to merge" select the upstream repository.
-7. Click "Merge".
+4. Click "Pull".
+5. Click "Remote:" and select the upstream repository.
+6. In "Branches to merge:" select "upstream/master"
+7. Click "Pull" on the bottom left of the pup-up.
+
+If merge conflicts occur after pulling:
+
+1. Click "VCS".
+2. Click "Git".
+3. Click "Merge Changes..."
+4. Select the upstream changes.
+5. Click merge, this will bring up a window where you can solve the merge conflicts.
 
 ---
-## Create a pull request for the _upstream master repository_ ##
+## Create a pull request for the _upstream repository_ ##
 
-***Always try to keep up to date with the upstream master repository!***
+***Always try to keep up to date with the upstream repository!***
 
 1. Go to your forked repository on [bitbucket](bitbucket.org/)
 2. In the sidebar click "Pull requests"
@@ -62,7 +70,6 @@
 	
 5. Click "Create pull request"
 
-The pull request will be reviewed and if everything is good it will be added to the master repository.
-After something is added to the master repository you should fetch the updates so make sure you wont stay behind in commits which can cause conflicts.
-
+The pull request will be reviewed and if everything is good it will be added to the upstream repository.
+After something is added to the upstream repository you should fetch the updates.
 ---

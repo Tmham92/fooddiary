@@ -21,6 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JdbcTemplate jdbcTemplate;
 
 
+<<<<<<< HEAD
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(this.jdbcTemplate.getDataSource())
@@ -29,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(
                         "select email, authority from users where email = ?");
     }
+=======
+>>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -36,11 +39,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+<<<<<<< HEAD
+=======
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
+        auth.jdbcAuthentication().dataSource(this.jdbcTemplate.getDataSource())
+                .passwordEncoder(passwordEncoder)
+                .usersByUsernameQuery(
+                        "select user_code, password, enabled from user where user_code = ? and enabled = true")
+                .authoritiesByUsernameQuery(
+                        "select user_code, role from user where user_code = ?");
+    }
+
+>>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+<<<<<<< HEAD
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/newProductForm").permitAll()
+=======
+                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact").permitAll()
+>>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

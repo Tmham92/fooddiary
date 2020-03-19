@@ -35,4 +35,8 @@ out/
 .vscode/
 
 ### Ingore the spring.log file
+<<<<<<< HEAD
 src/main/java/nl/bioinf/fooddiary/logger/spring.log
+=======
+src/main/java/nl/bioinf/fooddiary/logger/
+>>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5

@@ -42,14 +42,23 @@ body, html {
 }
 
 .card {
+<<<<<<< HEAD
     background-color: rgb(190,190,190);
+=======
+    background-color: #a6a6a6;
+>>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
     /* Add shadows to create the "card" effect */
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
+<<<<<<< HEAD
 
 .banner-image{
     background-image: url("https://fineitalianfood.com/wp-content/uploads/2018/05/AdobeStock_196505435.jpeg");
+=======
+.banner-image{
+    background-image: url('../images/food.png');
+>>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
     height: 50%;
 
     /* Position and center the image to scale nicely on all screens */
