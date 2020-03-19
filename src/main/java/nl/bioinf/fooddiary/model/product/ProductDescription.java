@@ -5,8 +5,11 @@ package nl.bioinf.fooddiary.model.product;
  * @version 0.0.1
  * date: 18-03-2020
  *
+ * Class that represents the description in Dutch and in English and synonymous for each individual product. See the
+ * ProductGroup class javadoc for some more information about the builder pattern and the constraints validation that
+ * is used in this class and the inner builder class. The synonymous variable is optional and therefore isn't final,
+ * furthermore this variable has a setter. All the other variables are final and have no setters to ensure immutability.
  *
- * See explanation about the use of the builder pattern in the javadoc from the ProductGroup.java.
  */
 public final class ProductDescription {
     // Instance variable declaration
@@ -20,9 +23,17 @@ public final class ProductDescription {
         this.synonymous = builder.synonymous;
     }
 
+    /**
+     * Static method that serves an instance of the inner class ProductDescriptionBuilder, taking the required
+     * string descriptionDutch and string descriptionEnglish as arguments
+     * @param descriptionDutch (String)
+     * @param descriptionEnglish (String)
+     * @return ProductDescriptionBuilder object
+     */
     public static ProductDescriptionBuilder builder(String descriptionDutch, String descriptionEnglish) {
         return new ProductDescriptionBuilder(descriptionDutch, descriptionEnglish);
     }
+
 
     public String getDescriptionDutch() {
         return descriptionDutch;
@@ -36,6 +47,14 @@ public final class ProductDescription {
         return synonymous;
     }
 
+    /**
+     * Synonymous isn't a important variable, therefore it isn't final. That is why there is a setter.
+     * @param synonymous (String)
+     */
+    public void setSynonymous(String synonymous) {
+        this.synonymous = synonymous;
+    }
+
     @Override
     public String toString() {
         return "ProductDescription{" +
@@ -45,13 +64,19 @@ public final class ProductDescription {
                 '}';
     }
 
+    /**
+     * Inner class that is used as a builder for the ProductDescription class. There are constraints validations for the
+     * instance variables. Whenever a new product is added to the database the product needs to validated, the
+     * constraints carry out those checks. The synonymous variable isn't final and therefore not required, whenever
+     * this synonymous variable isn't defined it gets the _UNKNOWN_SYNONYMOUS_ tag.
+     */
     public static class ProductDescriptionBuilder {
         // Required parameters
         private final String descriptionDutch;
         private final String descriptionEnglish;
 
         // Optional parameter
-        private String synonymous;
+        private String synonymous = "_UNKNOWN_SYNONYMOUS_";
 
         private ProductDescriptionBuilder(String descriptionDutch, String descriptionEnglish) {
             this.descriptionDutch = descriptionDutch;
@@ -59,6 +84,8 @@ public final class ProductDescription {
         }
 
         public ProductDescriptionBuilder synonymous(String synonymous) {
+            // While parsing the nevo product table the synonymous variables that aren't defined are "", therefore
+            // they aren't seen as values that aren't defined.
             if (synonymous.equals("")) {
                 this.synonymous = "_UNKNOWN_SYNONYMOUS_"; return this;
             }
