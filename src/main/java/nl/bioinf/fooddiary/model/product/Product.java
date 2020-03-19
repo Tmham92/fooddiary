@@ -1,5 +1,7 @@
 package nl.bioinf.fooddiary.model.product;
 
+import javax.validation.constraints.Size;
+
 /**
  * @author Tom Wagenaar
  * @version 0.0.1
@@ -17,6 +19,7 @@ public class Product {
         this.code = code;
         this.productGroup = productGroup;
     }
+
 
     @Override
     public String toString() {

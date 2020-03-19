@@ -16,7 +16,7 @@ import java.io.IOException;
  * has a lot of columns. There are columns that give information about: code, the group the product is in, a description
  * of that product, how it is measured and many columns that have the nutrient value for that product. This file is
  * read and then parsed. The columns are divided into groups to ensure readability, then the information is grouped and
- * passed on to different classes.
+ * passed on to different classes representing those groups.
  */
 public class ProductCsvParser {
 
@@ -55,7 +55,7 @@ public class ProductCsvParser {
      * This method receives every line in the nevo_online_2019_Product.csv file separately and groups the columns
      * into groups for more readability and passes it on to the respective class.
      *
-     * @param line, represents a single line in the nevo_online_2019_Product.csv file.
+     * @param line, represents a single line and therefore a single product in the nevo_online_2019_Product.csv file.
      */
     public void parseCsvFile(String[] line) {
         int code = Integer.parseInt(line[2]);
@@ -64,7 +64,7 @@ public class ProductCsvParser {
                 .build();
 
         Product product = new Product(code, productGroup);
-        System.out.println(product);
+
     }
 
     public static void main(String[] args) {
