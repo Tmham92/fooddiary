@@ -5,10 +5,12 @@ import nl.bioinf.fooddiary.model.nutrient.Nutrient;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tom Wagenaar
- * @version 0.0.1
+ * @version 0.0.2
  * date: 20-03-2020
  *
  * Parses the Nevo_Online_2019_Nutrient.csv file, this file consists out of a few columns, these columns are then
@@ -22,7 +24,8 @@ public class NutrientCsvParser {
      *
      * Catch: IOException, this could be a FileNotFoundException whenever the file isn't found.
      */
-    public void readCsvFile() {
+    public List<Nutrient> readCsvFile() {
+        List<Nutrient> nutrientList = new ArrayList<>();
         String csvFile = "src/data/csv/nevo_online_2019_Nutrient.csv";
 
         // try to read every line in the csv file and pass each line individually on to the parseCsvFile() method
@@ -38,12 +41,14 @@ public class NutrientCsvParser {
                     iteration++;
                     continue;
                 }
-                parseCsvFile(line);
+                nutrientList.add(parseCsvFile(line));
             }
         } catch (IOException exception) {
             exception.printStackTrace();
             System.exit(0);
         }
+
+        return nutrientList;
     }
 
     /**
@@ -53,6 +58,7 @@ public class NutrientCsvParser {
      * @param line, represents a single line and therefore a single nutrient in the Nevo_online_2019_Nutrient.csv file.
      */
     public Nutrient parseCsvFile(String[] line) {
+        // Assign each value in the line to a variable for better readability.
         String nutrientCode = line[0];
         String nameDutch = line[1];
         String nameEnglish = line[2];
