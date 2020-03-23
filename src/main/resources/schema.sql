@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS product_nutrient
     id             int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     product_id     int(25),
     nutrient_id    int(5),
-    nutrient_value int(10)                            NOT NULL,
+    nutrient_value varchar(10)                            NOT NULL,
 
     FOREIGN KEY (product_id) REFERENCES product (id),
     FOREIGN KEY (nutrient_id) REFERENCES nutrient (id)
