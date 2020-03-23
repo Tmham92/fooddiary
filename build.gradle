@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id 'idea'
 }
 
 group = 'nl.bioinf.fooddiary'
@@ -28,6 +29,12 @@ dependencies {
 
     // Dependency for reading / parsing the NevoOnline2019 csv file.
     compile "com.opencsv:opencsv:4.0"
+
+    // JUnit testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    //parameterized tests
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.1.0'
 
 }
 
