@@ -93,7 +93,6 @@ public final class ProductGroup {
      */
     public static class ProductGroupBuilder {
         // Required parameters
-        @NotNull
         @Min(1) @Max(999)
         private final int groupCode;
 
