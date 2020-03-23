@@ -1,18 +1,15 @@
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
-
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>NewProductForm</title>
+    <title>Adding New Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/newproductform.css">
-    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/contact.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
-<body>
 
 <div class="banner-image">
     <div class="banner-text">
@@ -21,44 +18,70 @@
     </div>
 </div>
 
-<div th:insert="template :: home-navbar"></div>
-
-
-<div class="container-fluid">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8" id="home-page-text">
-                <h2>New Product</h2>
-                <p th:text="#{newproductform.message}">
-                </p>
+<div class="container addnewproduct">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="newproduct-info">
+                <h2>Thanks for adding new products.</h2>
+                <h6>It is important to keep updating our food database.
+                <br />
+                Please fill in this form as detailed as possible so we get the right information.
+                Thanks.</h6>
             </div>
-                <div class="new-product-form" style="width: 24rem;">
-                    <div class="form-body">
-                        <h1>Add New Product</h1>
-                        <form action="#" th:action="@{/savenewproduct}" th:object="${newProduct}" method="GET">
+        </div>
+        <div class="col-md-9">
+            <div class="addproduct-form">
+                <form action="#" th:action="@{/addednewproduct}" th:object="${newproductform}" method="post">
+                    <div class="form-group">
 
-                            <p>Description of Food: <input type="text" th:field="*{description}" placeholder="Enter description"/></p>
-
-                            <p>Time of the Day: <input type="text" pattern="(?:[01]|2(?![4-9])){1}\d{1}:[0-5]{1}\d{1}"
-                                                       id="time" placeholder="11:55" th:field="*{timeOfDay}"/></p>
-                            <p>Meal time: <input type="text" th:field="*{mealtime}" placeholder="e.g. Lunch"/></p>
-
-                            <p>Quantity: <input type="text" placeholder="e.g. 100gr/100ml" th:field="*{quantity}"/></p>
-
-                            <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-                        </form>
+                    <label class="control-label col-sm-2" for="user_id">User ID: </label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{user_id}" class="form-control" id="user_id" placeholder="Enter User ID" name="user_id">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="date">Date:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="time_of_day">Time of the day:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{time_of_day}" class="form-control" id="time_of_day" placeholder="13:30" name="time_of_day">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="mealtime">Moment of Meal:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{mealtime}" class="form-control" id="mealtime" placeholder="Breakfast" name="mealtime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="description">Description:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Quacker Crueslie 4 nuts" name="description">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="quantity">Weight or Volume:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{quantity}" class="form-control" id="quantity" placeholder="100gr / 100ml" name="quantity">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-
-<div th:insert="template :: footer"></div>
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<body>
+Your Description is: <p th:text="${newproductform.description}"/>
+        <div th:insert="template :: footer"></div>
 </body>
 </html>

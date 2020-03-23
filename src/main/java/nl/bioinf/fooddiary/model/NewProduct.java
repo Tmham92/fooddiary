@@ -1,16 +1,25 @@
 package nl.bioinf.fooddiary.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.sql.Time;
 import java.util.Date;
 
 public class NewProduct {
 
+
     private Integer id;
     private Integer user_id;
+    @NotNull
     private Date date;
+    @NotNull
     private Time time_of_day;
+    @NotNull
     private String mealtime;
+    @NotNull
     private String description;
+    @Min(0)
+    @NotNull
     private String quantity;
 
 
