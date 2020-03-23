@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-.navbar {
-    height: 60px;
-=======
 @media screen and (min-width: 576px){
     .navbar {
         height: 60px;
@@ -9,7 +5,6 @@
 }
 
 .navbar {
->>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
     background-color: #343a40;
     font-size: 20px;
 }

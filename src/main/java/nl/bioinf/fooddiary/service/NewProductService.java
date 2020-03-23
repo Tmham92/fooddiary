@@ -1,11 +1,15 @@
-package nl.bioinf.fooddiary.dao.productdoa;
+package nl.bioinf.fooddiary.service;
 
+import nl.bioinf.fooddiary.dao.newproductdao.NewProductDAO;
 import nl.bioinf.fooddiary.model.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class NewProductService implements INewProductService {
+
     @Autowired
     private NewProductDAO newProductDAO;
 

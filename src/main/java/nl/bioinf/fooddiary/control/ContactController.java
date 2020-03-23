@@ -1,8 +1,5 @@
 package nl.bioinf.fooddiary.control;
 
-<<<<<<< HEAD
-public class ContactController {
-=======
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +21,4 @@ public class ContactController {
         model.addAttribute("page_name", "contact");
         return "contact";
     }
->>>>>>> 7eaf715b9f6af0a70cc142240392fecf662949f5
 }
