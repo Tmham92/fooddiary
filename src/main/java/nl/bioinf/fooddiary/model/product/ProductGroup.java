@@ -1,6 +1,5 @@
 package nl.bioinf.fooddiary.model.product;
 
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,10 +13,10 @@ import javax.validation.constraints.Size;
  * Class that represent the group code and group code description for each individual product in the
  * nevo_online_2019_Parser.csv file. This class makes uses of the so called builder pattern. An inner builder class
  * has been made that is implemented in such a way to give the class atomic construction, easy combination of parameters
- * and very readable client code, furthermore there are no setters and the class and instance variables are final to
+ * and very readable client code, furthermore there are no setters and the class instance variables are final to
  * ensure immutability.
  *
- * In the inner builder class constraints validation is used to give feedback to the spring framework whenever a
+ * In the inner builder class, constraints validation is used to give feedback to the spring framework whenever a
  * variable isn't valid.
  */
 public final class ProductGroup {
@@ -37,20 +36,25 @@ public final class ProductGroup {
 
     /**
      * Static method that serves an instance of the inner ProductGroupBuilder class, taking the required groupCode
-     * integer and groupCodeDescription string as arguments. Also checks the groupCode and groupCodeDescription
+     * String and groupCodeDescription string as arguments. Also checks the groupCode and groupCodeDescription
      * on null input.
      * @param groupCode (String)
      * @param groupCodeDescription (String)
      * @return ProductGroupBuilder object
      */
     public static ProductGroupBuilder builder(String groupCode, String groupCodeDescription) {
-
+        // TODO: Make a method that checks the groupCodeDescription on null input.
         int checkedGroupCode = checkGroupCode(groupCode);
 
         return new ProductGroupBuilder(checkedGroupCode, groupCodeDescription);
     }
 
 
+    /**
+     * Check the groupCode on null input.
+     * @param groupCode (String)
+     * @return checkedGroupCode
+     */
     public static int checkGroupCode(String groupCode) {
         int checkedGroupCode = -1;
 
