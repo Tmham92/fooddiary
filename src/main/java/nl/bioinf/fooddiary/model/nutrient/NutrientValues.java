@@ -11,13 +11,14 @@ import java.util.stream.Collectors;
  * date: 20-03-2020
  *
  * The NutrientValues class stores all the nutrient values in the nevo_online_2019_Product.csv file. This class
- * is called and the builder method return a NutrientValuesBuilder object, therefore the inner builder class can be
+ * is called and the builder method returns a NutrientValuesBuilder object, therefore the inner builder class can be
  * used. This class receives a String array containing all the nutrient values for a single product. Then every single
- * nutrient is passed on to the NutrientValue class, where it is passed back with the original value or a _NO_VALUE_
+ * nutrient is passed on to the NutrientValue class, where it is stored and with the original value or a _NO_VALUE_
  * value. When this is done, the NutrientValue object is returned and added to a list, furthermore this list is
  * returned to the Product class. For more information about the builder pattern go to ProductGroup class javadoc. There
  * are only getters and no setters and the value variables are final to ensure immutability.
  */
+// TODO: Use Junit testing for the different methods. Implement a check for the nutrient values.
 public class NutrientValues {
     private List<NutrientValue> nutrients;
 
@@ -54,7 +55,7 @@ public class NutrientValues {
     }
 
     /**
-     * Inner builder class that serves the NutrienValues class.
+     * Inner builder class that serves the NutrientValues class.
      */
     public static class NutrientValuesBuilder {
         private List<NutrientValue> nutrients = new ArrayList<>();
@@ -89,8 +90,8 @@ public class NutrientValues {
     }
 
     /**
-     * Class that receives a single nutrient value and then assign it with _NO_VALUE_ or it holds it original value.
-     * This object is then returned to the inner builder class.
+     * Class that receives and stores a single nutrient value and then assign it with _NO_VALUE_ or it holds it original
+     * value. This object is then returned to the inner builder class.
      */
     public static class NutrientValue {
         @NotNull
@@ -107,6 +108,10 @@ public class NutrientValues {
             this.value = value; return this;
         }
 
+        public String getValue() {
+            return value;
+        }
+
         @Override
         public String toString() {
             return "{" +
@@ -114,6 +119,4 @@ public class NutrientValues {
                     '}';
         }
     }
-
-
 }
