@@ -21,17 +21,19 @@ public class NewProductController {
     @Autowired
     private INewProductService newProductService;
 
-    @RequestMapping(value = {"/newproductform"}, method = RequestMethod.GET)
-    public String newProductFormWithoutLocale(Locale locale, Model model) {
-        model.addAttribute("page_name", "newproductform");
-        return "redirect:" + locale.getLanguage() + "/newproductform";
+    @RequestMapping(value="/savenewproduct")
+    public void saveNewProduct() {
+
     }
 
-    @RequestMapping(value = "/{locale}/newproductform")
-    public String  newProductFormWithLocale(Model model) {
-        model.addAttribute("page_name", "newproductform");
-        return "newproductform";
+
+    @RequestMapping(value = {"/newproductform"}, method = RequestMethod.GET)
+    public String readNewProductForm(Model model) {
+        model.addAttribute("newProduct", new NewProduct());
+        return "/newproductform";
     }
+
+
 
     @PostMapping("/newproductform")
     public String newProductFormSubmit(@ModelAttribute NewProductForm newProductForm) {

@@ -28,16 +28,14 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8" id="home-page-text">
-                <h2>Welcome</h2>
+                <h2>New Product</h2>
                 <p th:text="#{newproductform.message}">
                 </p>
             </div>
-
-            <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
+                <div class="new-product-form" style="width: 24rem;">
+                    <div class="form-body">
                         <h1>Add New Product</h1>
-                        <form action="#" th:action="@{/newproductform}" th:object="${newProductForm}" method="post">
+                        <form action="#" th:action="@{/savenewproduct}" th:object="${newProduct}" method="GET">
 
                             <p>Description of Food: <input type="text" th:field="*{description}" placeholder="Enter description"/></p>
 
