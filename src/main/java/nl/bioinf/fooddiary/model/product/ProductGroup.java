@@ -37,13 +37,31 @@ public final class ProductGroup {
 
     /**
      * Static method that serves an instance of the inner ProductGroupBuilder class, taking the required groupCode
-     * integer and groupCodeDescription string as arguments.
-     * @param groupCode (int)
+     * integer and groupCodeDescription string as arguments. Also checks the groupCode and groupCodeDescription
+     * on null input.
+     * @param groupCode (String)
      * @param groupCodeDescription (String)
      * @return ProductGroupBuilder object
      */
-    public static ProductGroupBuilder builder(int groupCode, String groupCodeDescription) {
-        return new ProductGroupBuilder(groupCode, groupCodeDescription);
+    public static ProductGroupBuilder builder(String groupCode, String groupCodeDescription) {
+
+        int checkedGroupCode = checkGroupCode(groupCode);
+
+        return new ProductGroupBuilder(checkedGroupCode, groupCodeDescription);
+    }
+
+
+    public static int checkGroupCode(String groupCode) {
+        int checkedGroupCode = -1;
+
+        // Change the groupCode String to an integer.
+        try {
+            checkedGroupCode = Integer.parseInt(groupCode);
+        } catch (NumberFormatException numbException) {
+            throw new NumberFormatException("Please don't provide a null value for group code!");
+        }
+
+        return checkedGroupCode;
     }
 
     // Getter for the group code.
