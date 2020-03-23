@@ -1,6 +1,8 @@
 package nl.bioinf.fooddiary.model.product;
 
+import nl.bioinf.fooddiary.model.csvparser.ProductCsvParser;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +21,7 @@ class ProductGroupTest {
         int expectedGroupCode = 5;
         String expectedGroupCodeDescription = "description";
 
-        ProductGroup productGroup = ProductGroup.builder(5, "description")
+        ProductGroup productGroup = ProductGroup.builder("5", "description")
                 .build();
 
         int actualGroupCode = productGroup.getGroupCode();
@@ -27,10 +29,33 @@ class ProductGroupTest {
 
         assertEquals(expectedGroupCode, actualGroupCode);
         assertEquals(expectedGroupCodeDescription, actualGroupCodeDescription);
+
     }
 
     @Test
+    void productGroupNullInput() {
+
+        Throwable exception = assertThrows(NumberFormatException.class,
+                () -> ProductGroup.builder(null, "Aardappelen en knolgewassen")
+                        .build());
+
+        String expected = "Please don't provide a null value for group code!";
+
+        assertEquals(expected, exception.getMessage());
+    }
+
+
+    @ParameterizedTest
     void productGroupBoundaryCases() {
+
+        Throwable exception = assertThrows(NumberFormatException.class,
+                () -> ProductGroup.builder(null, "Aardappelen en knolgewassen")
+                        .build());
+
+        String expected = "Please don't provide a null value for group code!";
+
+        assertEquals(expected, exception.getMessage());
+
 
     }
 }
