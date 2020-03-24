@@ -5,9 +5,11 @@ import nl.bioinf.fooddiary.model.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +27,7 @@ public class NewProductDAO implements IProductDAO {
 
     @Override
     public List<NewProduct> getAllNewProducts() {
-        String sql = "select id, description from unverified_product_entry";
+        String sql = "select id, user_id, date, time_of_day, mealtime, description, quantity from unverified_product_entry";
         RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
         return this.jdbcTemplate.query(sql, rowMapper);
     }
@@ -65,4 +67,5 @@ public class NewProductDAO implements IProductDAO {
             return true;
         }
     }
+
 }

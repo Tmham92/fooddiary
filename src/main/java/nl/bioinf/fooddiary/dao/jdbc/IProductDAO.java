@@ -5,7 +5,9 @@ import nl.bioinf.fooddiary.model.NewProduct;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
-
+/*
+@author Tobias Ham
+ */
 public interface IProductDAO {
     List<NewProduct> getAllNewProducts();
 
@@ -18,9 +20,6 @@ public interface IProductDAO {
     void addNewProduct(NewProduct newProduct);
 
     boolean newProductExists(int newProductId);
-
-
-
 
 
 }

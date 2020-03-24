@@ -14,7 +14,7 @@ public class NewProductRowMapper implements RowMapper<NewProduct>{
         NewProduct newProduct = new NewProduct();
         newProduct.setDescription(row.getString("description"));
         newProduct.setDate(row.getDate("date"));
-        newProduct.setTime_of_day(row.getTime("time_of_day"));
+        newProduct.setTime_of_day(row.getString("time_of_day"));
         newProduct.setUser_id(row.getInt("user_id"));
         newProduct.setMealtime(row.getString("mealtime"));
         newProduct.setQuantity(row.getString("quantity"));

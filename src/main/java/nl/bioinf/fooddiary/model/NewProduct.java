@@ -4,7 +4,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Time;
 import java.util.Date;
-
+/*
+@author Tobias Ham
+ */
 public class NewProduct {
 
 
@@ -13,7 +15,7 @@ public class NewProduct {
     @NotNull
     private Date date;
     @NotNull
-    private Time time_of_day;
+    private String time_of_day;
     @NotNull
     private String mealtime;
     @NotNull
@@ -47,11 +49,11 @@ public class NewProduct {
         this.date = date;
     }
 
-    public Time getTime_of_day() {
+    public String getTime_of_day() {
         return time_of_day;
     }
 
-    public void setTime_of_day(Time time_of_day) {
+    public void setTime_of_day(String time_of_day) {
         this.time_of_day = time_of_day;
     }
 
@@ -74,4 +76,12 @@ public class NewProduct {
     public String getQuantity() { return quantity; }
 
     public void setQuantity(String quantity) { this.quantity = quantity; }
+
+    public String toString() {
+        String message = " Description: " + description + " Quantity: " +
+                quantity + " User_id: " + user_id + " Date: " + date + " Time of Day: " +
+                time_of_day + " Mealtime: " + mealtime;
+        return message;
+    }
+
 }

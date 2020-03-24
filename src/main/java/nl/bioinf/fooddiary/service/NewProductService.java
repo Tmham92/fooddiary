@@ -4,9 +4,11 @@ import nl.bioinf.fooddiary.dao.newproductdao.NewProductDAO;
 import nl.bioinf.fooddiary.model.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+/*
+@author Tobias Ham
+ */
 @Service
 public class NewProductService implements INewProductService {
 
@@ -24,18 +26,13 @@ public class NewProductService implements INewProductService {
     }
 
     @Override
-    public synchronized boolean addNewProduct(NewProduct newProduct) {
-        if(newProductDAO.newProductExists(newProduct.getId())) {
-            return false;
-        } else {
-            newProductDAO.addNewProduct(newProduct);
-            return true;
-        }
+    public void addNewProduct(NewProduct newProduct) {
+        newProductDAO.addNewProduct(newProduct);
     }
 
     @Override
     public void deleteNewProduct(int newProductId) {
-
     }
+
 
 }
