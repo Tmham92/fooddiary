@@ -20,19 +20,21 @@ public class NewProductController {
     NewProductService newProductService;
 
 /*
-        @RequestMapping(value="/newproductform", method = RequestMethod.GET)
-        public ModelAndView show() {
-            return new ModelAndView("newproductform", "newProduct", new NewProduct());
-        }
-
+    @RequestMapping(value="newproductform", method = RequestMethod.GET)
+    public ModelAndView newProducts(Model model) {
+        ModelAndView mav = new ModelAndView("newproductform");
+        mav.addObject("newProducts", new NewProduct());
+        return mav;
+    }
 */
     @RequestMapping(value="/newproductform", method = RequestMethod.POST)
-    public ModelAndView processRequest(@ModelAttribute("newProduct") NewProduct newProduct) {
+    public String processRequest(@ModelAttribute("newProduct") NewProduct newProduct) {
+        System.out.println(newProduct);
         newProductService.addNewProduct(newProduct);
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         ModelAndView model = new ModelAndView("getAllNewProducts");
         model.addObject("newProducts", newProducts);
-        return model;
+        return "newproductform";
     }
 
     @RequestMapping("/getnewproducts")
@@ -48,9 +50,8 @@ public class NewProductController {
         model.addAttribute("newproductform", new NewProduct());
         return "newproductform";
     }
+
 /*
-
-
     @PostMapping("/newproductform")
     public String newProductFormSubmit(@ModelAttribute NewProduct newProduct) {
         return "newproductform";

@@ -19,6 +19,5 @@ public class NewProductRowMapper implements RowMapper<NewProduct>{
         newProduct.setMealtime(row.getString("mealtime"));
         newProduct.setQuantity(row.getString("quantity"));
         return newProduct;
-
     }
 }
