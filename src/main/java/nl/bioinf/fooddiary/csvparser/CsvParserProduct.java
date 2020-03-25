@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.model.csvparser;
+package nl.bioinf.fooddiary.csvparser;
 
 import com.opencsv.CSVReader;
 
