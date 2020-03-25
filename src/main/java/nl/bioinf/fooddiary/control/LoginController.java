@@ -7,15 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.Locale;
+
 
 @Controller
 public class LoginController {
 
     @RequestMapping(value = {"", "/", "/home"}, method = RequestMethod.GET)
-    public String homeWithoutLocale(Locale locale, Model model) {
-        model.addAttribute("page_name", "home");
+    public String homeWithoutLocale(Locale locale) {
         return "redirect:" + locale.getLanguage() + "/home";
 
     }
@@ -27,8 +26,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/{locale}/home")
-    public String  homeWithLocale(Model model) {
-        model.addAttribute("page_name", "home");
+    public String  homeWithLocale() {
         return "/home";
     }
 }
