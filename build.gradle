@@ -17,7 +17,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.1.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.0.RELEASE'
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.0'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -35,6 +35,13 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
     //parameterized tests
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.1.0'
+
+    // Spring Junit test
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.1.6.RELEASE'
+
+    // H2 database, needed for testing
+    compile group: 'com.h2database', name: 'h2', version: '1.4.194'
+
 
 }
 

@@ -1,8 +1,6 @@
 -- @Author Tom Wagenaar
 -- Copy all the code underneath this comment and put it into a sql console to make the fooddiary schema.
 
-CREATE SCHEMA IF NOT EXISTS fooddiary;
-
 DROP TABLE IF EXISTS user_project;
 DROP TABLE IF EXISTS project;
 DROP TABLE IF EXISTS product_entry;
@@ -12,6 +10,10 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS product_nutrient;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS nutrient;
+
+DROP SCHEMA IF EXISTS fooddiary;
+
+CREATE SCHEMA IF NOT EXISTS fooddiary;
 
 CREATE TABLE IF NOT EXISTS user
 (
@@ -118,3 +120,9 @@ CREATE TABLE IF NOT EXISTS product_nutrient
     FOREIGN KEY (product_id) REFERENCES product (id),
     FOREIGN KEY (nutrient_id) REFERENCES nutrient (id)
 );
+
+
+CREATE TABLE IF NOT EXISTS test (
+    id int PRIMARY KEY,
+    test int NOT NULL
+)
