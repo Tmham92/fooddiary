@@ -114,15 +114,9 @@ CREATE TABLE IF NOT EXISTS product_nutrient
 (
     id             int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     product_id     int(25),
-    nutrient_id    int(5),
+    nutrient_code    varchar(25),
     nutrient_value varchar(10)                            NOT NULL,
 
     FOREIGN KEY (product_id) REFERENCES product (id),
-    FOREIGN KEY (nutrient_id) REFERENCES nutrient (id)
+    FOREIGN KEY (nutrient_code) REFERENCES nutrient (nutrient_code)
 );
-
-
-CREATE TABLE IF NOT EXISTS test (
-    id int PRIMARY KEY,
-    test int NOT NULL
-)
