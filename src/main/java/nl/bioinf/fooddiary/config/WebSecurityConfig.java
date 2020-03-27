@@ -43,13 +43,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact").permitAll()
+                .antMatchers("**/diary-entry", "/diary-entry").hasRole("USER")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .loginPage("/home")
                     .failureUrl("/login-error.html")
                     .permitAll()
-                    .defaultSuccessUrl("/contact")
+                    .defaultSuccessUrl("/default")
                     .and()
 
                 .logout()
