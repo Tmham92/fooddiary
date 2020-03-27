@@ -1,106 +1,121 @@
 <!--AUTHOR: Hans -->
-
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+    <title>entry</title>
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/diary-entry.css}" href="../static/css/diary-entry.css">
+    <link rel="script" th:href="@{/js/diary-entry.js}" href="../static/js/diaryentry.js">
 </head>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>"
+<script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.js"></script>
 
-<body>
 
-<table id="example" class="display" style="width:100%">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Office</th>
-        <th>Age</th>
-        <th>Start date</th>
-        <th>Salary</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Tiger Nixon</td>
-        <td>System Architect</td>
-        <td>Edinburgh</td>
-        <td>61</td>
-        <td>2011/04/25</td>
-        <td>$320,800</td>
-    </tr>
-    <tr>
-        <td>Garrett Winters</td>
-        <td>Accountant</td>
-        <td>Tokyo</td>
-        <td>63</td>
-        <td>2011/07/25</td>
-        <td>$170,750</td>
-    </tr>
-    <tr>
-        <td>Ashton Cox</td>
-        <td>Junior Technical Author</td>
-        <td>San Francisco</td>
-        <td>66</td>
-        <td>2009/01/12</td>
-        <td>$86,000</td>
-    </tr>
-    <tr>
-        <td>Cedric Kelly</td>
-        <td>Senior Javascript Developer</td>
-        <td>Edinburgh</td>
-        <td>22</td>
-        <td>2012/03/29</td>
-        <td>$433,060</td>
-    </tr>
-    <tr>
-        <td>Airi Satou</td>
-        <td>Accountant</td>
-        <td>Tokyo</td>
-        <td>33</td>
-        <td>2008/11/28</td>
-        <td>$162,700</td>
-    </tr>
-    <tr>
-        <td>Brielle Williamson</td>
-        <td>Integration Specialist</td>
-        <td>New York</td>
-        <td>61</td>
-        <td>2012/12/02</td>
-        <td>$372,000</td>
-    </tr>
-    <tr>
-        <td>Herrod Chandler</td>
-        <td>Sales Assistant</td>
-        <td>San Francisco</td>
-        <td>59</td>
-        <td>2012/08/06</td>
-        <td>$137,500</td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Office</th>
-        <th>Age</th>
-        <th>Start date</th>
-        <th>Salary</th>
-    </tr>
-    </tfoot>
-</table>
+    <body>
+
+
+
+<div th:insert="template :: navbar"></div>
+<div class="container">
+
+            <p>
+                <button class="button" data-modal="modalOne" th:text="#{add.msg}"></button>
+            </p>
+
+            <div id="modalOne" class="modal">
+                <div class="modal-content">
+                    <div class="entry-form">
+                        <a class="close">&times;</a>
+                        <form action="/">
+                            <h2 th:text="#{add.msg}"></h2>
+                            <div>
+                                <input class="product" type="text" name="mealtime" placeholder="mealtime">
+                                <input type="text" name="product" placeholder="product">
+                                <input type="text" name="amount" placeholder="amount">
+                            </div>
+                            <button type="submit" href="/" th:text="#{add.msg}">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th th:text="#{table.mealtime}">Mealtime</th>
+                        <th th:text="#{table.product}">Product</th>
+                        <th th:text="#{table.date}">Date</th>
+                        <th th:text="#{table.amount}">Amount</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </body>
 
 <script>
     $(document).ready(function() {
-        $('#example').DataTable();
-    } );
-</script>
+        var t = $('#example').DataTable();
+        var counter = 1;
 
-</body>
+        $('#addRow').on( 'click', function () {
+            t.row.add( [
+                counter +'.1',
+                counter +'.2',
+                counter +'.3',
+                counter +'.4',
+            ] ).draw( false );
+
+            counter++;
+        } );
+
+        // Automatically add a first row of data
+        $('#addRow').click();
+    } );
+
+    function openForm() {
+        document.getElementById("loginPopup").style.display="block";
+    }
+
+    function closeForm() {
+        document.getElementById("loginPopup").style.display= "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        var modal = document.getElementById('loginPopup');
+        if (event.target == modal) {
+            closeForm();
+        }
+    }
+
+    var modalBtns = [...document.querySelectorAll(".button")];
+    modalBtns.forEach(function(btn){
+        btn.onclick = function() {
+            var modal = btn.getAttribute('data-modal');
+            document.getElementById(modal).style.display = "block";
+        }
+    });
+
+    var closeBtns = [...document.querySelectorAll(".close")];
+    closeBtns.forEach(function(btn){
+        btn.onclick = function() {
+            var modal = btn.closest('.modal');
+            modal.style.display = "none";
+        }
+    });
+
+    window.onclick = function(event) {
+        if (event.target.className === "modal") {
+            event.target.style.display = "none";
+        }
+    }
+</script>
 </html>
