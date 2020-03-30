@@ -3,15 +3,14 @@ package nl.bioinf.fooddiary.dao.productnutrient;
 import nl.bioinf.fooddiary.model.nutrient.ProductNutrient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Repository
 public class ProductNutrientDAO implements ProductNutrientRepository {
 
     private final JdbcTemplate jdbcTemplate;
+
+    private ProductNutrientMapper mapper;
 
     @Autowired
     public ProductNutrientDAO(JdbcTemplate jdbcTemplate) {
@@ -19,9 +18,11 @@ public class ProductNutrientDAO implements ProductNutrientRepository {
     }
 
 
-
     @Override
-    public ProductNutrient getProductNutrientById(int idPattern) {
-        return null;
+    public int insertProductNutrientData(ProductNutrient productNutrient) {
+        String sqlQuery = "INSERT INTO product_nutrient (product_code, nutrient_code, nutrient_value) VALUES (?, ?, ?)";
+
+        return jdbcTemplate.update(sqlQuery, productNutrient.getProductCode(),
+                productNutrient.getNutrientCode(), productNutrient.getNutrientValue());
     }
 }
