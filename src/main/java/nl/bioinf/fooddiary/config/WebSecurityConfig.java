@@ -38,11 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "select user_code, role from user where user_code = ?");
     }
 
+    // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact").permitAll()
+                .antMatchers( "/", "/home", "/*/home", "/data","/images/**", "/css/**", "/contact", "/*/contact").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
