@@ -20,7 +20,7 @@ class ProductNutrientRepositoryTest {
     private TestEntityManager entityManager;
 
     @Autowired
-    private ProductNutrientDAO productNutrientDAO;
+    private ProductNutrientRepository repository;
 
     @Before
     public void setUp() {
@@ -32,12 +32,4 @@ class ProductNutrientRepositoryTest {
         entityManager.persist(productNutrientObject);
     }
 
-    @Test
-    public void getProductNutrientById_ReturnID() {
-        // When
-        ProductNutrient productNutrient = productNutrientDAO.getProductNutrientById(10);
-
-        //then
-        assertEquals(productNutrient.getNutrientValue(), "0,256");
-    }
 }
