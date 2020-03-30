@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS user_project
 CREATE TABLE IF NOT EXISTS product
 (
     id                     int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    code                   int(25)                            NOT NULL,
+    code                   int(25)                            NOT NULL UNIQUE ,
     group_code             int(3)                             NOT NULL,
     group_code_description varchar(255)                       NOT NULL,
     description_dutch      varchar(255)                       NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS product
     synonymous             varchar(255)                       NULL,
     measurement_unit       varchar(10)                        NOT NULL,
     measurement_quantity   int(5)                             NOT NULL,
-    measurement_comment    varchar(255)                       NULL,
+    measurement_comment    varchar(510)                       NULL,
     enriched_with          varchar(255)                       NULL,
     traces_of              varchar(255)                       NULL
 );
@@ -103,18 +103,18 @@ CREATE TABLE IF NOT EXISTS nutrient
 (
     id               int(5) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nutrient_code    varchar(25)                       NOT NULL UNIQUE,
-    name_dutch       varchar(50)                       NOT NULL UNIQUE,
-    name_english     varchar(50)                       NOT NULL UNIQUE,
-    measurement_unit varchar(10)                       NOT NULL
+    name_dutch       varchar(255)                       NOT NULL,
+    name_english     varchar(255)                       NOT NULL,
+    measurement_unit varchar(255)                       NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS product_nutrient
 (
     id             int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    product_id     int(25),
-    nutrient_code    varchar(25),
+    product_code   int(25),
+    nutrient_code  varchar(25),
     nutrient_value varchar(10)                            NOT NULL,
 
-    FOREIGN KEY (product_id) REFERENCES product (id),
+    FOREIGN KEY (product_code) REFERENCES product (code),
     FOREIGN KEY (nutrient_code) REFERENCES nutrient (nutrient_code)
 );
