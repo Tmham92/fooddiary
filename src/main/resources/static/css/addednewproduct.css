@@ -1,0 +1,9 @@
+.col-md-9{
+    padding: 3%;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.banner-image {
+    height: 25%;
+}

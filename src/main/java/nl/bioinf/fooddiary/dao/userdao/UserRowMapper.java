@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.dao;
+package nl.bioinf.fooddiary.dao.userdao;
 
 import nl.bioinf.fooddiary.model.User;
 import org.springframework.jdbc.core.RowMapper;

@@ -20,8 +20,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -42,7 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact").permitAll()
+                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact",
+                        "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
+                ,"/getnewproducts", "/**/getnewproducts").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
