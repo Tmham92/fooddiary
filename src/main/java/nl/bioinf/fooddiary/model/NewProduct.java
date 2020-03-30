@@ -11,9 +11,9 @@ public class NewProduct {
 
 
     private Integer id;
-    private Integer user_id;
+    private String user_id;
     @NotNull
-    private Date date;
+    private String date;
     @NotNull
     private String time_of_day;
     @NotNull
@@ -33,21 +33,19 @@ public class NewProduct {
         this.id = id;
     }
 
-    public Integer getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public void setDate(String date) { this.date = date; }
 
     public String getTime_of_day() {
         return time_of_day;

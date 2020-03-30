@@ -1,15 +1,16 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Adding New Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Tobias Ham">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/newproductform.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/newproductform.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 
@@ -19,32 +20,28 @@
         <p><strong>Simple and Resourceful</strong></p>
     </div>
 </div>
-
 <div class="container addnewproduct">
     <div class="row">
         <div class="col-md-3">
             <div class="newproduct-info">
-                <h2>Thanks for adding new products.</h2>
-                <h6>It is important to keep updating our food database.
-                <br />
-                Please fill in this form as detailed as possible so we get the right information.
-                Thanks.</h6>
+                <h2 th:text="#{newproductformhead.message}"></h2>
+                <h6 th:text="#{newproductform.message}"></h6>
             </div>
         </div>
+
         <div class="col-md-9">
             <div class="addproduct-form">
-                <form action="#" th:action="@{/newproductfrom}" th:object="${newproductform}" method="post">
+                <form action="#" th:action="@{/addednewproduct}" th:object="${newproductform}" method="post">
                     <div class="form-group">
-
-                    <label class="control-label col-sm-2" for="user_id">User ID: </label>
-                    <div class="col-sm-10">
-                        <input type="text" th:field="*{user_id}" class="form-control" id="user_id" placeholder="Enter User ID" name="user_id">
-                    </div>
+                        <label class="control-label col-sm-2">User ID:</label>
+                        <div class="col-sm-10">
+                            <span th:text="${#request.getUserPrincipal().getName()}"></span>
+                        </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="date">Date:</label>
                     <div class="col-sm-10">
-                        <input type="text" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
+                        <input type="date" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
                     </div>
                 </div>
                 <div class="form-group">

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,10 +42,12 @@ public class NewProductDAO implements IProductDAO {
     }
 
     public void addNewProduct(NewProduct newProduct) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         String sql = "INSERT INTO unverified_product_entry " +
-                "(user_id, date, time_of_day, mealtime, description, quantity values (?,?,?,?,?,?,?);";
-        jdbcTemplate.update(sql, newProduct.getUser_id(), newProduct.getDate(), newProduct.getTime_of_day(),
-                newProduct.getMealtime(), newProduct.getDate(), newProduct.getQuantity());
+                "(user_id, date, time_of_day, mealtime, description, quantity) values (?,?,?,?,?,?);";
+        jdbcTemplate.update(sql, newProduct.getId(), newProduct.getDate(), newProduct.getTime_of_day(),
+                newProduct.getMealtime(), newProduct.getDescription(), newProduct.getQuantity());
     }
 
     public NewProduct getNewProductById(int newProductId) {

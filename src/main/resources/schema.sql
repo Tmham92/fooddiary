@@ -63,8 +63,8 @@ CREATE TABLE IF NOT EXISTS product_entry
     user_id     int(10),
     product_id  int(25),
     quantity    varchar(255)                       NOT NULL,
-    date        date                               NOT NULL,
-    time_of_day varchat(25)                        NOT NULL,
+    date        date                              NOT NULL,
+    time_of_day varchar(25)                        NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
     description varchar(255)                       NULL,
 
@@ -76,10 +76,9 @@ CREATE TABLE IF NOT EXISTS unverified_product_entry
 (
     id          int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id     int(10),
-    unit        varchar(255)                       NOT NULL,
-    amount      int(10)                            NOT NULL,
-    date        date                               NOT NULL,
-    time_of_day datetime                           NOT NULL,
+    quantity    varchar(255)                       NOT NULL,
+    date        varchar(255)                       NOT NULL,
+    time_of_day varchar(255)                       NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
     description varchar(255)                       NOT NULL,
 
