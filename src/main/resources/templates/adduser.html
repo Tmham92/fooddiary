@@ -3,13 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>Add User</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Hugo Donkerbroek">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/home.css}" href="../static/css/home.css">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" href=../static/css/navbar.css>
     <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/adduser.css}" href="../static/css/adduser.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 
@@ -26,23 +28,7 @@
     </div>
 </div>
 
-<div th:insert="template :: home-navbar"></div>
-
-<div class="container-fluid">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8" id="home-page-text">
-                <h2 th:text="#{welcome.message}"></h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
+<div th:insert="template :: add-user-navbar"></div>
 
 <div th:insert="template :: footer"></div>
 </body>
