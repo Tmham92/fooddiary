@@ -42,6 +42,9 @@ dependencies {
     // H2 database, needed for testing
     compile group: 'com.h2database', name: 'h2', version: '1.4.194'
 
+    // Needed for testing spring
+    compile group: 'org.hsqldb', name: 'hsqldb'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 }
 
