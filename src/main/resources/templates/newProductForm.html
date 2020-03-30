@@ -1,0 +1,85 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Adding New Products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Tobias Ham">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/newproductform.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+
+<div class="banner-image">
+    <div class="banner-text">
+        <h1>Food Diary</h1>
+        <p><strong>Simple and Resourceful</strong></p>
+    </div>
+</div>
+<div class="container addnewproduct">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="newproduct-info">
+                <h2 th:text="#{newproductformhead.message}"></h2>
+                <h6 th:text="#{newproductform.message}"></h6>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="addproduct-form">
+                <form action="#" th:action="@{/addednewproduct}" th:object="${newproductform}" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">User ID:</label>
+                        <div class="col-sm-10">
+                            <span th:text="${#request.getUserPrincipal().getName()}"></span>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="date">Date:</label>
+                    <div class="col-sm-10">
+                        <input type="date" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="time_of_day">Time of the day:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{time_of_day}" class="form-control" id="time_of_day" placeholder="13:30" name="time_of_day">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="mealtime">Moment of Meal:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{mealtime}" class="form-control" id="mealtime" placeholder="Breakfast" name="mealtime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="description">Description:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Quacker Crueslie 4 nuts" name="description">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="quantity">Weight or Volume:</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{quantity}" class="form-control" id="quantity" placeholder="100gr / 100ml" name="quantity">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+<div th:insert="template :: footer"></div>
+</body>
+</html>
