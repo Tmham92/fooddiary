@@ -20,6 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "select user_code, role from user where user_code = ?");
     }
 
+    // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -43,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact").permitAll()
                 .antMatchers("**/diary-entry", "/diary-entry").hasRole("USER")
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact",
+                .antMatchers( "/", "/home", "/*/home", "/data","/images/**", "/css/**", "/contact",
                         "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
                 ,"/getnewproducts", "/**/getnewproducts").permitAll()
                     .anyRequest().authenticated()
