@@ -20,8 +20,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,6 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact").permitAll()
                 .antMatchers("**/diary-entry", "/diary-entry").hasRole("USER")
+                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact",
+                        "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
+                ,"/getnewproducts", "/**/getnewproducts").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
