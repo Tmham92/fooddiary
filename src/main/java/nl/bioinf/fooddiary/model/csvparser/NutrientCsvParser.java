@@ -61,8 +61,8 @@ public class NutrientCsvParser {
         // Assign each value in the line to a variable for better readability.
         String nutrientCode = line[0];
         String nameDutch = line[1];
-        String nameEnglish = line[2];
-        String measurementUnit = line[3];
+        String nameEnglish = line[3];
+        String measurementUnit = line[2];
 
         // Parse every column into one single object for each individual line.
         Nutrient nutrient = Nutrient.builder(nutrientCode, nameDutch, nameEnglish, measurementUnit)
