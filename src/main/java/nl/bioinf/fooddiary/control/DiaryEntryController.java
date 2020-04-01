@@ -1,14 +1,17 @@
 package nl.bioinf.fooddiary.control;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import nl.bioinf.fooddiary.dao.product.ProductRepository;
+import nl.bioinf.fooddiary.model.product.ProductDescription;
+import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -18,6 +21,9 @@ import java.util.Locale;
 @Controller
 public class DiaryEntryController {
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @RequestMapping(value = "/diary-entry")
         public String diaryWithoutLocale(Locale locale) {
         return "redirect:" + locale.getLanguage() + "/diary-entry";
@@ -25,9 +31,17 @@ public class DiaryEntryController {
         }
 
     @RequestMapping(value = "/{locale}/diary-entry")
-    public String  diaryWithLocale(HttpServletRequest request, Authentication authentication, Model model, Principal principal) {
-
+    public String  diaryWithLocale(Model model) {
         return "/diary-entry";
     }
 
+    @RequestMapping(value = "/product-description", method = RequestMethod.GET)
+    public @ResponseBody
+    List<ProductDescription> getTime() {
+        return productRepository.getAllProductsByDescription();
+
     }
+
+
+
+}
