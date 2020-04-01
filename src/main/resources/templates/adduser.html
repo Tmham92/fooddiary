@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" href=../static/css/navbar.css>
     <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
-    <link rel="stylesheet" th:href="@{/css/contact.css}" href="../static/css/contact.css">
     <link rel="stylesheet" th:href="@{/css/adduser.css}" href="../static/css/adduser.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
@@ -31,40 +30,42 @@
 
 <div th:insert="template :: add-user-navbar"></div>
 
-<div class="container contact">
+<div class="container addnewuser">
     <div class="row">
         <div class="col-md-3">
-            <div class="contact-info">
-                <h2>Add User</h2>
-                <h4>Create a new user.</h4>
+            <div class="newproduct-info">
+                <h2 th:text="#{newproductformhead.message}"></h2>
+                <h6 th:text="#{newproductform.message}"></h6>
             </div>
         </div>
+
         <div class="col-md-9">
-            <div class="contact-form">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="usercode">User Code:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="usercode" placeholder="Enter User Code" name="usercode">
+            <div class="adduser-form">
+                <form action="#" th:action="@{/adduser}" th:object="${newuserform}" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="user_code">User Code:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{user_code}" class="form-control" id="user_code" placeholder="Enter User Code" name="user_code" required>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="pword">Password:</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" id="pword" placeholder="Enter Password" name="pword">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="password">Password:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{password}" class="form-control" id="password" placeholder="Enter Password" name="password" required>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="roleselect">Select User Role:</label>
-                    <select class="form-control" id="roleselect">
-                        <option>User</option>
-                        <option>Admin</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Submit</button>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="role">Role:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{role}" class="form-control" id="role" placeholder="Enter User Role" name="role" required>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
