@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.Locale;
 
 @Controller
@@ -16,7 +15,6 @@ public class LoginController {
 
     @RequestMapping(value = {"", "/", "/home"}, method = RequestMethod.GET)
     public String homeWithoutLocale(Locale locale, Model model) {
-        model.addAttribute("page_name", "home");
         return "redirect:" + locale.getLanguage() + "/home";
 
     }
@@ -25,7 +23,6 @@ public class LoginController {
     public String  homeWithLocale(Model model, Authentication authentication) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication.getAuthorities().toArray()[0]);
-        model.addAttribute("page_name", "home");
         return "/home";
     }
 

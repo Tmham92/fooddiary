@@ -36,7 +36,6 @@ public class NewProductController {
         System.out.println("Loading page without Locale");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        model.addAttribute("page_name", "newproductform");
         return "redirect:" + locale.getLanguage() + "/newproductform";
     }
 
@@ -45,7 +44,6 @@ public class NewProductController {
         System.out.println("Loading page with Locale");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        model.addAttribute("page_name", "newproductform");
         return "/newproductform";
     }
 
@@ -65,7 +63,7 @@ public class NewProductController {
     }
 
     @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
-    public String injectNewProduct(Model model, @ModelAttribute("newproductform")
+    public String injectNewProduct(@ModelAttribute("newproductform")
                                    @Validated NewProduct newProduct, BindingResult bindingResult) {
         System.out.println("Trying to inject data");
         newProductService.addNewProduct(newProduct);
@@ -73,14 +71,12 @@ public class NewProductController {
     }
 
     @RequestMapping(value = {"/addednewproduct"}, method = RequestMethod.GET)
-    public String addedNewProductWithoutLocale(Locale locale, Model model) {
-        model.addAttribute("page_name", "addednewproduct");
+    public String addedNewProductWithoutLocale(Locale locale) {
         return "redirect:" + locale.getLanguage() + "/addednewproduct";
     }
 
     @RequestMapping(value = "/{locale}/addednewproduct")
-    public String  addedNewProductWithLocale(Model model) {
-        model.addAttribute("page_name", "addednewproduct");
+    public String  addedNewProductWithLocale() {
         return "/addednewproduct";
     }
 }
