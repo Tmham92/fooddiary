@@ -2,6 +2,7 @@ package nl.bioinf.fooddiary.control;
 
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +21,17 @@ public class LoginController {
 
     }
 
-    @RequestMapping("/login-error.html")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
+    @RequestMapping(value = "/{locale}/home")
+    public String  homeWithLocale(Model model, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getAuthorities().toArray()[0]);
+        model.addAttribute("page_name", "home");
         return "/home";
     }
 
-    @RequestMapping(value = "/{locale}/home")
-    public String  homeWithLocale(Model model) {
-        model.addAttribute("page_name", "home");
+    @RequestMapping("/login-error.html")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
         return "/home";
     }
 }

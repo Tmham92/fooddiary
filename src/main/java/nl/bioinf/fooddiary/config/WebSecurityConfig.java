@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
@@ -19,6 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -36,24 +39,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "select user_code, role from user where user_code = ?");
     }
 
+    // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/contact",
-                        "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
-                ,"/getnewproducts/**/", "/**/getnewproducts/**/").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
+                .antMatchers( "/product-description","/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
+                        ,"/getnewproducts", "/**/getnewproducts").permitAll()
+                .antMatchers("**/diary-entry", "/diary-entry").hasRole("USER")
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
-                    .loginPage("/home")
-                    .failureUrl("/login-error.html")
-                    .permitAll()
-                    .defaultSuccessUrl("/contact")
-                    .and()
-
+                .loginPage("/home")
+                .failureUrl("/login-error.html")
+                .permitAll()
+                .defaultSuccessUrl("/default")
+                .and()
                 .logout()
-                    .permitAll();
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/home")
+                .invalidateHttpSession(true)        // set invalidation state when logout
+                .deleteCookies("JSESSIONID");
     }
 
 }

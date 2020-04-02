@@ -16,10 +16,14 @@ public class ProductNutrient {
     private final String nutrientCode;
     private final String nutrientValue;
 
-    public ProductNutrient(int productCode, String nutrientCode, String nutrientValue) {
-        this.productCode = productCode;
-        this.nutrientCode = nutrientCode;
-        this.nutrientValue = nutrientValue;
+    public ProductNutrient(ProductNutrientBuilder builder) {
+        this.productCode = builder.productCode;
+        this.nutrientCode = builder.nutrientCode;
+        this.nutrientValue = builder.nutrientValue;
+    }
+
+    public static ProductNutrientBuilder builder(int productCode, String nutrientCode, String nutrientValue) {
+        return new ProductNutrientBuilder(productCode, nutrientCode, nutrientValue);
     }
 
     // Getters
@@ -42,5 +46,19 @@ public class ProductNutrient {
                 ", nutrientCode='" + nutrientCode + '\'' +
                 ", nutrientValue='" + nutrientValue + '\'' +
                 '}';
+    }
+
+    public static class ProductNutrientBuilder {
+        private final int productCode;
+        private final String nutrientCode;
+        private final String nutrientValue;
+
+        public ProductNutrientBuilder(int productCode, String nutrientCode, String nutrientValue) {
+            this.productCode = productCode;
+            this.nutrientCode = nutrientCode;
+            this.nutrientValue = nutrientValue;
+        }
+
+        public ProductNutrient build() {return new ProductNutrient(this); }
     }
 }
