@@ -45,7 +45,6 @@ public class NewProductDAO implements IProductDAO {
     // Doet niet maar 1 ding.
     public void addNewProduct(NewProduct newProduct) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         // Because the newProduct has a String user_id value, which comes from user_code.
         // This value needs te be converted to the corresponding user_id Integer.
         Object[] param = new Object[] {
