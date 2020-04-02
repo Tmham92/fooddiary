@@ -5,19 +5,14 @@ import nl.bioinf.fooddiary.model.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.sql.DataSource;
-import java.security.Principal;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-@Transactional
+
 @Repository
 public class NewProductDAO implements IProductDAO {
 

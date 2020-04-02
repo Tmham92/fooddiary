@@ -27,16 +27,17 @@
                         <a class="nav-link" th:href="@{'/diary-entry'}" th:text="#{navbar.diary}"></a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('USER')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" th:text="#{navbar.newproduct}">
                             Unknown Products
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                            <a class="dropdown-item" th:href="@{'/newproductform'}" th:text="#{navbar.newproductform}" sec:authorize="hasRole('USER')">
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" th:href="@{'/newproductform'}" th:text="#{navbar.newproductform}">
                                 Add Unknown Product
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" th:href="@{'/getnewproducts'}" th:text="#{navbar.getnewproducts}" sec:authorize="hasRole('USER')">
+                            <a class="dropdown-item" th:href="@{'/getnewproducts'}" th:text="#{navbar.getnewproducts}">
                                 Get All Unverified Products
                             </a>
                         </div>
@@ -46,7 +47,7 @@
                         <a class="nav-link" th:href="@{'/logout'}" th:text="#{logout}"></a>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" >
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                            th:href="@{/(locale=nl)}">
                             <img src="/images/nl-flag-icon.png">
