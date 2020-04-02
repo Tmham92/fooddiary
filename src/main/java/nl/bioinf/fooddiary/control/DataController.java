@@ -10,7 +10,6 @@ import nl.bioinf.fooddiary.model.csvparser.ProductCsvParser;
 import nl.bioinf.fooddiary.model.nutrient.Nutrient;
 import nl.bioinf.fooddiary.model.nutrient.ProductNutrient;
 import nl.bioinf.fooddiary.model.product.Product;
-import org.hibernate.loader.plan.build.internal.LoadGraphLoadPlanBuildingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

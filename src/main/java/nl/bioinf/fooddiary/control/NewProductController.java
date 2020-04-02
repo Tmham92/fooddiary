@@ -23,7 +23,6 @@ public class NewProductController {
     public String newProductFormWithoutLocale(Locale locale, Model model) {
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        model.addAttribute("page_name", "newproductform");
         return "redirect:" + locale.getLanguage() + "/newproductform";
     }
 
@@ -31,27 +30,24 @@ public class NewProductController {
     public String  newProductFormWithLocale(Model model) {
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        model.addAttribute("page_name", "newproductform");
         return "/newproductform";
     }
 
 
     @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
-    public String injectNewProduct(Model model, @ModelAttribute("newproductform")
+    public String injectNewProduct(@ModelAttribute("newproductform")
                                    @Validated NewProduct newProduct, BindingResult bindingResult) {
         newProductService.addNewProduct(newProduct);
         return "redirect:/addednewproduct";
     }
 
     @RequestMapping(value = {"/addednewproduct"}, method = RequestMethod.GET)
-    public String addedNewProductWithoutLocale(Locale locale, Model model) {
-        model.addAttribute("page_name", "addednewproduct");
+    public String addedNewProductWithoutLocale(Locale locale) {
         return "redirect:" + locale.getLanguage() + "/addednewproduct";
     }
 
     @RequestMapping(value = "/{locale}/addednewproduct")
-    public String  addedNewProductWithLocale(Model model) {
-        model.addAttribute("page_name", "addednewproduct");
+    public String  addedNewProductWithLocale() {
         return "/addednewproduct";
     }
 }
