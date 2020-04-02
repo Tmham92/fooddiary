@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.security.Principal;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -41,12 +42,21 @@ public class NewProductDAO implements IProductDAO {
         return newProduct;
     }
 
+    // Doet niet maar 1 ding.
     public void addNewProduct(NewProduct newProduct) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        // Because the newProduct has a String user_id value, which comes from user_code.
+        // This value needs te be converted to the corresponding user_id Integer.
+        Object[] param = new Object[] {
+                auth.getName()
+        };
+        String sqlGetId = "SELECT id FROM user WHERE user_code = ?";
+        int user_id = jdbcTemplate.queryForObject(sqlGetId, param, Integer.class);
+
         String sql = "INSERT INTO unverified_product_entry " +
                 "(user_id, date, time_of_day, mealtime, description, quantity) values (?,?,?,?,?,?);";
-        jdbcTemplate.update(sql, newProduct.getId(), newProduct.getDate(), newProduct.getTime_of_day(),
+        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTime_of_day(),
                 newProduct.getMealtime(), newProduct.getDescription(), newProduct.getQuantity());
     }
 

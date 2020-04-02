@@ -32,6 +32,7 @@ public class NewProductService implements INewProductService {
 
     @Override
     public void deleteNewProduct(int newProductId) {
+        newProductDAO.deleteNewProduct(newProductId);
     }
 
 

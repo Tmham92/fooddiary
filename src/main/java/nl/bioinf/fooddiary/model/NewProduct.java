@@ -11,7 +11,7 @@ public class NewProduct {
 
 
     private Integer id;
-    private String user_id;
+        private Integer user_id;
     @NotNull
     private String date;
     @NotNull
@@ -24,7 +24,6 @@ public class NewProduct {
     @NotNull
     private String quantity;
 
-
     public Integer getId() {
         return id;
     }
@@ -33,11 +32,11 @@ public class NewProduct {
         this.id = id;
     }
 
-    public String getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 
@@ -77,7 +76,7 @@ public class NewProduct {
 
     public String toString() {
         String message = " Description: " + description + " Quantity: " +
-                quantity + " User_id: " + user_id + " Date: " + date + " Time of Day: " +
+                quantity + " Date: " + date + " Time of Day: " +
                 time_of_day + " Mealtime: " + mealtime;
         return message;
     }
