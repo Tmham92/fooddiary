@@ -8,7 +8,6 @@
 <body>
 
 <div th:fragment="navbar">
-<!--        home page navbar-->
         <nav class="navbar navbar-expand-sm navbar-dark">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -25,6 +24,10 @@
 
                     <li class="nav-item" sec:authorize="hasRole('USER')">
                         <a class="nav-link" th:href="@{'/diary-entry'}" th:text="#{navbar.diary}"></a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasRole('USER')">
+                        <a class="nav-link" th:href="@{'/adduser'}" th:text="#{navbar.adduser}"></a>
                     </li>
 
                     <li class="nav-item" sec:authorize="isAuthenticated()">
