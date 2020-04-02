@@ -14,6 +14,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
+/**
+ * @author Hans Zijlstra
+ */
+
 @Configuration
 public class ApplicationConfig implements WebMvcConfigurer {
 

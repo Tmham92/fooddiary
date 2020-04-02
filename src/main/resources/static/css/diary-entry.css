@@ -1,0 +1,147 @@
+/* Popup Box */
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 8888; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10vh auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%; /* Could be more or less, depending on screen size */
+}
+@media (min-width: 1366px) {
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10vh auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 30%; /* Could be more or less, depending on screen size */
+    }
+}
+h2, p {
+    margin: 0 0 20px;
+    font-weight: 400;
+    color: #666;
+}
+span{
+    color: #666;
+    display:block;
+    padding:0 0 5px;
+}
+form {
+    padding: 25px;
+    margin: 25px;
+    box-shadow: 0 2px 5px #f5f5f5;
+    background: #eee;
+}
+input, textarea {
+    width: calc(100% - 18px);
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #1c87c9;
+    outline: none;
+}
+.entry-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #ff6e19;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+}
+button:hover {
+    background: #ff6e19;
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+button.button {
+    background:none;
+    border-top:none;
+    outline: none;
+    border-right:none;
+    border-left:none;
+    border-bottom:#02274a 1px solid;
+    padding:0 0 3px 0;
+    font-size:16px;
+    cursor:pointer;
+}
+button.button:hover {
+    border-bottom:#a99567 1px solid;
+    color:#a99567;
+}
+/*the container must be positioned relative:*/
+.autocomplete {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+input {
+    border: 1px solid transparent;
+    background-color: white;
+    padding: 10px;
+    font-size: 16px;
+}
+
+input[type=text] {
+    width: 100%;
+}
+
+input[type=submit] {
+    background-color: #ff6e19;
+    color: #fff;
+    cursor: pointer;
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+    background-color: #ff6e19;
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+    background-color: #ff6e19 !important;
+    color: #ffffff;
+}
