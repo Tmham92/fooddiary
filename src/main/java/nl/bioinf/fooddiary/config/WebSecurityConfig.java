@@ -44,9 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/product-description","/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
-                        ,"/getnewproducts", "/**/getnewproducts").permitAll()
-                .antMatchers("**/diary-entry", "/diary-entry").hasRole("USER")
+                .antMatchers( "/product-description","/", "/home", "/*/home", "/images/**", "/css/**",
+                        "/contact", "/*/contact").permitAll()
+                .antMatchers("**/diary-entry", "/diary-entry", "/**/newproductform", "/newproductform",
+                        "/addednewproduct", "/**/addednewproduct", "/getnewproducts", "/**/getnewproducts").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
