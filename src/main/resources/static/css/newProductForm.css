@@ -1,3 +1,4 @@
+/* Author Tobias Ham */
 .newproductform{
     padding: 4%;
     /*height: 400px;*/
@@ -33,6 +34,7 @@
 .addproduct-form button:focus{
     box-shadow:none;
 }
+
 
 .banner-image {
     height: 25%;
