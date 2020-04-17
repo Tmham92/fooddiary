@@ -1,7 +1,7 @@
 package nl.bioinf.fooddiary.control;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
-import nl.bioinf.fooddiary.dao.product.ProductRepository;
+import nl.bioinf.fooddiary.dao.ProductRepository;
 import nl.bioinf.fooddiary.model.product.ProductDescription;
 import nl.bioinf.fooddiary.model.product.ProductEntry;
 import org.slf4j.Logger;
