@@ -1,10 +1,9 @@
 package nl.bioinf.fooddiary.model.csvparser;
 
-import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
 import nl.bioinf.fooddiary.model.product.Product;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Tom Wagenaar
