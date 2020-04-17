@@ -66,7 +66,14 @@ public class ProductCsvParser {
      * @param line, represents a single line and therefore a single product in the nevo_online_2019_Product.csv file.
      */
     public Product parseCsvFile(String[] line) {
-        int code = Integer.parseInt(line[2]);
+        int code;
+
+        try {
+            code = Integer.parseInt(line[2]);
+        } catch (NumberFormatException exception) {
+            throw new NumberFormatException("productCode isn't an integer.");
+        }
+
 
         // Parse the group code and group description into an object.
         ProductGroup productGroup = ProductGroup.builder(line[0], line[1])
@@ -78,7 +85,7 @@ public class ProductCsvParser {
                 .build();
 
         // Parse the measurement -Unit, -Quantity and -Comment into an object.
-        ProductMeasurement productMeasurement = ProductMeasurement.builder(line[6], Integer.parseInt(line[7]))
+        ProductMeasurement productMeasurement = ProductMeasurement.builder(line[6], line[7])
                 .measurementComment(line[8])
                 .build();
 
