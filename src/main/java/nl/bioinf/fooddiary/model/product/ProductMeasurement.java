@@ -1,20 +1,16 @@
 package nl.bioinf.fooddiary.model.product;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
 
 /**
  * @author Tom Wagenaar
- * @version 0.0.1
+ * @version 0.0.2
  * date: 18-03-2020
  *
  * Class that represents the measurement -Unit, -Quanity and -Comment for each individual product. See the
- * ProductGroup class javadoc for some more information about the builder pattern and the constraints validation that
- * is used in this class and the inner builder class. The measurementComment variable is optional and therefore isn't
- * final, furthermore this variable has a setter. All the other variables are final and have no setters to ensure
- * immutability.
+ * ProductGroup class javadoc for some more information about the builder pattern that is used in this class and the
+ * inner builder class. The measurementComment variable is optional and therefore isn't final. All the other variables
+ * are final and have no setters to ensure immutability.
  */
 public class ProductMeasurement {
     // Instance variable declaration
@@ -30,13 +26,24 @@ public class ProductMeasurement {
 
     /**
      * Static method that serves an instance of the inner class ProductMeasurementBuilder, taking the required
-     * string measurementUnit and int measurementQuantity as arguments
+     * string measurementUnit and string measurementQuantity as arguments. The measurementQuantity is transformed into
+     * an integer, furthermore some checks are carried out on both the unit and the quantity.
      * @param measurementUnit (String)
-     * @param measurementQuantity (int)
+     * @param measurementQuantity (String)
      * @return ProductDescriptionBuilder object
      */
-    public static ProductMeasurementBuilder builder(String measurementUnit, int measurementQuantity) {
-        return new ProductMeasurementBuilder(measurementUnit, measurementQuantity);
+    public static ProductMeasurementBuilder builder(String measurementUnit, String measurementQuantity) {
+        // Check the Product measurement unit on null input and length, in between carry out a trim.
+        ProductNutrientInputChecker.checkStringInputNull(measurementUnit, "measurementUnit");
+        measurementUnit = measurementUnit.trim();
+        ProductNutrientInputChecker.checkInputLength(measurementUnit, 10, "measurementUnit");
+
+        // Check the measurementQuantity on null input, change it to an integer and if the integer is between a range.
+        ProductNutrientInputChecker.checkStringInputNull(measurementQuantity, "measurementQuantity");
+        int checkedMeasurementQuantity = ProductNutrientInputChecker.changeStringToInt(measurementQuantity, "measurementQuantity");
+        ProductNutrientInputChecker.checkInputSize(checkedMeasurementQuantity, 9999, "measurementQuantity");
+
+        return new ProductMeasurementBuilder(measurementUnit, checkedMeasurementQuantity);
     }
 
     // Getters for the instance variables
@@ -62,18 +69,12 @@ public class ProductMeasurement {
     }
 
     /**
-     * Inner class that is used as a builder for the ProductMeasurement class. There are constraints validations for the
-     * instance variables. Whenever a new product is added to the database the product needs to validated, the
-     * constraints carry out those checks. The measurementComment variable isn't final and therefore not required, whenever
-     * this synonymous variable isn't defined it gets the _UNKNOWN_COMMENT_ tag.
+     * Inner class that is used as a builder for the ProductMeasurement class. The measurementComment variable isn't
+     * final and therefore not required, whenever this synonymous variable isn't defined it gets the _UNKNOWN_COMMENT_ tag.
      */
     public static class ProductMeasurementBuilder {
         // Required instance variable
-        @NotNull
-        @Size(min = 1, max = 10)
         private final String measurementUnit;
-        @NotNull
-        @Min(0) @Max(9999)
         private final int measurementQuantity;
 
         // Optional instance variable
@@ -85,12 +86,21 @@ public class ProductMeasurement {
         }
 
         public ProductMeasurementBuilder measurementComment(String measurementComment) {
-            // While parsing the nevo product table the measurementComment variables that aren't defined are "",
-            // therefore they aren't seen as values that aren't defined.
+            // Check if the measurementComment is a null value and trim it.
+            ProductNutrientInputChecker.checkStringInputNull(measurementComment, "measurementComment");
+            measurementComment = measurementComment.trim();
+
+            // Assign a value to the comment.
             if (measurementComment.equals("")) {
                 this.measurementComment = "_UNKNOWN_COMMENT_"; return this;
+            } else {
+                this.measurementComment = measurementComment;
             }
-            this.measurementComment = measurementComment; return this;
+
+            // Check the length of the comment.
+            ProductNutrientInputChecker.checkInputLength(this.measurementComment, 510, "measurmentComment");
+
+            return this;
         }
 
         /**
