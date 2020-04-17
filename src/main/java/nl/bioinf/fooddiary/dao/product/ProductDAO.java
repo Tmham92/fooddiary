@@ -1,16 +1,12 @@
 package nl.bioinf.fooddiary.dao.product;
 
 
-import nl.bioinf.fooddiary.model.csvparser.ProductCsvParser;
 import nl.bioinf.fooddiary.model.product.Product;
 import nl.bioinf.fooddiary.model.product.ProductDescription;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
