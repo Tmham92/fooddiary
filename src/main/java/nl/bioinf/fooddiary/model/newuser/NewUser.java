@@ -4,6 +4,8 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author Hugo Donkerbroek
+ *
+ * Class that stores information about a new account from the new-user form
  */
 
 public class NewUser {
