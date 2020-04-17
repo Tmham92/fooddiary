@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Hugo Donkerbroek
+ *
+ * This class inserts a new user in the database using an SQL query. The user data comes from the NewUser class.
  */
 
 @Transactional
