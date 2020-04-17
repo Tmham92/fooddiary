@@ -1,15 +1,14 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
 
 /**
  * @author Tom Wagenaar
- * @version 0.0.1
+ * @version 0.0.2
  * date: 20-03-2020
  *
  * Class that is used to store all the information from the nutrient table from Nevo_online_2019 file into objects. For
- * more information about the builder pattern and the constraint validation see the ProductGroup class javadoc.
+ * more information about the builder pattern see the ProductGroup class javadoc.
  */
 public class Nutrient {
     // Instance variable declaration
@@ -40,6 +39,27 @@ public class Nutrient {
      */
     public static NutrientBuilder builder(String nutrientCode, String nameDutch,
                                           String nameEnglish, String measurementUnit) {
+
+        // Check the nutrientCode on null input and length.
+        ProductNutrientInputChecker.checkStringInputNull(nutrientCode, "nutrientCode");
+        nutrientCode = nutrientCode.trim();
+        ProductNutrientInputChecker.checkInputLength(nutrientCode, 25, "nutrientCode");
+
+        // Check the nameDutch on null input and length.
+        ProductNutrientInputChecker.checkStringInputNull(nameDutch, "nameDutch");
+        nameDutch = nameDutch.trim();
+        ProductNutrientInputChecker.checkInputLength(nameDutch, 255, "nameDutch");
+
+        // Check the nameEnglish on null input and length.
+        ProductNutrientInputChecker.checkStringInputNull(nameEnglish, "nameEnglish");
+        nameEnglish = nameEnglish.trim();
+        ProductNutrientInputChecker.checkInputLength(nameEnglish, 255, "nameEnglish");
+
+        // Check the measurementUnit on null input and length.
+        ProductNutrientInputChecker.checkStringInputNull(measurementUnit, "measurementUnit");
+        measurementUnit = measurementUnit.trim();
+        ProductNutrientInputChecker.checkInputLength(measurementUnit, 255, "measurementUnit");
+
         return new NutrientBuilder(nutrientCode, nameDutch, nameEnglish, measurementUnit);
     }
 
@@ -70,26 +90,12 @@ public class Nutrient {
                 '}';
     }
 
-    /**
-     * Inner builder class that serves the Nutrient class. This inner class uses constraint validation for the instance
-     * variables.  Whenever a new product is added to the database the product needs to validated, the
-     * constraints carry out those checks.
-     */
+    // Inner builder class that serves the Nutrient class with the required variables.
     public static class NutrientBuilder {
-        @NotNull
-        @Size(min = 1, max = 25)
+        // Required variables.
         private final String nutrientCode;
-
-        @NotNull
-        @Size(min = 1, max = 50)
         private final String nameDutch;
-
-        @NotNull
-        @Size(min = 1, max = 50)
         private final String nameEnglish;
-
-        @NotNull
-        @Size(min = 1, max = 10)
         private final String measurementUnit;
 
         public NutrientBuilder(String nutrientCode, String nameDutch, String nameEnglish, String measurementUnit) {
