@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.model;
+package nl.bioinf.fooddiary.model.newproduct;
 
 import javax.validation.constraints.NotNull;
 

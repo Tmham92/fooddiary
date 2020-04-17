@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.dao.userdao;
 
-import nl.bioinf.fooddiary.model.User;
+import nl.bioinf.fooddiary.model.newuser.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

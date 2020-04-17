@@ -1,7 +1,7 @@
 package nl.bioinf.fooddiary.dao.newproduct;
 
 
-import nl.bioinf.fooddiary.model.NewProduct;
+import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

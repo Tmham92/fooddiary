@@ -1,7 +1,7 @@
 package nl.bioinf.fooddiary.service;
 
 import nl.bioinf.fooddiary.dao.jdbc.IUserDAO;
-import nl.bioinf.fooddiary.model.User;
+import nl.bioinf.fooddiary.model.newuser.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

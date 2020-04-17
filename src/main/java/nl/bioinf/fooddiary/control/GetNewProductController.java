@@ -1,7 +1,7 @@
 package nl.bioinf.fooddiary.control;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
-import nl.bioinf.fooddiary.model.NewProduct;
+import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import nl.bioinf.fooddiary.service.NewProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

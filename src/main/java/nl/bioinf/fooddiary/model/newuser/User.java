@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.model;
+package nl.bioinf.fooddiary.model.newuser;
 
 
 public class User {

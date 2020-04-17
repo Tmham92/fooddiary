@@ -1,7 +1,7 @@
 package nl.bioinf.fooddiary.service;
 
 import nl.bioinf.fooddiary.dao.newproduct.NewProductDAO;
-import nl.bioinf.fooddiary.model.NewProduct;
+import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
