@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 public class NutrientDAO implements NutrientRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private NutrientRowMapper mapper;
 
     @Autowired
     public NutrientDAO(JdbcTemplate jdbcTemplate) {
