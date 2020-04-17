@@ -5,10 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Tobias Ham">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/newproductform.css}" href="../static/css/newproductform.css">
+    <link rel="stylesheet" th:href="@{/css/home.css}" href="../static/css/home.css">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/contact.css}" href="../static/css/contact.css">
+    <link rel="stylesheet" th:href="@{/css/producttable.css}" href="../static/css/producttable.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 
@@ -18,13 +22,42 @@
         <p><strong>Simple and Resourceful</strong></p>
     </div>
 </div>
+<div th:insert="template :: navbar"></div>
 
 <body>
-
-
-<h2>List of newly added products</h2>
-<p th:text="${getNewProducts}"/>
-
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <table id="producttable">
+                <thead>
+                <tr>
+                    <th> Product ID </th>
+                    <th> User ID </th>
+                    <th> Description </th>
+                    <th> Date </th>
+                    <th> Quantity </th>
+                    <th> Mealtime </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="newproduct : ${getNewProducts}">
+                    <td><span th:text="${newproduct.id}"> Product ID </span></td>
+                    <td><span th:text="${newproduct.user_id}"> User ID </span></td>
+                    <td><span th:text="${newproduct.description}"> Description </span></td>
+                    <td><span th:text="${newproduct.date}"> Date </span></td>
+                    <td><span th:text="${newproduct.quantity}"> Quantity </span></td>
+                    <td><span th:text="${newproduct.mealtime}"> Mealtime </span></td>
+                    <td><form id="deleteNewProduct" th:action="@{/getnewproducts}" method="post">
+                        <input type="hidden" th:value="${newproduct.id}" name="productID"/>
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to DELETE this entry?')"/>
+                    </form>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
 
 <div th:insert="template :: footer"></div>
 </body>
