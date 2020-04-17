@@ -1,16 +1,13 @@
 package nl.bioinf.fooddiary.dao.product;
 
 
-import nl.bioinf.fooddiary.model.csvparser.ProductCsvParser;
 import nl.bioinf.fooddiary.model.product.Product;
 import nl.bioinf.fooddiary.model.product.ProductDescription;
+import nl.bioinf.fooddiary.model.product.ProductMeasurement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +17,6 @@ import java.util.List;
 public class ProductDAO implements ProductRepository{
 
     private final JdbcTemplate jdbcTemplate;
-
-    private ProductRowMapper mapper;
 
     @Autowired
     public ProductDAO(JdbcTemplate jdbcTemplate) {
@@ -43,8 +38,15 @@ public class ProductDAO implements ProductRepository{
                 product.getProductInfoExtra().getEnrichedWith(), product.getProductInfoExtra().getTracesOf());
     }
 
+
+    /**
+     * @author Hans Zijlstra
+     * Method that fetches all the product descriptions of the products in the database in english and dutch
+     * @return List<ProductDescription></> list of productdescriptions
+     */
+
     @Override
-    public List<ProductDescription> getAllProductsByDescription() {
+    public List<ProductDescription> getAllProductDescriptions() {
         String sqlQuery = "select description_dutch, description_english, synonymous from product;";
         return jdbcTemplate.query(sqlQuery, new RowMapper<ProductDescription>() {
             @Override
@@ -53,4 +55,23 @@ public class ProductDAO implements ProductRepository{
             }
         });
     }
+
+    /**
+     * @author Hans Zijlstra
+     * Method that fetches the measuring unit for the selected product in the database
+     * @return List<ProductDescription></> list of productdescriptions
+     */
+
+    @Override
+    public ProductMeasurement getProductByDescription(String description) {
+        String sqlQuery = "select measurement_quantity  from product where description_dutch = ? or where description_english = ?";
+        return (ProductMeasurement) jdbcTemplate.query(sqlQuery, new RowMapper<ProductMeasurement>() {
+            @Override
+            public ProductMeasurement mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return ProductMeasurement.builder(rs.getString("measurement_unit"), rs.getInt("measurement_quantity")).measurementComment(rs.getString("measurement_comment")).build();
+            }
+        });
+    }
+
+
 }

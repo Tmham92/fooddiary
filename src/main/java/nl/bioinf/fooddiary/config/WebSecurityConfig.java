@@ -13,6 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * @author Hans Zijlstra
+ * This class handels the security of the application.
+ * Here authorisation and privileges for users are set,
+ * This class further controlls login functionallity and database and page access.
+ */
 
 @Configuration
 @EnableWebSecurity
@@ -21,11 +27,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+    /**
+     * Passwordencoder for hashing string passwords.
+     * @return PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    /**
+     * Methods that checks if a user is authenticated and which role this user has by querying the database
+     */
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
@@ -39,13 +54,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
     // TODO: /adduser can be accessed by role USER, should change to only be accessible by ADMIN. -Hugo
+    /**
+     * Method that configures the application authorisation
+     * Users are authorised to see different pages and have several privileges based on the role of the user
+     * For specific privileges the hasRole method is used to indicate specific privileges
+     * Furthermore login request are handled when this method is called
+     * @param http (HttpSecurity)
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers( "/product-description","/", "/home", "/*/home", "/images/**", "/css/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
+                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/js/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
                         ,"/getnewproducts", "/**/getnewproducts").permitAll()
-                .antMatchers("**/diary-entry", "/diary-entry", "/adduser", "/*/adduser").hasRole("USER")
+                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
