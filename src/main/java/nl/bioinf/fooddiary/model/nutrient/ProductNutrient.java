@@ -1,15 +1,20 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
+import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+
 /**
  * @author Tom Wagenaar
  * @version 0.0.1
  * date: 23-03-2020
  *
- * Class that stores the information about the code for a single product the nutrient values for that product and the
- * column names for those nutrient values. The information from this object is later on used to inject this data into
- * the database table Product_Nutrient, therefore these instance variable correspond to the fields in the
- * Product_Nutrient table. There are no setters and the instance variables are final, that ensures the immutability
- * of this class.
+ * Class that represents the linking table between the product and nutrient table in the fooddairy database. This
+ * class has productCode variable that represent the a single product in the product table. The nutrientCode variable
+ * represent a single nutrient in the nutrient table. A single product contains multiple nutrientCodes, therefore
+ * multiple nutrientValues. In the class there aren't any setters and the instance variables are final to ensure
+ * immutability. For more information about the builder pattern that is used see the ProductGroup javadoc.
+ *
+ * There is no need for checking the ProductCode and NutrientCode values, because these values are already checked in
+ * the Product and Nutrient classes!
  */
 public class ProductNutrient {
     private final int productCode;
@@ -23,6 +28,12 @@ public class ProductNutrient {
     }
 
     public static ProductNutrientBuilder builder(int productCode, String nutrientCode, String nutrientValue) {
+
+        // Check the nutrientValue on null input and length.
+        ProductNutrientInputChecker.checkStringInputNull(nutrientValue, "nutrientValue");
+        nutrientValue = nutrientValue.trim();
+        ProductNutrientInputChecker.checkInputLength(nutrientValue, 15, "nutrientValue");
+
         return new ProductNutrientBuilder(productCode, nutrientCode, nutrientValue);
     }
 
@@ -48,6 +59,7 @@ public class ProductNutrient {
                 '}';
     }
 
+    // Inner builder class that serves the ProductNutrient class.
     public static class ProductNutrientBuilder {
         private final int productCode;
         private final String nutrientCode;
