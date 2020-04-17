@@ -52,8 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "select user_code, role from user where user_code = ?");
     }
 
-    // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
-    // TODO: /adduser can be accessed by role USER, should change to only be accessible by ADMIN. -Hugo
     /**
      * Method that configures the application authorisation
      * Users are authorised to see different pages and have several privileges based on the role of the user
@@ -61,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * Furthermore login request are handled when this method is called
      * @param http (HttpSecurity)
      */
+    // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
+    // TODO: /adduser can be accessed by role USER, should change to only be accessible by ADMIN. -Hugo
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
