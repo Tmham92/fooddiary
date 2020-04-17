@@ -49,6 +49,8 @@ dependencies {
     compile group: 'org.hsqldb', name: 'hsqldb'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
 }
 
 test {
