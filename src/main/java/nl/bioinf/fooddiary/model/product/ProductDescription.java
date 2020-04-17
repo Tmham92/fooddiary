@@ -1,18 +1,16 @@
 package nl.bioinf.fooddiary.model.product;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
 
 /**
  * @author Tom Wagenaar
- * @version 0.0.2
+ * @version 0.0.5
  * date: 18-03-2020
  *
  * Class that represents the description in Dutch and in English and synonymous for each individual product. See the
- * ProductGroup class javadoc for some more information about the builder pattern and the constraints validation that
- * is used in this class and the inner builder class. The synonymous variable is optional and therefore isn't final,
- * furthermore this variable has a setter. All the other variables are final and have no setters to ensure immutability.
- *
+ * ProductGroup class javadoc for some more information about the builder pattern that is used in this class. The
+ * synonymous variable is optional and therefore isn't final. All the other variables are final and have no setters
+ * to ensure immutability.
  */
 public class ProductDescription {
     // Instance variable declaration
@@ -28,16 +26,27 @@ public class ProductDescription {
 
     /**
      * Static method that serves an instance of the inner class ProductDescriptionBuilder, taking the required
-     * string descriptionDutch and string descriptionEnglish as arguments
+     * string descriptionDutch and string descriptionEnglish as arguments, furthemore checking those values.
      * @param descriptionDutch (String)
      * @param descriptionEnglish (String)
      * @return ProductDescriptionBuilder object
      */
     public static ProductDescriptionBuilder builder(String descriptionDutch, String descriptionEnglish) {
+
+        // Check the products dutch description, in between trim it.
+        ProductNutrientInputChecker.checkStringInputNull(descriptionDutch, "descriptionDutch");
+        descriptionDutch = descriptionDutch.trim();
+        ProductNutrientInputChecker.checkInputLength(descriptionDutch, 255, "descriptionDutch");
+
+        // Check the products description english, in between trim it.
+        ProductNutrientInputChecker.checkStringInputNull(descriptionEnglish, "descriptionEnglish");
+        descriptionEnglish = descriptionEnglish.trim();
+        ProductNutrientInputChecker.checkInputLength(descriptionEnglish, 255, "descriptionEnglish");
+
         return new ProductDescriptionBuilder(descriptionDutch, descriptionEnglish);
     }
 
-
+    // Getters
     public String getDescriptionDutch() {
         return descriptionDutch;
     }
@@ -50,14 +59,6 @@ public class ProductDescription {
         return synonymous;
     }
 
-    /**
-     * Synonymous isn't a important variable, therefore it isn't final. That is why there is a setter.
-     * @param synonymous (String)
-     */
-    public void setSynonymous(String synonymous) {
-        this.synonymous = synonymous;
-    }
-
     @Override
     public String toString() {
         return "{" +
@@ -68,39 +69,54 @@ public class ProductDescription {
     }
 
     /**
-     * Inner class that is used as a builder for the ProductDescription class. There are constraints validations for the
-     * instance variables. Whenever a new product is added to the database the product needs to validated, the
-     * constraints carry out those checks. The synonymous variable isn't final and therefore not required, whenever
-     * this synonymous variable isn't defined it gets the _UNKNOWN_SYNONYMOUS_ tag.
+     * Inner class that is used as a builder for the ProductDescription class. The synonymous variable isn't final and
+     * therefore not required, whenever this synonymous variable isn't defined it gets the _UNKNOWN_SYNONYMOUS_ tag.
      */
     public static class ProductDescriptionBuilder {
         // Required parameters
-        @NotNull
-        @Size(min = 1, max = 255)
         private final String descriptionDutch;
-
-        @NotNull
-        @Size(min = 1, max = 255)
         private final String descriptionEnglish;
 
         // Optional parameter
-        private String synonymous = "_UNKNOWN_SYNONYMOUS_";
+        private String synonymous  = "_UNKNOWN_SYNONYMOUS_";
 
         private ProductDescriptionBuilder(String descriptionDutch, String descriptionEnglish) {
             this.descriptionDutch = descriptionDutch;
             this.descriptionEnglish = descriptionEnglish;
         }
 
+        /**
+         * Method that sets the synonymous. While parsing the nevo_online_2019_product.csv file there are fields with
+         * "" as value, this method assign the _UNKNOWN_SYNONYMOUS_ value to it. Whenever a form is filled in and the
+         * inner builder class is called and there isn't a value assigned to synonymous using .synonymous() a
+         * _UNKNOWN_SYNONYMOUS_ value is also assigned, furthermore checks on null input and length.
+         * @param synonymous
+         * @return
+         */
         public ProductDescriptionBuilder synonymous(String synonymous) {
-            // While parsing the nevo product table the synonymous variables that aren't defined are "", therefore
-            // they aren't seen as values that aren't defined.
+            // Checks on null input.
+            ProductNutrientInputChecker.checkStringInputNull(synonymous, "synonymous");
+
+            // Trim the synonymous.
+            synonymous = synonymous.trim();
+
+            // Assign value to synonymous.
             if (synonymous.equals("")) {
                 this.synonymous = "_UNKNOWN_SYNONYMOUS_"; return this;
+            } else {
+                this.synonymous = synonymous;
             }
 
-            this.synonymous = synonymous; return this;
+            // Check if length of synonymous is appropriate.
+            ProductNutrientInputChecker.checkInputLength(this.synonymous, 255, "synonymous");
+
+            return this;
         }
 
+        /**
+         * Serves the ProductDescription class.
+         * @return ProductDescription object with the parameters correspond to the instance variables.
+         */
         public ProductDescription build() {return new ProductDescription(this); }
     }
 }

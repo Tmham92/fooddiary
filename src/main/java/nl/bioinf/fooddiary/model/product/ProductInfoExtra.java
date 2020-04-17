@@ -1,14 +1,16 @@
 package nl.bioinf.fooddiary.model.product;
 
 
+import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+
 /**
  * @author Tom Wagenaar
- * @version 0.0.1
+ * @version 0.0.2
  * date: 19-03-2020
  *
  * Class that represents enriched with and traces of columns for each individual product. See the
- * ProductGroup class javadoc for some more information about the builder pattern and the constraints validation that
- * is used in this class and the inner builder class. Both variables are optional and therefore they can be changed.
+ * ProductGroup class javadoc for some more information about the builder pattern  that is used in this class and the
+ * inner builder class. Both variables are optional.
  */
 public class ProductInfoExtra {
     private String enrichedWith;
@@ -37,15 +39,6 @@ public class ProductInfoExtra {
         return tracesOf;
     }
 
-    // Setters for the variables
-    public void setEnrichedWith(String enrichedWith) {
-        this.enrichedWith = enrichedWith;
-    }
-
-    public void setTracesOf(String tracesOf) {
-        this.tracesOf = tracesOf;
-    }
-
     @Override
     public String toString() {
         return "{" +
@@ -55,37 +48,50 @@ public class ProductInfoExtra {
     }
 
     /**
-     * Inner class that is used as a builder for the ProductInfoExtra class. There are constraints validations for the
-     * instance variables. Whenever a new product is added to the database the product needs to validated, the
-     * constraints carry out those checks. The measurementComment variable isn't final and therefore not required, whenever
-     * this synonymous variable isn't defined it gets the _UNKNOWN_COMMENT_ tag.
+     * Inner class that is used as a builder for the ProductInfoExtra class. The measurementComment variable isn't final
+     * and therefore not required, whenever this synonymous variable isn't defined it gets the _UNKNOWN_INFO_ value.
      */
     public static class ProductInfoExtraBuilder {
         // Optional
         private String enrichedWith = "_UNKNOWN_INFO_";
         private String tracesOf = "_UNKNOWN_INFO_";
 
-        /**
-         * Constructor with no required parameters.
-         */
+        // Constructor without any parameters.
         private ProductInfoExtraBuilder() { }
 
         public ProductInfoExtraBuilder enrichedWith(String enrichedWith) {
-            // While parsing the nevo product table the enrichedWith variables that aren't defined are "",
-            // therefore they aren't seen as values that aren't defined.
+            // Check if the enriched with value is a null value.
+            ProductNutrientInputChecker.checkStringInputNull(enrichedWith, "enrichedWith");
+            enrichedWith = enrichedWith.trim();
+
+            // assign a value to the enrichedWith variable.
             if (enrichedWith.equals("")) {
                 this.enrichedWith = "_UNKNOWN_INFO_"; return this;
+            } else {
+                this.enrichedWith = enrichedWith;
             }
-            this.enrichedWith = enrichedWith; return this;
+
+            // Check the length of the enrichedWith variable.
+            ProductNutrientInputChecker.checkInputLength(enrichedWith, 255, "enrichedWith");
+
+            return this;
         }
 
         public ProductInfoExtraBuilder tracesOf(String tracesOf) {
-            // While parsing the nevo product table the tracesOf variables that aren't defined are "",
-            // therefore they aren't seen as values that aren't defined.
+            // Check if the traces of value is a null value.
+            ProductNutrientInputChecker.checkStringInputNull(tracesOf, "tracesOf");
+            tracesOf = tracesOf.trim();
+
+            // assign a value to the tracesOf variable.
             if (tracesOf.equals("")) {
                 this.tracesOf = "_UNKNOWN_INFO_"; return this;
+            } else {
+                this.tracesOf = tracesOf;
             }
-            this.tracesOf = tracesOf; return this;
+
+            // Check the length of the tracesOf variable.
+            ProductNutrientInputChecker.checkInputLength(tracesOf, 255, "tracesOf");
+            return this;
         }
 
         /**
