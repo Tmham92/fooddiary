@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Hugo Donkerbroek
+ *
+ * This class inserts a new user in the database using an SQL query. The user data comes from the NewUser class.
  */
 
 @Transactional
@@ -20,27 +22,15 @@ public class NewUserDAO implements INewUserService {
     public NewUserDAO(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    /**
+     * SQL query to insert the user data into the database.
+     * @param newUser the user data; user_code, password, role
+     */
     @Override
     public void addNewUser(NewUser newUser) {
         String sql = "INSERT INTO user " +
                 "(id, user_code, password, role, enabled) values (?,?,?,?,?);";
         jdbcTemplate.update(sql, newUser.getId(), newUser.getUser_code(), newUser.getPassword(),
                 newUser.getRole(), newUser.getEnabled());
-
-//        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert()
-//                .withTableName("user")
-//                .usingGeneratedKeyColumns("id");
-//
-//        Map<String, Object> parameters = new HashMap<String, Object>();
-//        parameters.put("id", newUser.getId());
-//        parameters.put("user_code", newUser.getUser_code());
-//        parameters.put("password", newUser.getPassword());
-//        parameters.put("role", newUser.getRole());
-//        parameters.put("enabled", newUser.getEnabled());
-//
-//        Number id = simpleJdbcInsert.executeAndReturnKey(parameters);
-//
-//        return simpleJdbcInsert.execute(parameters);
     }
 }

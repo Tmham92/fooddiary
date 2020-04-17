@@ -2,29 +2,52 @@ package nl.bioinf.fooddiary.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Description;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.spring5.ISpringTemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Locale;
 
 /**
  * @author Hans Zijlstra
+ * This class handels the application configuration.
+ * For internationalization purposes the clients locale is used to resolve messages
+ * This class further controlls login functionallity and database and page access.
  */
-
+@ComponentScan
 @Configuration
 public class ApplicationConfig implements WebMvcConfigurer {
 
+    /**
+     * The Localeresolver enables  the option to automatically resolve messages using the client's locale
+     * @return LocalResolver
+     */
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.getDefault());
         return localeResolver;
     }
+
+    /**
+     * LocalChangeInterceptor catches changing of locales. It will detet a parameter in the request
+     * and change the locale. the parameter name is set to locale
+     * @return localChangeInterceptor
+     */
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
@@ -33,6 +56,13 @@ public class ApplicationConfig implements WebMvcConfigurer {
         return localeChangeInterceptor;
     }
 
+    /**
+     * MessageSource resolving messages supports for the parameterization
+     * and internationalization of messages
+     * The classpath of messages is set and a default enconding is UTF-8
+     * @return MessageSource
+     */
+
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -40,6 +70,12 @@ public class ApplicationConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
+
+    /**
+     * addInterceptors Helps with configuring a list of mapped interceptors the requested url should apply to .
+     * @param registry (InterceptorRegistry)
+     * @return localChangeInterceptor
+     */
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
