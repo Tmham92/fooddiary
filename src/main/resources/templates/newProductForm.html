@@ -34,45 +34,56 @@
                 <form action="#" th:action="@{/addednewproduct}" th:object="${newproductform}" method="post">
                     <div class="form-group">
                         <label class="control-label col-sm-2">User ID:</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             <span th:value="${#request.getUserPrincipal().getName()}"></span>
                         </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="date">Date:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <input type="date" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="time_of_day">Time of the day:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <input type="text" th:field="*{time_of_day}" class="form-control" id="time_of_day" placeholder="13:30" name="time_of_day">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="mealtime">Moment of Meal:</label>
-                    <div class="col-sm-10">
-                        <input type="text" th:field="*{mealtime}" class="form-control" id="mealtime" placeholder="Breakfast" name="mealtime">
+                    <div class="col-sm-6">
+                        <select id="mealtime" class="form-control" name="mealtime" th:field="*{mealtime}">
+                            <option value="before breakfast">Before breakfast</option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="after breakfast">After breakfast</option>
+                            <option value="before lunch">Before lunch</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="after lunch">After lunch</option>
+                            <option value="before dinner">Before dinner</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="after dinner">After dinner</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="description">Description:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Quacker Crueslie 4 nuts" name="description">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="quantity">Weight or Volume:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <input type="text" th:field="*{quantity}" class="form-control" id="quantity" placeholder="100gr / 100ml" name="quantity">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-2 col-sm-6">
                         <button type="submit" class="btn btn-default">Submit</button>
                     </div>
                 </div>
+                    </div>
                 </form>
             </div>
         </div>

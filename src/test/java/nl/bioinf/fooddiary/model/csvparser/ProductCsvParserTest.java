@@ -1,6 +1,5 @@
 package nl.bioinf.fooddiary.model.csvparser;
 
-import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
 import nl.bioinf.fooddiary.model.product.Product;
 import org.junit.jupiter.api.Test;
 
