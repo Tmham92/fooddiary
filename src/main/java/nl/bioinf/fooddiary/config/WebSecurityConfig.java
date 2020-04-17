@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
+    // TODO: /adduser can be accessed by role USER, should change to only be accessible by ADMIN. -Hugo
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
