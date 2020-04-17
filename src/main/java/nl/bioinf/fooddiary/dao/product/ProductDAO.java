@@ -16,6 +16,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * @author Tom Wagenaar
+ *
+ * This class represent the Data Access Object or DAO for the product table in the fooddairy database. The DAO allows
+ * for isolation of the application layer from the database layer. Both layers can evolve separately without knowing
+ * anything from each other. This class implements the ProductRepository that keeps the domain model completely
+ * decoupled from the database layer. This class supports inserting data into the product table using sql query,
+ * retrieving the product description for one signle product.
+ */
 @Repository
 public class ProductDAO implements ProductRepository{
 
@@ -28,7 +37,13 @@ public class ProductDAO implements ProductRepository{
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
+    /**
+     * @Author Tom Wagenaar
+     * Method that when called insert a single product into the product table from the fooddiary database. This is
+     * accomplished using a sql query and jdbcTemplate update method.
+     * @param product, One single Product object
+     * @return jdbcTemplate.update, containing a sql query and the used product objects.
+     */
     @Override
     public int insertProductData(Product product) {
         String sqlQuery = "INSERT INTO product (code, group_code, group_code_description, description_dutch, " +
