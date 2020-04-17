@@ -19,7 +19,6 @@ public class Product {
     private ProductInfoExtra productInfoExtra;
     private NutrientValues nutrientValues;
 
-
     /**
      * Constructor receiving several object that contain information about each column in the Nevo_Online_2019_Product.
      * csv

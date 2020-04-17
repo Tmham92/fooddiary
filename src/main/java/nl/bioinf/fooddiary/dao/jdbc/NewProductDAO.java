@@ -1,6 +1,6 @@
-package nl.bioinf.fooddiary.dao.newproduct;
+package nl.bioinf.fooddiary.dao.jdbc;
 
-import nl.bioinf.fooddiary.dao.jdbc.IProductDAO;
+import nl.bioinf.fooddiary.dao.IProductDAO;
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,6 +1,7 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
-import javax.validation.constraints.NotNull;
+import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,15 +11,11 @@ import java.util.stream.Collectors;
  * @version 0.0.1
  * date: 20-03-2020
  *
- * The NutrientValues class stores all the nutrient values in the nevo_online_2019_Product.csv file. This class
- * is called and the builder method returns a NutrientValuesBuilder object, therefore the inner builder class can be
- * used. This class receives a String array containing all the nutrient values for a single product. Then every single
- * nutrient is passed on to the NutrientValue class, where it is stored and with the original value or a _NO_VALUE_
- * value. When this is done, the NutrientValue object is returned and added to a list, furthermore this list is
- * returned to the Product class. For more information about the builder pattern go to ProductGroup class javadoc. There
- * are only getters and no setters and the value variables are final to ensure immutability.
+ * This class stores all the nutrient data from a single product in the Nevo_Online_2019_Product.csv file into a object.
+ * The inner builder class receives a string array containing the nutrient data for a single product. For each nutrient
+ * a NutrientValue object containing that nutrient value is made. This NutrientValue object is then added to the
+ * nutrients list.
  */
-// TODO: Use Junit testing for the different methods. Implement a check for the nutrient values.
 public class NutrientValues {
     private List<NutrientValue> nutrients;
 
@@ -79,10 +76,7 @@ public class NutrientValues {
             return this;
         }
 
-        /**
-         * Serves the NutrientValues class.
-         * @return NutrientValues object.
-         */
+        // Serves the NutrientValues class.
         public NutrientValues build() {
             return new NutrientValues(this);
         }
@@ -94,20 +88,29 @@ public class NutrientValues {
      * value. This object is then returned to the inner builder class.
      */
     public static class NutrientValue {
-        @NotNull
         private String value = "_NO_VALUE_";
 
         public NutrientValue() {}
 
+        // Checking the nutrient value and assigning a _NO_VALUE_ string whenever the nutrient is not known.
         public NutrientValue value(String value) {
-            // While parsing the nevo product table the nutrients variables that aren't defined are "",
-            // therefore they aren't seen as values that aren't defined.
+            // Check on null input.
+            ProductNutrientInputChecker.checkStringInputNull(value, "nutrientValue");
+
+            // Trim the value.
+            value = value.trim();
+
+            // Assign a _NO_VALUE_ whenever value is a "".
             if (value.equals("")) {
                 this.value = "_NO_VALUE_"; return this;
+            } else {
+                this.value = value;
             }
-            this.value = value; return this;
+
+            return this;
         }
 
+        // Getter for a single value.
         public String getValue() {
             return value;
         }

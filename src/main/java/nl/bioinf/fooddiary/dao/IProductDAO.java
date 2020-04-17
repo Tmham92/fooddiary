@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.dao.jdbc;
+package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 
