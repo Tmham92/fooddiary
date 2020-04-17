@@ -1,7 +1,10 @@
 package nl.bioinf.fooddiary.control;
 
+import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.model.NewProduct;
 import nl.bioinf.fooddiary.service.NewProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,7 @@ import java.util.Locale;
 
 @Controller
 public class GetNewProductController {
+    private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
 
     @Autowired
     NewProductService newProductService;
@@ -32,6 +36,9 @@ public class GetNewProductController {
      */
     @RequestMapping(value= {"/getnewproducts"}, method = RequestMethod.GET)
     public String getAllNewProductsWithoutLocale(Locale locale, Model model) {
+        logger.info("/getnewproducts is being called with unknown locale. Requesting Locale and open " +
+                "/getnewproducts in requested language");
+
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
         model.addAttribute("page_name", "getnewproducts");
@@ -46,6 +53,7 @@ public class GetNewProductController {
      */
     @RequestMapping(value = "/{locale}/getnewproducts")
     public String getAllNewProductsWithLocale(Model model) {
+        logger.info("{locale}/getnewproducts is being called. Open /getnewproducts in requested language");
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
         model.addAttribute("page_name", "newproductform");
@@ -59,6 +67,7 @@ public class GetNewProductController {
      */
     @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST)
     private String deleteNewProduct(@RequestParam int productID) {
+        logger.info("Newly added product removed from database. Product ID is " + productID);
         System.out.println("Passing " + productID + " to delete Entry Function");
         newProductService.deleteNewProduct(productID);
         return "redirect:/getnewproducts";

@@ -1,7 +1,10 @@
 package nl.bioinf.fooddiary.control;
 
+import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.model.NewProduct;
 import nl.bioinf.fooddiary.service.NewProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,8 @@ import java.util.Locale;
 @Controller
 public class NewProductController {
 
+    private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
+
     @Autowired
     NewProductService newProductService;
 
@@ -31,6 +36,8 @@ public class NewProductController {
      */
     @RequestMapping(value = {"/newproductform"}, method = RequestMethod.GET)
     public String newProductFormWithoutLocale(Locale locale, Model model) {
+        logger.info("/newproductform url has been called without a known Locale." +
+                "Requesting Locale and opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
         return "redirect:" + locale.getLanguage() + "/newproductform";
@@ -43,6 +50,8 @@ public class NewProductController {
      */
     @RequestMapping(value = "/{locale}/newproductform")
     public String  newProductFormWithLocale(Model model) {
+        logger.info("/newproductform url has been called with a known Locale." +
+                "Opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
         return "/newproductform";
@@ -58,6 +67,8 @@ public class NewProductController {
     @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
     public String injectNewProduct(@ModelAttribute("newproductform")
                                    @Validated NewProduct newProduct, BindingResult bindingResult) {
+        logger.info("Submitting NewProduct from newProductForm to database." +
+                "Redirecting user to /addednewproduct url.");
         newProductService.addNewProduct(newProduct);
         return "redirect:/addednewproduct";
     }
@@ -69,6 +80,8 @@ public class NewProductController {
      */
     @RequestMapping(value = {"/addednewproduct"}, method = RequestMethod.GET)
     public String addedNewProductWithoutLocale(Locale locale) {
+        logger.info("/addednewproduct url has been called without known Locale." +
+                "Requesting Locale and opening web page in right language.");
         return "redirect:" + locale.getLanguage() + "/addednewproduct";
     }
 
@@ -78,6 +91,8 @@ public class NewProductController {
      */
     @RequestMapping(value = "/{locale}/addednewproduct")
     public String  addedNewProductWithLocale() {
+        logger.info("/addednewproduct url has been called with known Locale." +
+                "Opening web page in right language.");
         return "/addednewproduct";
     }
 }
