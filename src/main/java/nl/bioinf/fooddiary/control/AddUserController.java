@@ -27,6 +27,12 @@ public class AddUserController {
     @Autowired
     NewUserService newUserService;
 
+    /**
+     * Shows the add-user-form on the /adduser url page.
+     * @param locale loads the web page in the current language setting
+     * @param model New-user-form used for filling in account information for new accounts
+     * @return returns the locale + adduser.html page
+     */
     @RequestMapping(value = {"/adduser"}, method = RequestMethod.GET)
     public String newUserFormWithoutLocale(Locale locale, Model model) {
         logger.info("/adduser url has been called");
@@ -36,6 +42,11 @@ public class AddUserController {
         return "redirect:" + locale.getLanguage() + "/adduser";
     }
 
+    /**
+     * Shows the add-user-form on the /adduser url page.
+     * @param model New-user-form used for filling in account information for new accounts
+     * @return returns the adduser.html page
+     */
     @RequestMapping(value = "/{locale}/adduser", method = RequestMethod.GET)
     public String newUserFormWithLocale(Model model) {
         logger.info("/adduser url has been called");
@@ -45,6 +56,11 @@ public class AddUserController {
         return "/adduser";
     }
 
+    /**
+     * Handles the page post request. The data sent with the post request is saved in the newUser class
+     * @param newUser the user data from the new-user-form
+     * @return redirects to /adduser to reload the page
+     */
     @RequestMapping(value = "/adduser", method = RequestMethod.POST)
     public String injectNewUser(@ModelAttribute("newuserform")
                                    @Validated NewUser newUser, BindingResult bindingResult) {
