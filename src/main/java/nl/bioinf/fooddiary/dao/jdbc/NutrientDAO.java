@@ -1,5 +1,6 @@
-package nl.bioinf.fooddiary.dao.nutrient;
+package nl.bioinf.fooddiary.dao.jdbc;
 
+import nl.bioinf.fooddiary.dao.NutrientRepository;
 import nl.bioinf.fooddiary.model.nutrient.Nutrient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

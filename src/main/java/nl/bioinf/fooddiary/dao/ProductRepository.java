@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.dao.product;
+package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.product.Product;
 import nl.bioinf.fooddiary.model.product.ProductDescription;

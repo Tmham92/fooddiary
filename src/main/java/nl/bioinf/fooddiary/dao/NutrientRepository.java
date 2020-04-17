@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.dao.nutrient;
+package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.nutrient.Nutrient;
 

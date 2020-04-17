@@ -1,5 +1,6 @@
-package nl.bioinf.fooddiary.dao.productnutrient;
+package nl.bioinf.fooddiary.dao.jdbc;
 
+import nl.bioinf.fooddiary.dao.ProductNutrientRepository;
 import nl.bioinf.fooddiary.model.nutrient.ProductNutrient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Repository;
 public class ProductNutrientDAO implements ProductNutrientRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    private ProductNutrientMapper mapper;
 
     @Autowired
     public ProductNutrientDAO(JdbcTemplate jdbcTemplate) {

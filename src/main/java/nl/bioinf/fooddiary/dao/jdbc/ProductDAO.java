@@ -1,6 +1,7 @@
-package nl.bioinf.fooddiary.dao.product;
+package nl.bioinf.fooddiary.dao.jdbc;
 
 
+import nl.bioinf.fooddiary.dao.ProductRepository;
 import nl.bioinf.fooddiary.model.product.Product;
 import nl.bioinf.fooddiary.model.product.ProductDescription;
 import nl.bioinf.fooddiary.model.product.ProductMeasurement;
@@ -23,7 +24,7 @@ import java.util.List;
  * retrieving the product description for one signle product.
  */
 @Repository
-public class ProductDAO implements ProductRepository{
+public class ProductDAO implements ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

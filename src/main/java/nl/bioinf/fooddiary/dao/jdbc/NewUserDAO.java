@@ -1,4 +1,4 @@
-package nl.bioinf.fooddiary.dao.newuserdao;
+package nl.bioinf.fooddiary.dao.jdbc;
 
 import nl.bioinf.fooddiary.model.newuser.NewUser;
 import nl.bioinf.fooddiary.service.INewUserService;
