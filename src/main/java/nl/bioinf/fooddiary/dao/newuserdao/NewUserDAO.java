@@ -23,6 +23,10 @@ public class NewUserDAO implements INewUserService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * SQL query to insert the user data into the database.
+     * @param newUser the user data; user_code, password, role
+     */
     @Override
     public void addNewUser(NewUser newUser) {
         String sql = "INSERT INTO user " +
