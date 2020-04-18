@@ -27,7 +27,7 @@ public class NewProductDAO implements IProductDAO {
     private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
 
     @Autowired
-    public NewProductDAO(JdbcTemplate jdbcTemplate){
+    public NewProductDAO(){
         this.jdbcTemplate = jdbcTemplate;
     }
 
