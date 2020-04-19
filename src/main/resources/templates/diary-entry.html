@@ -44,7 +44,12 @@
                                 <input type="text" id="quantity" name="quantity" th:placeholder="#{table.amount}">
                                 <input type="date" id="date" placeholder="Enter date" name="date" th:value="${ldt}">
                                 <input type="time" id="time" placeholder="Time" name="time">
-                                <input class="product" id="mealtime" type="text" name="mealtime" th:placeholder="#{table.mealtime}">
+                                <select id="mealtime" class="form-control" name="mealtime" th:placeholder="#{table.mealtime}">
+                                    <option th:value="#{mealtime.breakfast}" th:text="#{mealtime.breakfast}"></option>
+                                    <option th:value="#{mealtime.lunch}" th:text="#{mealtime.lunch}"></option>
+                                    <option th:value="#{mealtime.dinner}" th:text="#{mealtime.dinner}"></option>
+                                    <option th:value="#{mealtime.snack}" th:text="#{mealtime.snack}"></option>
+                                </select>
                                 <input type="text" id="description" name="description">
                             </div>
                             <button id="product-submit" type="submit" th:text="#{add.msg}">Submit</button>
