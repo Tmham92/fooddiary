@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  * This class inserts a new user in the database using an SQL query. The user data comes from the NewUser class.
  */
 
-@Transactional
 @Repository
 public class NewUserDAO implements INewUserService {
     private JdbcTemplate jdbcTemplate;
