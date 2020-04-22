@@ -1,5 +1,7 @@
 package nl.bioinf.fooddiary.model.product;
 
+import java.sql.Date;
+
 /**
  * @author Hans Zijlstra
  * Class that respresents a product entry into the user his diary.
@@ -11,10 +13,18 @@ package nl.bioinf.fooddiary.model.product;
 public class ProductEntry {
     private String productDescription;
     private String quantity;
-    private String date;
+    private Date date;
     private String time;
     private String mealtime;
     private String description;
+
+    public ProductEntry(String productDescription, String quantity, Date date, String time, String mealtime) {
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+        this.date = date;
+        this.time = time;
+        this.mealtime = mealtime;
+    }
 
 
     public String getProductDescription() {
@@ -25,7 +35,7 @@ public class ProductEntry {
         return quantity;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -41,28 +51,5 @@ public class ProductEntry {
         return description;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setMealtime(String mealtime) {
-        this.mealtime = mealtime;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
 

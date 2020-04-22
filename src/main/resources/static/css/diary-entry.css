@@ -149,3 +149,20 @@ input[type=submit] {
 #mealtime {
     margin-bottom: 20px;
 }
+
+#productbtn {
+    width: 23%;
+    padding: 11px 0 11px 0;
+}
+
+#productDescription {
+    width: 75%;
+}
+
+#quantity {
+    width: 75%;
+}
+
+#unit {
+    width:23%
+}

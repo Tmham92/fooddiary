@@ -25,8 +25,6 @@
     <div th:insert="template :: navbar"></div>
   <div class="container">
 
-    <p th:text="'Uploaded on ' + ${currentDate}">Uploaded on Oct 30 2015</p>
-      <p th:text="${ldt}"></p>
             <p>
                 <button class="button" data-modal="modalOne" th:text="#{add.msg}"></button>
             </p>
@@ -38,10 +36,12 @@
                         <form autocomplete="off"  method="post" id="product-entry">
                             <h2 th:text="#{add.msg}"></h2>
                             <div class="autocomplete">
-                                <input id="productDescription" type="text" action="/diary-entry" name="product" th:placeholder="#{table.product}">
+                                <input id="productDescription" type="text" name="productDescription" required th:placeholder="#{table.product}">
+                                <button id="productbtn" class="btn btn-primary" th:text="#{select.btn}"></button>
                             </div>
                             <div class="productMetaData">
                                 <input type="text" id="quantity" name="quantity" th:placeholder="#{table.amount}">
+                                <input type="text" id="unit" name="unit" th:placeholder="#{table.unit}">
                                 <input type="date" id="date" placeholder="Enter date" name="date" th:value="${ldt}">
                                 <input type="time" id="time" placeholder="Time" name="time">
                                 <select id="mealtime" class="form-control" name="mealtime" th:placeholder="#{table.mealtime}">

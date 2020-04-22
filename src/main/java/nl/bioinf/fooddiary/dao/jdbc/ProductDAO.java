@@ -2,9 +2,7 @@ package nl.bioinf.fooddiary.dao.jdbc;
 
 
 import nl.bioinf.fooddiary.dao.ProductRepository;
-import nl.bioinf.fooddiary.model.product.Product;
-import nl.bioinf.fooddiary.model.product.ProductDescription;
-import nl.bioinf.fooddiary.model.product.ProductMeasurement;
+import nl.bioinf.fooddiary.model.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,6 +31,20 @@ public class ProductDAO implements ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
+    public int getProductId(String description) {
+        String sqlQuery = "select id from product where description_dutch = ?";
+        return jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { description }, Integer.class);
+    }
+
+    @Override
+    public int getUserIdByUsername(String username) {
+        String sqlQuery = "select id from user where user_code = ? ";
+        return jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { username }, Integer.class);
+    }
+
     /**
      * @Author Tom Wagenaar
      * Method that when called insert a single product into the product table from the fooddiary database. This is
@@ -54,6 +66,14 @@ public class ProductDAO implements ProductRepository {
                 product.getProductInfoExtra().getEnrichedWith(), product.getProductInfoExtra().getTracesOf());
     }
 
+    @Override
+    public int insertProductIntoDiary(int userId, int productId, ProductEntry productEntry) {
+        String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
+                "(?,?,?,?,?,?)";
+        return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), productEntry.getMealtime(),
+                productEntry.getDescription());
+    }
+
 
     /**
      * @author Hans Zijlstra
@@ -63,11 +83,11 @@ public class ProductDAO implements ProductRepository {
 
     @Override
     public List<ProductDescription> getAllProductDescriptions() {
-        String sqlQuery = "select description_dutch, description_english, synonymous from product;";
+        String sqlQuery = "select description_dutch, description_english from product;";
         return jdbcTemplate.query(sqlQuery, new RowMapper<ProductDescription>() {
             @Override
             public ProductDescription mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return ProductDescription.builder(rs.getString("description_dutch"), rs.getString("description_english")).synonymous(rs.getString("synonymous")).build();
+                return ProductDescription.builder(rs.getString("description_dutch"), rs.getString("description_english")).build();
             }
         });
     }
@@ -79,15 +99,15 @@ public class ProductDAO implements ProductRepository {
      */
 
     @Override
-    public ProductMeasurement getProductByDescription(String description) {
-        String sqlQuery = "select measurement_quantity  from product where description_dutch = ? or where description_english = ?";
-        return (ProductMeasurement) jdbcTemplate.query(sqlQuery, new RowMapper<ProductMeasurement>() {
-            @Override
-            public ProductMeasurement mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return ProductMeasurement.builder(rs.getString("measurement_unit"), rs.getString("measurement_quantity")).measurementComment(rs.getString("measurement_comment")).build();
-            }
-        });
+    public String getMeasurementUnitByDescription(String description) {
+        String sqlQuery = "select measurement_unit from product where description_dutch = ?";
+        String measurementUnit = (String) jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { description }, String.class);
+        return measurementUnit;
+
     }
+
+
 
 
 }

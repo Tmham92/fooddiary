@@ -1,21 +1,26 @@
 package nl.bioinf.fooddiary.control;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.dao.ProductRepository;
 import nl.bioinf.fooddiary.model.product.ProductDescription;
 import nl.bioinf.fooddiary.model.product.ProductEntry;
+import nl.bioinf.fooddiary.model.product.ProductView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author Hans Zijlstra
@@ -75,6 +80,14 @@ public class DiaryEntryController {
         return productRepository.getAllProductDescriptions();
     }
 
+    @PostMapping(value = "/diary-entry/product-measurement", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public String getProductMeasurement(@RequestParam String productDescription) throws JsonProcessingException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productUnit", productRepository.getMeasurementUnitByDescription(productDescription));
+        return new ObjectMapper().writeValueAsString(params);
+    }
+
 
     /**
      * Method that handles the ajax post request for a product entry into the user his food diary
@@ -87,7 +100,12 @@ public class DiaryEntryController {
     @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ProductEntry addProductToDiary(@ModelAttribute @Valid ProductEntry productEntry) {
-        logger.info("/diary-entry/addtodiary url has been called via ajax post request returning ProductEntry object in JSON FORMAT");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        int productId = productRepository.getProductId(productEntry.getProductDescription());
+        int userId = productRepository.getUserIdByUsername(authentication.getName());
+
+        System.out.println(productEntry.getDate() + productEntry.getTime());
+        productRepository.insertProductIntoDiary(userId, productId, productEntry);
         return productEntry;
 
     }

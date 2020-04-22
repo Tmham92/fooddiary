@@ -2,9 +2,6 @@
 
 $(document).ready(function() {
     autocomplete(document.getElementById("productDescription"), getDescriptions());
-    $("productDescription").autocomplete({
-        source
-    })
 
     var t = $('#example').DataTable();
     var counter = 1;
@@ -23,10 +20,26 @@ $(document).ready(function() {
     // Automatically add a first row of data
     $('#addRow').click();
 
+
+    $(function () {
+        $("#productbtn").click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/diary-entry/product-measurement',
+                dataType: 'json',
+                data: 'productDescription=' + $('#productDescription').val(),
+                success: function (response) {
+                    $("#unit").val(response.productUnit)
+                    console.log(response.productUnit);
+                }
+            });
+        });
+    });
+
+
     $(function () {
     $("#product-submit").click(function(event){
-        // $("productDescription").val()
-        console.log("sending")
         event.preventDefault();
         $.post({
             url : "/diary-entry/addtodiary",
@@ -37,8 +50,10 @@ $(document).ready(function() {
         });
     });
 });
-});
 
+
+
+});
 
 function getDescriptions() {
 
@@ -50,12 +65,13 @@ function getDescriptions() {
             for (var i = 0; i < data.length; i++) {
                 var obj = data[i];
                 descriptions.push(obj.descriptionDutch)
-
             }
         }
     });
     return descriptions
 }
+
+
 
 
 
