@@ -1,7 +1,7 @@
 package nl.bioinf.fooddiary.model.product;
 
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 /**
  * @author Tom Wagenaar
@@ -61,7 +61,7 @@ public class ProductInfoExtra {
 
         public ProductInfoExtraBuilder enrichedWith(String enrichedWith) {
             // Check if the enriched with value is a null value.
-            ProductNutrientInputChecker.checkStringInputNull(enrichedWith, "enrichedWith");
+            DataInputChecker.checkStringInputNull(enrichedWith, "enrichedWith");
             enrichedWith = enrichedWith.trim();
 
             // assign a value to the enrichedWith variable.
@@ -72,14 +72,14 @@ public class ProductInfoExtra {
             }
 
             // Check the length of the enrichedWith variable.
-            ProductNutrientInputChecker.checkInputLength(enrichedWith, 255, "enrichedWith");
+            DataInputChecker.checkInputLength(enrichedWith, 255, "enrichedWith");
 
             return this;
         }
 
         public ProductInfoExtraBuilder tracesOf(String tracesOf) {
             // Check if the traces of value is a null value.
-            ProductNutrientInputChecker.checkStringInputNull(tracesOf, "tracesOf");
+            DataInputChecker.checkStringInputNull(tracesOf, "tracesOf");
             tracesOf = tracesOf.trim();
 
             // assign a value to the tracesOf variable.
@@ -90,7 +90,7 @@ public class ProductInfoExtra {
             }
 
             // Check the length of the tracesOf variable.
-            ProductNutrientInputChecker.checkInputLength(tracesOf, 255, "tracesOf");
+            DataInputChecker.checkInputLength(tracesOf, 255, "tracesOf");
             return this;
         }
 
