@@ -22,30 +22,13 @@ $(document).ready(function() {
 
 
     $(function () {
-        $("#productbtn").click(function (event) {
-            event.preventDefault();
-            $.ajax({
-                type: 'POST',
-                url: '/diary-entry/product-measurement',
-                dataType: 'json',
-                data: 'productDescription=' + $('#productDescription').val(),
-                success: function (response) {
-                    $("#unit").val(response.productUnit)
-                    console.log(response.productUnit);
-                }
-            });
-        });
-    });
-
-
-    $(function () {
     $("#product-submit").click(function(event){
         event.preventDefault();
         $.post({
             url : "/diary-entry/addtodiary",
             data: $('#product-entry').serialize(),
             succes: function (res) {
-                console.log(res)
+                alert(res)
             }
         });
     });
@@ -55,8 +38,22 @@ $(document).ready(function() {
 
 });
 
-function getDescriptions() {
+function getMeasurementUnit(value) {
+    $.ajax({
+        type: 'POST',
+        url: '/diary-entry/product-measurement',
+        dataType: 'json',
+        data: 'productDescription=' + $('#productDescription').val(),
+        success: function (response) {
+            $("#unit").val(response.productUnit)
 
+
+        }
+
+    })
+}
+
+function getDescriptions() {
     descriptions = [];
     $.ajax({
         url: '/product-description',
@@ -70,6 +67,7 @@ function getDescriptions() {
     });
     return descriptions
 }
+
 
 
 
@@ -107,6 +105,7 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
+                    getMeasurementUnit(inp.value)
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
