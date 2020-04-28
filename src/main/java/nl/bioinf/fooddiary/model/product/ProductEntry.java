@@ -13,19 +13,21 @@ import java.sql.Date;
 public class ProductEntry {
     private String productDescription;
     private String quantity;
+    private String unit;
     private Date date;
     private String time;
     private String mealtime;
     private String description;
 
-    public ProductEntry(String productDescription, String quantity, Date date, String time, String mealtime) {
+    public ProductEntry(String productDescription, String quantity, String unit, Date date, String time, String mealtime,String description) {
         this.productDescription = productDescription;
         this.quantity = quantity;
+        this.unit = unit;
         this.date = date;
         this.time = time;
         this.mealtime = mealtime;
+        this.description = description;
     }
-
 
     public String getProductDescription() {
         return productDescription;
@@ -50,6 +52,11 @@ public class ProductEntry {
     public String getDescription() {
         return description;
     }
+
+    public String getUnit() {
+        return unit;
+    }
+
 
 }
 
