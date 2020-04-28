@@ -42,7 +42,7 @@
                                 <input type="text" id="quantity" name="quantity" th:placeholder="#{table.amount}">
                                 <input type="text" id="unit" name="unit" th:placeholder="#{table.unit}">
                                 <input type="date" id="date" placeholder="Enter date" name="date" th:value="${ldt}">
-                                <input type="time" id="time" placeholder="Time" name="time">
+                                <input type="time" id="time" placeholder="Time" name="time" th:value="${time}">
                                 <select id="mealtime" class="form-control" name="mealtime" th:placeholder="#{table.mealtime}">
                                     <option th:value="#{mealtime.breakfast}" th:text="#{mealtime.breakfast}"></option>
                                     <option th:value="#{mealtime.lunch}" th:text="#{mealtime.lunch}"></option>
@@ -57,17 +57,20 @@
                 </div>
             </div>
 
-            <table id="example" class="display" style="width:100%">
+            <table id="diaryTable" class="display" style="width:100%">
                 <thead>
                     <tr>
                         <th th:text="#{table.mealtime}">Mealtime</th>
                         <th th:text="#{table.product}">Product</th>
-                        <th th:text="#{table.date}">Date</th>
                         <th th:text="#{table.amount}">Amount</th>
+                        <th th:text="#{table.time}">Time</th>
+                        <th th:text="#{table.description}">Description</th>
                     </tr>
                 </thead>
             </table>
         </div>
+
+    <div class="cloudcontainer"></div>
     </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

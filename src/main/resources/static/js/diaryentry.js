@@ -2,39 +2,28 @@
 
 $(document).ready(function() {
     autocomplete(document.getElementById("productDescription"), getDescriptions());
-
-    var t = $('#example').DataTable();
+    var diaryTable = $('#diaryTable').DataTable();
     var counter = 1;
 
-    $('#addRow').on( 'click', function () {
-        t.row.add( [
-            counter +'.1',
-            counter +'.2',
-            counter +'.3',
-            counter +'.4',
-        ] ).draw( false );
-
-        counter++;
-    } );
-
-    // Automatically add a first row of data
-    $('#addRow').click();
-
-
-    $(function () {
     $("#product-submit").click(function(event){
         event.preventDefault();
-        $.post({
+        var diaryEntry = [];
+        $.ajax({
             url : "/diary-entry/addtodiary",
+            type: "post",
             data: $('#product-entry').serialize(),
-            succes: function (res) {
-                alert(res)
+            success: function (response) {
+                diaryTable.row.add([
+                    response.mealtime,
+                    response.productDescription,
+                    response.quantity + response.unit,
+                    response.time,
+                    response.description
+                ]).draw( false );
+
             }
         });
     });
-});
-
-
 
 });
 
@@ -46,7 +35,6 @@ function getMeasurementUnit(value) {
         data: 'productDescription=' + $('#productDescription').val(),
         success: function (response) {
             $("#unit").val(response.productUnit)
-
 
         }
 
