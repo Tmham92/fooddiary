@@ -8,8 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -66,6 +68,16 @@ public class ProductDAO implements ProductRepository {
                 product.getProductInfoExtra().getEnrichedWith(), product.getProductInfoExtra().getTracesOf());
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Inserts information regarding consumed products into the diary database
+     * @param userId int The users id
+     * @param productId int id of consumed product
+     * @param productEntry productEntry object containing product data
+     * @return List<ProductDescription></> list of productdescriptions
+     */
+
+
     @Override
     public int insertProductIntoDiary(int userId, int productId, ProductEntry productEntry) {
         String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
@@ -73,6 +85,20 @@ public class ProductDAO implements ProductRepository {
         return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), productEntry.getMealtime(),
                 productEntry.getDescription());
     }
+
+    @Override
+    public List<ProductEntry> getDiaryEntriesByDate(int id, String currentDate) {
+        String sqlQuery = "select description_dutch, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
+                "from product_entry pe join product p on pe.product_id = p.code where pe.user_id = ? and pe.date = ?";
+        return jdbcTemplate.query(sqlQuery, new Object[] { id, currentDate }, new RowMapper<ProductEntry>() {
+            @Override
+            public ProductEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ProductEntry(rs.getString("description_dutch"), rs.getString("measurement_quantity"), rs.getString("measurement_unit"),
+                        rs.getString("date"), rs.getString("time_of_day"), rs.getString("mealtime"), rs.getString("description"));
+            }
+        });
+    }
+
 
 
     /**
@@ -95,6 +121,7 @@ public class ProductDAO implements ProductRepository {
     /**
      * @author Hans Zijlstra
      * Method that fetches the measuring unit for the selected product in the database
+     * @param description String description of food product
      * @return List<ProductDescription></> list of productdescriptions
      */
 
@@ -104,7 +131,6 @@ public class ProductDAO implements ProductRepository {
         String measurementUnit = (String) jdbcTemplate.queryForObject(
                 sqlQuery, new Object[] { description }, String.class);
         return measurementUnit;
-
     }
 
 

@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.product;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @author Hans Zijlstra
@@ -14,12 +14,13 @@ public class ProductEntry {
     private String productDescription;
     private String quantity;
     private String unit;
-    private Date date;
+    private String date;
     private String time;
     private String mealtime;
     private String description;
 
-    public ProductEntry(String productDescription, String quantity, String unit, Date date, String time, String mealtime,String description) {
+
+    public ProductEntry(String productDescription, String quantity, String unit, String date, String time, String mealtime, String description) {
         this.productDescription = productDescription;
         this.quantity = quantity;
         this.unit = unit;
@@ -37,7 +38,7 @@ public class ProductEntry {
         return quantity;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -56,7 +57,6 @@ public class ProductEntry {
     public String getUnit() {
         return unit;
     }
-
 
 }
 

@@ -6,7 +6,6 @@ import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.dao.ProductRepository;
 import nl.bioinf.fooddiary.model.product.ProductDescription;
 import nl.bioinf.fooddiary.model.product.ProductEntry;
-import nl.bioinf.fooddiary.model.product.ProductView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -55,15 +54,18 @@ public class DiaryEntryController {
 
     /**
      * Method that listens to the local interceptor and serves the food diary to the visitor
-     * returns the page in english or dutch
+     * returns the page in english or dutch with the current time and date
      * @return diary-entry (String)
      */
 
     @RequestMapping(value = "/{locale}/diary-entry")
     public String  diaryWithLocale(Model model) {
         logger.info("/{locale}/diary-entry url has been called returning /diary-entry");
-        final LocalDate now = LocalDate.now();
-        model.addAttribute("ldt", now);
+        final LocalDate currentDate = LocalDate.now();
+        Date date = new Date();
+        String time = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date).split("\\s+")[1];
+        model.addAttribute("ldt", currentDate);
+        model.addAttribute("time", time);
         return "/diary-entry";
     }
 
@@ -99,14 +101,42 @@ public class DiaryEntryController {
 
     @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ProductEntry addProductToDiary(@ModelAttribute @Valid ProductEntry productEntry) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public ProductEntry addProductToDiary(@RequestParam String productDescription, @RequestParam String quantity, @RequestParam String unit,
+                                          @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime) {
+        description = validateDescription(description);
+        ProductEntry productEntry = new ProductEntry(productDescription, quantity, unit, date, time, mealtime, description);
         int productId = productRepository.getProductId(productEntry.getProductDescription());
-        int userId = productRepository.getUserIdByUsername(authentication.getName());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        productRepository.insertProductIntoDiary(getUserID(authentication), productId, productEntry);
 
-        System.out.println(productEntry.getDate() + productEntry.getTime());
-        productRepository.insertProductIntoDiary(userId, productId, productEntry);
+        System.out.println("STARTING");
+
+
+
+
+
         return productEntry;
+
+    }
+
+    @GetMapping(value = "/product-entries-by-date", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ProductEntry> getProductEntriesByDate() {
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return productRepository.getDiaryEntriesByDate(getUserID(authentication), date) ;
+    }
+
+    private String validateDescription(String description) {
+        return Objects.requireNonNullElse(description, " ");
+
+    }
+
+    private int getUserID(Authentication authentication) {
+        return productRepository.getUserIdByUsername(authentication.getName());
 
     }
 

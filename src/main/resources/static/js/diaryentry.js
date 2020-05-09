@@ -4,14 +4,26 @@ $(document).ready(function() {
     autocomplete(document.getElementById("productDescription"), getDescriptions());
     var diaryTable = $('#diaryTable').DataTable();
     var counter = 1;
+    getTodaysDiaryEntries(diaryTable);
 
     $("#product-submit").click(function(event){
         event.preventDefault();
+
         var diaryEntry = [];
+        var data = {};
+
+        data["productDescription"] = $("#productDescription").val();
+        data["mealtime"] = $("#mealtime").val();
+        data["quantity"] = $("#quantity").val();
+        data["unit"] = $("#unit").val();
+        data["date"] = $("#date").val();
+        data["time"] = $("#time").val();
+        data["description"] = $("#description").val();
         $.ajax({
             url : "/diary-entry/addtodiary",
-            type: "post",
-            data: $('#product-entry').serialize(),
+            type: "POST",
+            dataType: 'json',
+            data: data,
             success: function (response) {
                 diaryTable.row.add([
                     response.mealtime,
@@ -54,6 +66,27 @@ function getDescriptions() {
         }
     });
     return descriptions
+}
+
+function getTodaysDiaryEntries(diaryTable) {
+    $.ajax({
+        url: '/product-entries-by-date',
+        dataType: 'json',
+        success: function (response) {
+            for (var i = 0; i < response.length; i++) {
+                var obj = response[i];
+                console.log(obj);
+                diaryTable.row.add([
+                    obj.mealtime,
+                    obj.productDescription,
+                    obj.quantity + obj.unit,
+                    obj.time,
+                    obj.description
+                 ]).draw( false );
+        }
+    }
+
+})
 }
 
 
