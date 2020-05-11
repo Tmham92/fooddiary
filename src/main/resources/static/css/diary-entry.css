@@ -158,3 +158,11 @@ input[type=submit] {
 #unit {
     width:23%
 }
+
+.row_selected {
+    background-color:#ff6e19!important;
+}
+
+td.sorting_1 {
+    background-color: transparent !important;
+}
