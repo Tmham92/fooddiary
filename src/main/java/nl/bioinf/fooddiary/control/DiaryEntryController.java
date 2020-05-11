@@ -109,14 +109,14 @@ public class DiaryEntryController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         productRepository.insertProductIntoDiary(getUserID(authentication), productId, productEntry);
 
-        System.out.println("STARTING");
-
-
-
-
-
         return productEntry;
 
+    }
+    @PostMapping(value = "/remove/diary-entry", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public void deleteFromDiary(@RequestParam int entry) {
+        System.out.println("Success");
+        productRepository.removeDiaryEntryById(entry);
     }
 
     @GetMapping(value = "/product-entries-by-date", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -129,6 +129,10 @@ public class DiaryEntryController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return productRepository.getDiaryEntriesByDate(getUserID(authentication), date) ;
     }
+
+
+
+
 
     private String validateDescription(String description) {
         return Objects.requireNonNullElse(description, " ");

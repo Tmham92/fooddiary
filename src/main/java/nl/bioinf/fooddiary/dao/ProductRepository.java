@@ -27,4 +27,6 @@ public interface ProductRepository {
 
     List<ProductEntry> getDiaryEntriesByDate(int id, String date);
 
+    int removeDiaryEntryById(int diaryEntryId);
+
 }

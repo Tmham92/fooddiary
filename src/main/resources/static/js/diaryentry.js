@@ -1,10 +1,57 @@
 //author: Hans Zijlstra
 
 $(document).ready(function() {
+    var diaryTable;
     autocomplete(document.getElementById("productDescription"), getDescriptions());
-    var diaryTable = $('#diaryTable').DataTable();
-    var counter = 1;
+
+
+    // make rows able for selecting
+    $('#diaryTable tbody').on('click', 'tr', function (e) {
+       if ( $(this).hasClass('row_selected')) {
+           $(this).removeClass('row_selected');
+
+
+       } else {
+           diaryTable.$('tr.selected_row');
+           $(this).addClass('row_selected');
+       }
+
+    });
+
+    $('#btn-remove').click(function(){
+        var anSelected = fnGetSelected( diaryTable );
+        for (var i = 0; i < anSelected.length; i++) {
+            var data = $('#diaryTable').DataTable().row(anSelected[i]).data();
+            console.log()
+            $.ajax({
+                url : "/remove/diary-entry",
+                type: "POST",
+                dataType: 'json',
+                data: 'entry=' + data[0],
+                success: function (response) {
+                    console.log(response)
+                }
+
+
+            })
+        }
+        $(anSelected).remove();
+    });
+
+
+
+
+    /* Get the rows which are currently selected */
+    function fnGetSelected( diaryTableLocal )
+    {
+        return diaryTableLocal.$('tr.row_selected');
+    }
+
+    diaryTable = $('#diaryTable').DataTable();
+    diaryTable.columns( [0] ).visible( false );
     getTodaysDiaryEntries(diaryTable);
+
+
 
     $("#product-submit").click(function(event){
         event.preventDefault();
@@ -26,6 +73,7 @@ $(document).ready(function() {
             data: data,
             success: function (response) {
                 diaryTable.row.add([
+                    response.id,
                     response.mealtime,
                     response.productDescription,
                     response.quantity + response.unit,
@@ -75,8 +123,8 @@ function getTodaysDiaryEntries(diaryTable) {
         success: function (response) {
             for (var i = 0; i < response.length; i++) {
                 var obj = response[i];
-                console.log(obj);
                 diaryTable.row.add([
+                    obj.id,
                     obj.mealtime,
                     obj.productDescription,
                     obj.quantity + obj.unit,

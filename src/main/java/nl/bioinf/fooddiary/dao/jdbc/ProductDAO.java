@@ -87,18 +87,24 @@ public class ProductDAO implements ProductRepository {
     }
 
     @Override
-    public List<ProductEntry> getDiaryEntriesByDate(int id, String currentDate) {
-        String sqlQuery = "select description_dutch, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
+    public List<ProductEntry> getDiaryEntriesByDate(int idUser, String currentDate) {
+        String sqlQuery = "select pe.id, user_id, product_id, description_dutch, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
                 "from product_entry pe join product p on pe.product_id = p.code where pe.user_id = ? and pe.date = ?";
-        return jdbcTemplate.query(sqlQuery, new Object[] { id, currentDate }, new RowMapper<ProductEntry>() {
+        return jdbcTemplate.query(sqlQuery, new Object[] { idUser, currentDate }, new RowMapper<ProductEntry>() {
             @Override
             public ProductEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new ProductEntry(rs.getString("description_dutch"), rs.getString("measurement_quantity"), rs.getString("measurement_unit"),
+                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
+                        rs.getString("description_dutch"), rs.getString("measurement_quantity"), rs.getString("measurement_unit"),
                         rs.getString("date"), rs.getString("time_of_day"), rs.getString("mealtime"), rs.getString("description"));
             }
         });
     }
 
+    @Override
+    public int removeDiaryEntryById(int diaryEntryId) {
+        String sqlQuery = "delete from product_entry where id = ?";
+        return jdbcTemplate.update(sqlQuery, diaryEntryId);
+    }
 
 
     /**

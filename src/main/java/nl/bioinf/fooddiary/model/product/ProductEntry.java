@@ -11,6 +11,9 @@ import java.util.Date;
  */
 
 public class ProductEntry {
+    private int id;
+    private int user_id;
+    private int product_id;
     private String productDescription;
     private String quantity;
     private String unit;
@@ -19,6 +22,18 @@ public class ProductEntry {
     private String mealtime;
     private String description;
 
+    public ProductEntry(int id, int user_id, int product_id, String productDescription, String quantity, String unit, String date, String time, String mealtime, String description) {
+        this.id = id;
+        this.user_id = user_id;
+        this.product_id = product_id;
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.date = date;
+        this.time = time;
+        this.mealtime = mealtime;
+        this.description = description;
+    }
 
     public ProductEntry(String productDescription, String quantity, String unit, String date, String time, String mealtime, String description) {
         this.productDescription = productDescription;
@@ -58,5 +73,14 @@ public class ProductEntry {
         return unit;
     }
 
+    public int getId() { return id; }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
 }
 
