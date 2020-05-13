@@ -19,7 +19,9 @@
         <p><strong>Simple and Resourceful</strong></p>
     </div>
 </div>
+
 <div th:insert="template :: navbar"></div>
+
 <div class="container addnewproduct">
     <div class="row">
         <div class="col-md-3">
@@ -31,51 +33,60 @@
 
         <div class="col-md-9">
             <div class="addproduct-form">
-                <form action="#" th:action="@{/addednewproduct}" th:object="${newproductform}" method="post">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">User ID:</label>
-                        <div class="col-sm-6">
-                            <span th:value="${#request.getUserPrincipal().getName()}"></span>
-                        </div>
-
+                <form action="#" th:action="@{/addednewproduct}" enctype="multipart/form-data" th:object="${newproductform}" method="post">
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="date">Date:</label>
+                    <label class="control-label col-sm-3" for="date" th:text="#{form.date}"></label>
                     <div class="col-sm-6">
                         <input type="date" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
+                        <td class="form-entry-error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></td>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="time_of_day">Time of the day:</label>
+                    <label class="control-label col-sm-3" for="time_of_day" th:text="#{form.time_of_day}"></label>
                     <div class="col-sm-6">
                         <input type="text" th:field="*{time_of_day}" class="form-control" id="time_of_day" placeholder="13:30" name="time_of_day">
+                        <td class="form-entry-error" th:if="${#fields.hasErrors('time_of_day')}" th:errors="*{time_of_day}"></td>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="mealtime">Moment of Meal:</label>
+                    <label class="control-label col-sm-3" for="mealtime" th:text="#{form.mealtime}"></label>
                     <div class="col-sm-6">
                         <select id="mealtime" class="form-control" name="mealtime" th:field="*{mealtime}">
-                            <option value="before breakfast">Before breakfast</option>
-                            <option value="breakfast">Breakfast</option>
-                            <option value="after breakfast">After breakfast</option>
-                            <option value="before lunch">Before lunch</option>
-                            <option value="lunch">Lunch</option>
-                            <option value="after lunch">After lunch</option>
-                            <option value="before dinner">Before dinner</option>
-                            <option value="dinner">Dinner</option>
-                            <option value="after dinner">After dinner</option>
+                            <option value="before breakfast" th:text="#{form.mealtime.beforebreakfast}"></option>
+                            <option value="breakfast" th:text="#{form.mealtime.breakfast}"></option>
+                            <option value="after breakfast"th:text="#{form.mealtime.afterbreakfast}"></option>
+                            <option value="before lunch" th:text="#{form.mealtime.beforelunch}"></option>
+                            <option value="lunch"th:text="#{form.mealtime.lunch}"></option>
+                            <option value="after lunch"th:text="#{form.mealtime.afterlunch}"></option>
+                            <option value="before dinner" th:text="#{form.mealtime.beforedinner}"></option>
+                            <option value="dinner" th:text="#{form.mealtime.dinner}"></option>
+                            <option value="after dinner"th:text="#{form.mealtime.afterdinner}"></option>
                         </select>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="description">Description:</label>
+                    <label class="control-label col-sm-3" for="description" th:text="#{form.description}"></label>
                     <div class="col-sm-6">
                         <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Quacker Crueslie 4 nuts" name="description">
+                        <td class="form-entry-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="quantity">Weight or Volume:</label>
+                    <label class="control-label col-sm-3" for="quantity" th:text="#{form.quantity}"></label>
                     <div class="col-sm-6">
                         <input type="text" th:field="*{quantity}" class="form-control" id="quantity" placeholder="100gr / 100ml" name="quantity">
+                        <td class="form-entry-error" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></td>
+                    </div>
+                </div>
+
+                <div class="form=group">
+                    <label class="control-label col-sm-3" th:text="#{form.addpicture}"></label>
+                    <div class="col-sm-6">
+                        <input type="file" name="newProductPicture" class="form-control" id="newProductPicture" >
                     </div>
                 </div>
                 <div class="form-group">
@@ -83,7 +94,6 @@
                         <button type="submit" class="btn btn-default">Submit</button>
                     </div>
                 </div>
-                    </div>
                 </form>
             </div>
         </div>

@@ -1,5 +1,6 @@
 package nl.bioinf.fooddiary.model.newproduct;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -14,14 +15,15 @@ public class NewProduct {
 
     private Integer id;
     private Integer user_id;
-    @NotNull
+    @NotEmpty(message = "{newproductform.date.notempty}") @NotNull
     private String date;
-    @NotNull
+    @NotEmpty(message = "{newproductform.time_of_day.notempty}") @NotNull
     private String time_of_day;
-    @NotNull
+    @NotEmpty @NotNull
     private String mealtime;
-    @NotNull
+    @NotEmpty(message = "{newproductform.description.notempty}") @NotNull
     private String description;
+    @NotEmpty(message = "{newproductform.quantity.notempty}") @NotNull
     private String quantity;
 
     public Integer getId() {

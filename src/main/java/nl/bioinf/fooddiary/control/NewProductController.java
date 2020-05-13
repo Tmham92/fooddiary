@@ -2,19 +2,27 @@ package nl.bioinf.fooddiary.control;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
+
+import nl.bioinf.fooddiary.model.newproduct.NewProductPictureResponse;
 import nl.bioinf.fooddiary.service.NewProductService;
+import nl.bioinf.fooddiary.service.PictureStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
 import java.util.Locale;
+
+
 
 /**
  * @author Tobias Ham
@@ -27,14 +35,19 @@ import java.util.Locale;
 public class NewProductController {
 
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
-
     @Autowired
     NewProductService newProductService;
+    @Autowired
+    PictureStorageService pictureStorageService;
+    @Value("${file.uploadDir}")
+    private String uploadDir;
+
 
     /**
      * Method that opens the web page based on the value attribute without a known Locale.
+     *
      * @param locale (Locale)
-     * @param model (Model)
+     * @param model  (Model)
      * @return (String)
      */
     @RequestMapping(value = {"/newproductform"}, method = RequestMethod.GET)
@@ -46,38 +59,54 @@ public class NewProductController {
         return "redirect:" + locale.getLanguage() + "/newproductform";
     }
 
+
     /**
      * Method that opens the web page based on the value attribute with a known Locale.
+     *
      * @param model (Model)
      * @return (String)
      */
     @RequestMapping(value = "/{locale}/newproductform")
-    public String  newProductFormWithLocale(Model model) {
+    public String newProductFormWithLocale(Model model) {
         logger.info("/newproductform url has been called with a known Locale." +
                 "Opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "/newproductform";
+        return "newproductform";
     }
 
 
     /**
      * Method that injects a valid NewProduct form submission into the database and redirect the user to a new web page.
-     * @param newProduct (NewProduct object)
+     *
+     * @param newProduct    (NewProduct object)
      * @param bindingResult (BindingResult object)
      * @return (String)
      */
     @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
-    public String injectNewProduct(@ModelAttribute("newproductform")
-                                   @Validated NewProduct newProduct, BindingResult bindingResult) {
+    public String injectNewProduct(@Valid @ModelAttribute("newproductform")
+                                               NewProduct newProduct,
+                                   @RequestParam("newProductPicture") MultipartFile file,
+                                   BindingResult bindingResult) {
         logger.info("Submitting NewProduct from newProductForm to database." +
                 "Redirecting user to /addednewproduct url.");
+
+        if (bindingResult.hasErrors()) {
+            logger.info("Form could not be validated.");
+            return "/newproductform";
+        }
+        logger.info("Try to upload file to " + uploadDir);
+        System.out.println(file);
+
         newProductService.addNewProduct(newProduct);
+        uploadFile(file);
+
         return "redirect:/addednewproduct";
     }
 
     /**
      * Method that opens the addednewproduct web page when locale is unknown.
+     *
      * @param locale (Locale)
      * @return (String)
      */
@@ -90,12 +119,40 @@ public class NewProductController {
 
     /**
      * Method that opens the addednewproduct web page when Locale is known.
+     *
      * @return (String)
      */
     @RequestMapping(value = "/{locale}/addednewproduct")
-    public String  addedNewProductWithLocale() {
+    public String addedNewProductWithLocale() {
         logger.info("/addednewproduct url has been called with known Locale." +
                 "Opening web page in right language.");
-        return "/addednewproduct";
+        return "addednewproduct";
     }
+
+    /**
+     * Posting Method that handles a file/picture that can be uploaded when entering a unknown product.
+     * @param file (MutlipartFile)
+     * @return (NewProductPictureResponds)
+     */
+
+    @PostMapping("/newproductform")
+    public NewProductPictureResponse uploadFile(@RequestParam("newProductPicture") MultipartFile file) {
+        String fileName = pictureStorageService.storeFile(file);
+        logger.info("Storing picture in upload Directory");
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+
+        newProductService.addNewProductPictureLocation(uploadDir + "/" + fileName);
+
+        return new NewProductPictureResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
+
+
 }
+
+
+

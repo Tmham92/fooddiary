@@ -27,7 +27,7 @@ public class NewProductService implements INewProductService {
 
     @Override
     public NewProduct getNewProductById(int newProductId) {
-        return null;
+        return newProductDAO.getNewProductById(newProductId);
     }
 
     @Override
@@ -40,5 +40,8 @@ public class NewProductService implements INewProductService {
         newProductDAO.deleteNewProduct(newProductId);
     }
 
+    @Override
+    public void addNewProductPictureLocation(String pictureLocation) { newProductDAO.addNewProductPictureLocation(pictureLocation);
 
+    }
 }
