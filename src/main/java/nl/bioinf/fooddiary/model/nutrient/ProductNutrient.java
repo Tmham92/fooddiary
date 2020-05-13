@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 /**
  * @author Tom Wagenaar
@@ -30,9 +30,9 @@ public class ProductNutrient {
     public static ProductNutrientBuilder builder(int productCode, String nutrientCode, String nutrientValue) {
 
         // Check the nutrientValue on null input and length.
-        ProductNutrientInputChecker.checkStringInputNull(nutrientValue, "nutrientValue");
+        DataInputChecker.checkStringInputNull(nutrientValue, "nutrientValue");
         nutrientValue = nutrientValue.trim();
-        ProductNutrientInputChecker.checkInputLength(nutrientValue, 15, "nutrientValue");
+        DataInputChecker.checkInputLength(nutrientValue, 15, "nutrientValue");
 
         return new ProductNutrientBuilder(productCode, nutrientCode, nutrientValue);
     }

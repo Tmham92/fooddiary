@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 /**
  * @author Tom Wagenaar
@@ -41,24 +41,24 @@ public class Nutrient {
                                           String nameEnglish, String measurementUnit) {
 
         // Check the nutrientCode on null input and length.
-        ProductNutrientInputChecker.checkStringInputNull(nutrientCode, "nutrientCode");
+        DataInputChecker.checkStringInputNull(nutrientCode, "nutrientCode");
         nutrientCode = nutrientCode.trim();
-        ProductNutrientInputChecker.checkInputLength(nutrientCode, 25, "nutrientCode");
+        DataInputChecker.checkInputLength(nutrientCode, 25, "nutrientCode");
 
         // Check the nameDutch on null input and length.
-        ProductNutrientInputChecker.checkStringInputNull(nameDutch, "nameDutch");
+        DataInputChecker.checkStringInputNull(nameDutch, "nameDutch");
         nameDutch = nameDutch.trim();
-        ProductNutrientInputChecker.checkInputLength(nameDutch, 255, "nameDutch");
+        DataInputChecker.checkInputLength(nameDutch, 255, "nameDutch");
 
         // Check the nameEnglish on null input and length.
-        ProductNutrientInputChecker.checkStringInputNull(nameEnglish, "nameEnglish");
+        DataInputChecker.checkStringInputNull(nameEnglish, "nameEnglish");
         nameEnglish = nameEnglish.trim();
-        ProductNutrientInputChecker.checkInputLength(nameEnglish, 255, "nameEnglish");
+        DataInputChecker.checkInputLength(nameEnglish, 255, "nameEnglish");
 
         // Check the measurementUnit on null input and length.
-        ProductNutrientInputChecker.checkStringInputNull(measurementUnit, "measurementUnit");
+        DataInputChecker.checkStringInputNull(measurementUnit, "measurementUnit");
         measurementUnit = measurementUnit.trim();
-        ProductNutrientInputChecker.checkInputLength(measurementUnit, 255, "measurementUnit");
+        DataInputChecker.checkInputLength(measurementUnit, 255, "measurementUnit");
 
         return new NutrientBuilder(nutrientCode, nameDutch, nameEnglish, measurementUnit);
     }

@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ public class NutrientValues {
         // Checking the nutrient value and assigning a _NO_VALUE_ string whenever the nutrient is not known.
         public NutrientValue value(String value) {
             // Check on null input.
-            ProductNutrientInputChecker.checkStringInputNull(value, "nutrientValue");
+            DataInputChecker.checkStringInputNull(value, "nutrientValue");
 
             // Trim the value.
             value = value.trim();

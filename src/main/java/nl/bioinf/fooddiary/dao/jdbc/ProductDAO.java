@@ -2,6 +2,7 @@ package nl.bioinf.fooddiary.dao.jdbc;
 
 
 import nl.bioinf.fooddiary.dao.ProductRepository;
+import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
 import nl.bioinf.fooddiary.model.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +33,8 @@ public class ProductDAO implements ProductRepository {
 
     private  JdbcTemplate jdbcTemplate;
 
+
+    private RowMapper<Product> rowMapper = new ProductRowMapper();
 
     @Autowired
     public ProductDAO(JdbcTemplate jdbcTemplate) {
@@ -144,6 +147,23 @@ public class ProductDAO implements ProductRepository {
     }
 
 
+
+
+    // TODO: !Reminder! Denk even na over of de product_id in recipe niet veranderd moet worden naar product_code - Tom
+    /**
+     * @author Tom Wagenaar
+     * Date: 13-05-2020
+     *
+     * Method that receives a productDescription either in Dutch or English and retrieves the corresponding Product
+     * from the product table in the fooddiary database.
+     * @param productDescription, string that is either the description in Dutch or English.
+     * @return Product that correspond to the description.
+     */
+    @Override
+    public Product getSpecificProduct(String productDescription) {
+        String sqlQuery = "select * from product where description_dutch = ?";
+        return jdbcTemplate.queryForObject(sqlQuery, rowMapper, productDescription);
+    }
 
 
 }
