@@ -35,9 +35,9 @@
             <div class="addproduct-form">
                 <form action="#" th:action="@{/addednewproduct}" enctype="multipart/form-data" th:object="${newproductform}" method="post">
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="date" th:text="#{form.date}"></label>
+                    <label class="control-label col-sm-3" th:text="#{form.date}"></label>
                     <div class="col-sm-6">
-                        <input type="date" th:field="*{date}" class="form-control" id="date" placeholder="Enter date" name="date">
+                        <input type="date" th:field="*{date}" class="form-control" id="date" name="date">
                         <td class="form-entry-error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></td>
                     </div>
                 </div>
