@@ -1,5 +1,7 @@
 package nl.bioinf.fooddiary.model.product;
 
+import java.util.Date;
+
 /**
  * @author Hans Zijlstra
  * Class that respresents a product entry into the user his diary.
@@ -9,19 +11,45 @@ package nl.bioinf.fooddiary.model.product;
  */
 
 public class ProductEntry {
+    private int id;
+    private int user_id;
+    private int product_id;
     private String productDescription;
-    private String quantity;
+    private double quantity;
+    private String unit;
     private String date;
     private String time;
     private String mealtime;
     private String description;
 
+    public ProductEntry(int id, int user_id, int product_id, String productDescription, double quantity, String unit, String date, String time, String mealtime, String description) {
+        this.id = id;
+        this.user_id = user_id;
+        this.product_id = product_id;
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.date = date;
+        this.time = time;
+        this.mealtime = mealtime;
+        this.description = description;
+    }
+
+    public ProductEntry(String productDescription, double quantity, String unit, String date, String time, String mealtime, String description) {
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.date = date;
+        this.time = time;
+        this.mealtime = mealtime;
+        this.description = description;
+    }
 
     public String getProductDescription() {
         return productDescription;
     }
 
-    public String getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
@@ -41,28 +69,18 @@ public class ProductEntry {
         return description;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public int getId() { return id; }
+
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setMealtime(String mealtime) {
-        this.mealtime = mealtime;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public int getProduct_id() {
+        return product_id;
     }
 }
 
