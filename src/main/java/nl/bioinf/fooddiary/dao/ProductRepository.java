@@ -29,4 +29,6 @@ public interface ProductRepository {
 
     int removeDiaryEntryById(int diaryEntryId);
 
+    Product getSpecificProduct(String productDescription);
+
 }

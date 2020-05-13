@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.product;
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 /**
  * @author Tom Wagenaar
@@ -34,14 +34,14 @@ public class ProductMeasurement {
      */
     public static ProductMeasurementBuilder builder(String measurementUnit, String measurementQuantity) {
         // Check the Product measurement unit on null input and length, in between carry out a trim.
-        ProductNutrientInputChecker.checkStringInputNull(measurementUnit, "measurementUnit");
+        DataInputChecker.checkStringInputNull(measurementUnit, "measurementUnit");
         measurementUnit = measurementUnit.trim();
-        ProductNutrientInputChecker.checkInputLength(measurementUnit, 10, "measurementUnit");
+        DataInputChecker.checkInputLength(measurementUnit, 10, "measurementUnit");
 
         // Check the measurementQuantity on null input, change it to an integer and if the integer is between a range.
-        ProductNutrientInputChecker.checkStringInputNull(measurementQuantity, "measurementQuantity");
-        int checkedMeasurementQuantity = ProductNutrientInputChecker.changeStringToInt(measurementQuantity, "measurementQuantity");
-        ProductNutrientInputChecker.checkInputSize(checkedMeasurementQuantity, 9999, "measurementQuantity");
+        DataInputChecker.checkStringInputNull(measurementQuantity, "measurementQuantity");
+        int checkedMeasurementQuantity = DataInputChecker.changeStringToInt(measurementQuantity, "measurementQuantity");
+        DataInputChecker.checkInputSize(checkedMeasurementQuantity, 9999, "measurementQuantity");
 
         return new ProductMeasurementBuilder(measurementUnit, checkedMeasurementQuantity);
     }
@@ -87,7 +87,7 @@ public class ProductMeasurement {
 
         public ProductMeasurementBuilder measurementComment(String measurementComment) {
             // Check if the measurementComment is a null value and trim it.
-            ProductNutrientInputChecker.checkStringInputNull(measurementComment, "measurementComment");
+            DataInputChecker.checkStringInputNull(measurementComment, "measurementComment");
             measurementComment = measurementComment.trim();
 
             // Assign a value to the comment.
@@ -98,7 +98,7 @@ public class ProductMeasurement {
             }
 
             // Check the length of the comment.
-            ProductNutrientInputChecker.checkInputLength(this.measurementComment, 510, "measurmentComment");
+            DataInputChecker.checkInputLength(this.measurementComment, 510, "measurmentComment");
 
             return this;
         }

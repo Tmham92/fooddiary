@@ -101,12 +101,13 @@ CREATE TABLE IF NOT EXISTS recipe
 (
     id           int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id      int(10),
-    product_id   int(25),
-    recipe_group int(10)                            NOT NULL,
+    product_code int(25),
+    recipe_group varchar(255)                       NOT NULL,
+    quantity     int(5)                             NOT NULL,
     verified     boolean                            NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (product_id) REFERENCES product (id)
+    FOREIGN KEY (product_code) REFERENCES product (code)
 );
 
 CREATE TABLE IF NOT EXISTS nutrient

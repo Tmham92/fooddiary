@@ -4,11 +4,11 @@ package nl.bioinf.fooddiary.model;
  * @author Tom Wagenaar
  * date: 14-04-2020
  *
- * Class that consists out of checks for the Product, Nutrient and ProductNutrient class values, these include a
+ * Class that consists out of checks for the Product, Nutrient, ProductNutrient recipe class values, these include a
  * check for null input, input length (input must be of specific length), input size (input must be between a specific
  * range of integers and a method that changes the input string to an integer. All methods have exception handling.
  */
-public class ProductNutrientInputChecker {
+public class DataInputChecker {
 
     /**
      * Method that checks if the input is a null value, furthermore receives a column name to make a proper exception.

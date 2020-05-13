@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.product;
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 /**
  * @author Tom Wagenaar
@@ -37,14 +37,14 @@ public final class ProductGroup {
      */
     public static ProductGroupBuilder builder(String groupCode, String groupCodeDescription) {
         // Check the group code description, in between trim it.
-        ProductNutrientInputChecker.checkStringInputNull(groupCodeDescription, "groupCodeDescription");
+        DataInputChecker.checkStringInputNull(groupCodeDescription, "groupCodeDescription");
         groupCodeDescription = groupCodeDescription.trim();
-        ProductNutrientInputChecker.checkInputLength(groupCodeDescription, 255, "groupCodeDescription");
+        DataInputChecker.checkInputLength(groupCodeDescription, 255, "groupCodeDescription");
 
         // Check the group code on null input and on the value.
-        ProductNutrientInputChecker.checkStringInputNull(groupCode, "groupCode");
-        int checkedGroupCode = ProductNutrientInputChecker.changeStringToInt(groupCode, "groupCode");
-        ProductNutrientInputChecker.checkInputSize(checkedGroupCode, 999, "groupCode");
+        DataInputChecker.checkStringInputNull(groupCode, "groupCode");
+        int checkedGroupCode = DataInputChecker.changeStringToInt(groupCode, "groupCode");
+        DataInputChecker.checkInputSize(checkedGroupCode, 999, "groupCode");
 
         return new ProductGroupBuilder(checkedGroupCode, groupCodeDescription);
     }
