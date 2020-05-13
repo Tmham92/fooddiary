@@ -145,3 +145,24 @@ input[type=submit] {
     background-color: #ff6e19 !important;
     color: #ffffff;
 }
+
+#mealtime {
+    margin-bottom: 20px;
+}
+
+
+#quantity {
+    width: 75%;
+}
+
+#unit {
+    width:23%
+}
+
+.row_selected {
+    background-color:#ff6e19!important;
+}
+
+td.sorting_1 {
+    background-color: transparent !important;
+}
