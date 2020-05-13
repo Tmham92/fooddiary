@@ -1,10 +1,11 @@
 //author: Hans Zijlstra
 
-$(document).ready(function() {
-    autocomplete(document.getElementById("productDescription"), getDescriptions());
-    $("productDescription").autocomplete({
-        source
-    })
+$(document).ready(function (elementId) {
+    var arr = getDescriptions();
+    autocomplete(document.getElementById("productDescription"), arr);
+
+    autocomplete(document.getElementById("productInput"), arr);
+
 
     var t = $('#example').DataTable();
     var counter = 1;
@@ -31,13 +32,89 @@ $(document).ready(function() {
         $.post({
             url : "/diary-entry/addtodiary",
             data: $('#product-entry').serialize(),
-            succes: function (res) {
+            success: function (res) {
                 console.log(res)
             }
         });
     });
+    });
+
+
 });
+
+
+
+// @Author Tom Wagenaar
+// Variable used to make the input id's distinct from each other.
+var counter = 1;
+
+// Function that makes a new div consisting of the product the uses wants to submit and a remove product button.
+function addProductLine() {
+    // Get the product the user wants to add to the recipe
+    var input = document.getElementById("productInput").value;
+
+    // Make a new div consisting out of a text field with the product the user wants to add to the recipe + a button
+    // to remove the product.
+    var newDiv = document.createElement('div');
+    newDiv.className = "autocomplete";
+    newDiv.id = "productInput" + counter;
+
+    newDiv.innerHTML ="<input id = 'productInput"+counter+"' type='text' placeholder='"+input+"' name='recipeInput[]' value='"+input+"' style='width: 83%;' readonly>" +
+        "<input type='button' value='-' onclick='removeProductLine(this)' style='width: 15%;margin-left: 5px'>";
+
+    document.getElementById('dyanamicProductInput[0]').appendChild(newDiv);
+
+    // Clear the product in the input field
+    document.getElementById("productInput").value = "";
+
+    counter++;
+    console.log("Added a new product input field in the recipe form.")
+}
+
+// @Author Tom Wagenaar
+// Function that removes the current product and decreases the counter.
+function removeProductLine(btn) {
+    btn.parentNode.remove();
+    counter--;
+    console.log("Removed a product input field in the recipe form.")
+}
+
+
+$("#recipeSubmit").click(function (event) {
+    console.log("Sending info");
+    event.preventDefault();
+
+    var inputList = [];
+
+    var inputFields = document.getElementsByName("recipeInput[]");
+
+    for (var i = 0; i < inputFields.length; i++)
+        inputList[i] = inputFields[i].value;
+
+    var data = {};
+
+    data["userID"] = 2;
+    data["productDescriptionList"] = inputList;
+    data["recipeGroup"] = $("#recipeGroupInput").val();
+    data["quantity"] = $("#recipeGroupQuantityInput").val();
+    data["verified"] = 0;
+
+    console.log(JSON.stringify(data));
+
+    $.ajax({
+        type: "POST",
+        contentType : 'application/json; charset=utf-8',
+        dataType : 'json',
+        url: "/diary-entry/add-new-recipe",
+        data: JSON.stringify(data), // Note it is important
+        success :function(response) {
+            console.log(response);
+        }
+    });
+
+
 });
+
 
 
 function getDescriptions() {
