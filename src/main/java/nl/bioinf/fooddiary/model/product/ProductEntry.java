@@ -15,14 +15,14 @@ public class ProductEntry {
     private int user_id;
     private int product_id;
     private String productDescription;
-    private String quantity;
+    private double quantity;
     private String unit;
     private String date;
     private String time;
     private String mealtime;
     private String description;
 
-    public ProductEntry(int id, int user_id, int product_id, String productDescription, String quantity, String unit, String date, String time, String mealtime, String description) {
+    public ProductEntry(int id, int user_id, int product_id, String productDescription, double quantity, String unit, String date, String time, String mealtime, String description) {
         this.id = id;
         this.user_id = user_id;
         this.product_id = product_id;
@@ -35,7 +35,7 @@ public class ProductEntry {
         this.description = description;
     }
 
-    public ProductEntry(String productDescription, String quantity, String unit, String date, String time, String mealtime, String description) {
+    public ProductEntry(String productDescription, double quantity, String unit, String date, String time, String mealtime, String description) {
         this.productDescription = productDescription;
         this.quantity = quantity;
         this.unit = unit;
@@ -49,7 +49,7 @@ public class ProductEntry {
         return productDescription;
     }
 
-    public String getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 

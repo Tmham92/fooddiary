@@ -23,7 +23,6 @@
 
     <div th:insert="template :: navbar"></div>
   <div class="container">
-
             <p>
                 <button class="button" data-modal="modalOne" th:text="#{add.msg}"></button>
             </p>
@@ -39,11 +38,11 @@
                                 <input id="productDescription" type="text" name="productDescription" required th:placeholder="#{table.product}">
                             </div>
                             <div class="productMetaData">
-                                <input type="text" id="quantity" name="quantity" th:placeholder="#{table.amount}">
-                                <input type="text" id="unit" name="unit" th:placeholder="#{table.unit}">
-                                <input type="date" id="date" placeholder="Enter date" name="date" th:value="${ldt}">
-                                <input type="time" id="time" placeholder="Time" name="time" th:value="${time}">
-                                <select id="mealtime" class="form-control" name="mealtime" th:placeholder="#{table.mealtime}">
+                                <input type="number"  step="0.1" id="quantity" name="quantity" th:placeholder="#{table.amount}" min="0.1" required>
+                                <input type="text" id="unit" name="unit" th:placeholder="#{table.unit}" required readonly>
+                                <input type="date" id="date" placeholder="Enter date" name="date" required th:value="${ldt}">
+                                <input type="time" id="time" placeholder="Time" name="time" required th:value="${time}">
+                                <select id="mealtime" class="form-control" name="mealtime"  th:placeholder="#{table.mealtime}">
                                     <option th:value="#{mealtime.breakfast}" th:text="#{mealtime.breakfast}"></option>
                                     <option th:value="#{mealtime.lunch}" th:text="#{mealtime.lunch}"></option>
                                     <option th:value="#{mealtime.dinner}" th:text="#{mealtime.dinner}"></option>

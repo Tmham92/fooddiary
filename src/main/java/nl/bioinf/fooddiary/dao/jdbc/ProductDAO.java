@@ -26,7 +26,12 @@ import java.util.List;
 @Repository
 public class ProductDAO implements ProductRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private  JdbcTemplate jdbcTemplate;
+
 
     @Autowired
     public ProductDAO(JdbcTemplate jdbcTemplate) {
@@ -94,7 +99,7 @@ public class ProductDAO implements ProductRepository {
             @Override
             public ProductEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
-                        rs.getString("description_dutch"), rs.getString("measurement_quantity"), rs.getString("measurement_unit"),
+                        rs.getString("description_dutch"), rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
                         rs.getString("date"), rs.getString("time_of_day"), rs.getString("mealtime"), rs.getString("description"));
             }
         });
@@ -134,9 +139,8 @@ public class ProductDAO implements ProductRepository {
     @Override
     public String getMeasurementUnitByDescription(String description) {
         String sqlQuery = "select measurement_unit from product where description_dutch = ?";
-        String measurementUnit = (String) jdbcTemplate.queryForObject(
+        return (String) jdbcTemplate.queryForObject(
                 sqlQuery, new Object[] { description }, String.class);
-        return measurementUnit;
     }
 
 

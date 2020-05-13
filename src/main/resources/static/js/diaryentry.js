@@ -22,7 +22,6 @@ $(document).ready(function() {
         var anSelected = fnGetSelected( diaryTable );
         for (var i = 0; i < anSelected.length; i++) {
             var data = $('#diaryTable').DataTable().row(anSelected[i]).data();
-            console.log()
             $.ajax({
                 url : "/remove/diary-entry",
                 type: "POST",
@@ -53,10 +52,11 @@ $(document).ready(function() {
 
 
 
-    $("#product-submit").click(function(event){
+    $("#product-entry").submit(function(event){
         event.preventDefault();
 
-        var diaryEntry = [];
+
+        var diaryEntry = getDescriptions();
         var data = {};
 
         data["productDescription"] = $("#productDescription").val();
@@ -66,26 +66,61 @@ $(document).ready(function() {
         data["date"] = $("#date").val();
         data["time"] = $("#time").val();
         data["description"] = $("#description").val();
-        $.ajax({
-            url : "/diary-entry/addtodiary",
-            type: "POST",
-            dataType: 'json',
-            data: data,
-            success: function (response) {
-                diaryTable.row.add([
-                    response.id,
-                    response.mealtime,
-                    response.productDescription,
-                    response.quantity + response.unit,
-                    response.time,
-                    response.description
-                ]).draw( false );
 
-            }
-        });
+        // console.log(diaryEntry.values)
+        // console.log(Object.values())
+        // console.log(getDescriptions().length)
+        // // checkForDescriptionInArray(diaryTable, data.productDescription);
+        // // if(checkForDescriptionInArray(diaryTable, data.productDescription)) {
+        // //     console.log("In Database")
+        // // } else {
+        // //     console.log("Not in database")
+        // // }
+
+
+
+            $.ajax({
+                url : "/diary-entry/addtodiary",
+                type: "POST",
+                dataType: 'json',
+                data: data,
+                success: function (response) {
+                    diaryTable.row.add([
+                        response.id,
+                        response.mealtime,
+                        response.productDescription,
+                        response.quantity + response.unit,
+                        response.time,
+                        response.description
+                    ]).draw( false );
+
+                }
+            });
+
     });
 
 });
+
+function checkForDescriptionInArray(diaryTable, description) {
+    console.log("starting")
+    var result = false;
+    var i;
+    // for (i = 0; i < diaryTable.length; i++) {
+    //     console.log("looping")
+    //     console.log(diaryTable[i]);
+    //     if (diaryTable[i] === description) {
+    //         result = true
+    //     }
+    // }
+    for (i = 0; diaryTable.length < 5; i++) {
+        console.log(i)
+    }
+    console.log(result);
+    return result;
+}
+
+
+
 
 function getMeasurementUnit(value) {
     $.ajax({

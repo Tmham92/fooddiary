@@ -9,7 +9,9 @@ import nl.bioinf.fooddiary.model.product.ProductEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,7 @@ import java.util.*;
 public class DiaryEntryController {
 
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
+    private static final double illegalQuantity = 0;
 
     @Autowired
     private ProductRepository productRepository;
@@ -101,15 +104,19 @@ public class DiaryEntryController {
 
     @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ProductEntry addProductToDiary(@RequestParam String productDescription, @RequestParam String quantity, @RequestParam String unit,
+    public ResponseEntity<Object> addProductToDiary(@RequestParam String productDescription, @RequestParam double quantity, @RequestParam String unit,
                                           @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime) {
-        description = validateDescription(description);
-        ProductEntry productEntry = new ProductEntry(productDescription, quantity, unit, date, time, mealtime, description);
-        int productId = productRepository.getProductId(productEntry.getProductDescription());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        productRepository.insertProductIntoDiary(getUserID(authentication), productId, productEntry);
 
-        return productEntry;
+        try {
+            description = validateDescription(description);
+            ProductEntry productEntry = new ProductEntry(productDescription, checkQuantityForNull(quantity), unit, date, time, mealtime, description);
+            int productId = productRepository.getProductId(productEntry.getProductDescription());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            productRepository.insertProductIntoDiary(getUserID(authentication), productId, productEntry);
+            return ResponseEntity.ok(productEntry);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quantity cannot be null");
+        }
 
     }
     @PostMapping(value = "/remove/diary-entry", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -142,6 +149,14 @@ public class DiaryEntryController {
     private int getUserID(Authentication authentication) {
         return productRepository.getUserIdByUsername(authentication.getName());
 
+    }
+
+    private double checkQuantityForNull(double quantity) {
+        if (quantity == 0) {
+            throw new IllegalArgumentException();
+        } else {
+            return quantity;
+        }
     }
 
 
