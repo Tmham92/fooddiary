@@ -20,4 +20,6 @@ public interface ProductRepository {
 
     ProductMeasurement getProductByDescription(String description);
 
+    Product getSpecificProduct(String productDescription);
+
 }
