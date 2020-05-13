@@ -4,8 +4,8 @@ $(document).ready(function() {
     var diaryTable;
     autocomplete(document.getElementById("productDescription"), getDescriptions());
 
-
     autocomplete(document.getElementById("productInput"), getDescriptions());
+    
     // make rows able for selecting
     $('#diaryTable tbody').on('click', 'tr', function (e) {
        if ( $(this).hasClass('row_selected')) {
