@@ -5,8 +5,8 @@ import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
-/*
-@author Tobias Ham
+/**
+    @Author Tobias Ham
  */
 public interface IProductDAO {
     List<NewProduct> getAllNewProducts();
@@ -21,5 +21,6 @@ public interface IProductDAO {
 
     boolean newProductExists(int newProductId);
 
+    void addNewProductPictureLocation(String pictureLocation);
 
 }
