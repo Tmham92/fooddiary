@@ -2,16 +2,16 @@ package nl.bioinf.fooddiary.dao.jdbc;
 
 
 import nl.bioinf.fooddiary.dao.ProductRepository;
-import nl.bioinf.fooddiary.model.product.Product;
-import nl.bioinf.fooddiary.model.product.ProductDescription;
-import nl.bioinf.fooddiary.model.product.ProductMeasurement;
+import nl.bioinf.fooddiary.model.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -26,11 +26,30 @@ import java.util.List;
 @Repository
 public class ProductDAO implements ProductRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private  JdbcTemplate jdbcTemplate;
+
 
     @Autowired
     public ProductDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public int getProductId(String description) {
+        String sqlQuery = "select id from product where description_dutch = ?";
+        return jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { description }, Integer.class);
+    }
+
+    @Override
+    public int getUserIdByUsername(String username) {
+        String sqlQuery = "select id from user where user_code = ? ";
+        return jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { username }, Integer.class);
     }
 
     /**
@@ -54,6 +73,44 @@ public class ProductDAO implements ProductRepository {
                 product.getProductInfoExtra().getEnrichedWith(), product.getProductInfoExtra().getTracesOf());
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Inserts information regarding consumed products into the diary database
+     * @param userId int The users id
+     * @param productId int id of consumed product
+     * @param productEntry productEntry object containing product data
+     * @return List<ProductDescription></> list of productdescriptions
+     */
+
+
+    @Override
+    public int insertProductIntoDiary(int userId, int productId, ProductEntry productEntry) {
+        String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
+                "(?,?,?,?,?,?)";
+        return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), productEntry.getMealtime(),
+                productEntry.getDescription());
+    }
+
+    @Override
+    public List<ProductEntry> getDiaryEntriesByDate(int idUser, String currentDate) {
+        String sqlQuery = "select pe.id, user_id, product_id, description_dutch, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
+                "from product_entry pe join product p on pe.product_id = p.code where pe.user_id = ? and pe.date = ?";
+        return jdbcTemplate.query(sqlQuery, new Object[] { idUser, currentDate }, new RowMapper<ProductEntry>() {
+            @Override
+            public ProductEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
+                        rs.getString("description_dutch"), rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
+                        rs.getString("date"), rs.getString("time_of_day"), rs.getString("mealtime"), rs.getString("description"));
+            }
+        });
+    }
+
+    @Override
+    public int removeDiaryEntryById(int diaryEntryId) {
+        String sqlQuery = "delete from product_entry where id = ?";
+        return jdbcTemplate.update(sqlQuery, diaryEntryId);
+    }
+
 
     /**
      * @author Hans Zijlstra
@@ -63,11 +120,11 @@ public class ProductDAO implements ProductRepository {
 
     @Override
     public List<ProductDescription> getAllProductDescriptions() {
-        String sqlQuery = "select description_dutch, description_english, synonymous from product;";
+        String sqlQuery = "select description_dutch, description_english from product;";
         return jdbcTemplate.query(sqlQuery, new RowMapper<ProductDescription>() {
             @Override
             public ProductDescription mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return ProductDescription.builder(rs.getString("description_dutch"), rs.getString("description_english")).synonymous(rs.getString("synonymous")).build();
+                return ProductDescription.builder(rs.getString("description_dutch"), rs.getString("description_english")).build();
             }
         });
     }
@@ -75,19 +132,18 @@ public class ProductDAO implements ProductRepository {
     /**
      * @author Hans Zijlstra
      * Method that fetches the measuring unit for the selected product in the database
+     * @param description String description of food product
      * @return List<ProductDescription></> list of productdescriptions
      */
 
     @Override
-    public ProductMeasurement getProductByDescription(String description) {
-        String sqlQuery = "select measurement_quantity  from product where description_dutch = ? or where description_english = ?";
-        return (ProductMeasurement) jdbcTemplate.query(sqlQuery, new RowMapper<ProductMeasurement>() {
-            @Override
-            public ProductMeasurement mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return ProductMeasurement.builder(rs.getString("measurement_unit"), rs.getString("measurement_quantity")).measurementComment(rs.getString("measurement_comment")).build();
-            }
-        });
+    public String getMeasurementUnitByDescription(String description) {
+        String sqlQuery = "select measurement_unit from product where description_dutch = ?";
+        return (String) jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { description }, String.class);
     }
+
+
 
 
 }
