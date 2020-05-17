@@ -27,7 +27,7 @@ public class NewProductDAO implements IProductDAO {
     private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
 
     @Autowired
-    public NewProductDAO(JdbcTemplate jdbcTemplate){
+    public NewProductDAO(){
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -41,7 +41,8 @@ public class NewProductDAO implements IProductDAO {
         return this.jdbcTemplate.query(sql, rowMapper);
     }
 
-    /**
+
+/**
      * Method that retrieves a newProduct object from the database
      * @param id (int)
      * @param description (String)
@@ -52,7 +53,7 @@ public class NewProductDAO implements IProductDAO {
      * @return NewProduct object
      */
     public NewProduct getNewProduct(Integer id, String description, Date date, Time time_of_day, String mealtime, double quantity) {
-        String sql = "select id, description, date, time_of_day, mealtime, quantity from unverified_product_entry where id = ? and description = ?";
+        String sql = "select id, description, date, time_of_day, mealtime, quantity from unverified_product_entry where id = ?";
         NewProduct newProduct = jdbcTemplate.queryForObject(sql, rowMapper, id, description, date, time_of_day, mealtime, quantity);
         return newProduct;
     }
@@ -88,12 +89,12 @@ public class NewProductDAO implements IProductDAO {
 
     /**
      * Method that retrieves NewProduct object based on their corresponding ID value.
-     * @param newProductId (int)
+     * @param id (int)
      * @return (NewProduct object)
      */
-    public NewProduct getNewProductById(int newProductId) {
-        String sql = "SELECT id, description FROM unverified_product_entry WHERE id = ?";
-        NewProduct newProduct = jdbcTemplate.queryForObject(sql, rowMapper, newProductId);
+    public NewProduct getNewProductById(int id) {
+        String sql = "SELECT id, user_id, description, date, time_of_day, mealtime, quantity FROM unverified_product_entry WHERE id = ?";
+        NewProduct newProduct = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return newProduct;
     }
 
@@ -121,4 +122,20 @@ public class NewProductDAO implements IProductDAO {
             return true;
         }
     }
+    /**
+     *  Method that inserts the New Product Picture Location into the database.
+     *  The newProduct ID that is associated with the picture is retrieved from
+     *  the unverified_product_entry table.
+     *  The highest ID number is used because this is the last product entry due to auto incrementation.
+     * @param pictureLocation
+     */
+
+
+    public void addNewProductPictureLocation(String pictureLocation) {
+        int unverified_product_id = jdbcTemplate.queryForObject("SELECT MAX(id) FROM unverified_product_entry", Integer.class);
+        String sql = "INSERT INTO unverified_product_picture_location " +
+                "(unverified_product_id,  unverified_product_picture_location) VALUES (?,?);";
+        jdbcTemplate.update(sql, unverified_product_id, pictureLocation);
+    }
+
 }

@@ -93,3 +93,7 @@
 .dropdown-item.active, .dropdown-item:active{color:rgb(255, 110, 25);}
 .dropdown-item:focus, .dropdown-item:hover{background:rgb(255, 110, 25)}
 
+.dropdown-item{z-index: 2; position: relative}
+.dropdown-menu{z-index: 2; position: relative}
+.dropdown-divider{z-index: 2; position: relative}
+

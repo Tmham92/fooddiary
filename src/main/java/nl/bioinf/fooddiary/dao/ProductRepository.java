@@ -1,9 +1,8 @@
 package nl.bioinf.fooddiary.dao;
 
-import nl.bioinf.fooddiary.model.product.Product;
-import nl.bioinf.fooddiary.model.product.ProductDescription;
-import nl.bioinf.fooddiary.model.product.ProductMeasurement;
+import nl.bioinf.fooddiary.model.product.*;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -14,10 +13,22 @@ import java.util.List;
  */
 public interface ProductRepository {
 
+    int getProductId(String description);
+
+    int getUserIdByUsername(String username);
+
     int insertProductData(Product product);
 
     List<ProductDescription> getAllProductDescriptions();
 
-    ProductMeasurement getProductByDescription(String description);
+    String getMeasurementUnitByDescription(String description);
+
+    int insertProductIntoDiary(int userId, int productId, ProductEntry productEntry);
+
+    List<ProductEntry> getDiaryEntriesByDate(int id, String date);
+
+    int removeDiaryEntryById(int diaryEntryId);
+
+    Product getSpecificProduct(String productDescription);
 
 }

@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
     <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
-    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/home.css}" href="../static/css/home.css">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
     <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
@@ -24,12 +23,45 @@
 
     <div th:insert="template :: navbar"></div>
   <div class="container">
-
-    <p th:text="'Uploaded on ' + ${currentDate}">Uploaded on Oct 30 2015</p>
-      <p th:text="${ldt}"></p>
             <p>
                 <button class="button" data-modal="modalOne" th:text="#{add.msg}"></button>
             </p>
+             <button id="btn-remove" data-modal="modalOne" th:text="#{remove.btn}"></button>
+
+            <p>
+                <!--@author Tom Wagenaar, button when clicked shows a pop up for adding a new recipe.-->
+                <button class="button" data-modal="addNewRecipe" th:text="#{addNewRecipe}">Add new recipe</button>
+            </p>
+
+            <div id="addNewRecipe" class="modal">
+                <div class="modal-content">
+                    <div class="entry-form">
+                        <a class="close">&times;</a>
+
+
+                        <form autocomplete="off" method="post" id="newRecipeForm">
+                            <h2 th:text="#{addNewRecipe.message}"></h2>
+                            <p th:text="#{newProductDisclaimer.message}">Disclaimer</p>
+
+                            <div id="recipeGroup">
+                                <input id="recipeGroupInput" type="text" th:placeholder="#{recipeGroupInput.message}">
+                            </div>
+
+                            <div class="autocomplete" id="dyanamicProductInput[0]">
+                                <input id="productInput" type="text" th:placeholder="#{add.msg}" style="width: 83%; display: inline-block">
+                                <input type='button' value="+" onclick="addProductLine()" style="width: 15%; display: inline-block">
+                            </div>
+
+                            <div id="recipeGroupQuantity">
+                                <input id="recipeGroupQuantityInput" type="text" th:placeholder="#{recipeGroupQuantityInput.message}">
+                            </div>
+
+                            <button id="recipeSubmit" type="submit" th:text="#{recipeSubmit.message}">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
 
             <div id="modalOne" class="modal">
                 <div class="modal-content">
@@ -38,13 +70,19 @@
                         <form autocomplete="off"  method="post" id="product-entry">
                             <h2 th:text="#{add.msg}"></h2>
                             <div class="autocomplete">
-                                <input id="productDescription" type="text" action="/diary-entry" name="product" th:placeholder="#{table.product}">
+                                <input id="productDescription" type="text" name="productDescription" required th:placeholder="#{table.product}">
                             </div>
                             <div class="productMetaData">
-                                <input type="text" id="quantity" name="quantity" th:placeholder="#{table.amount}">
-                                <input type="date" id="date" placeholder="Enter date" name="date" th:value="${ldt}">
-                                <input type="time" id="time" placeholder="Time" name="time">
-                                <input class="product" id="mealtime" type="text" name="mealtime" th:placeholder="#{table.mealtime}">
+                                <input type="number"  step="0.1" id="quantity" name="quantity" th:placeholder="#{table.amount}" min="0.1" required>
+                                <input type="text" id="unit" name="unit" th:placeholder="#{table.unit}" required readonly>
+                                <input type="date" id="date" placeholder="Enter date" name="date" required th:value="${ldt}">
+                                <input type="time" id="time" placeholder="Time" name="time" required th:value="${time}">
+                                <select id="mealtime" class="form-control" name="mealtime"  th:placeholder="#{table.mealtime}">
+                                    <option th:value="#{mealtime.breakfast}" th:text="#{mealtime.breakfast}"></option>
+                                    <option th:value="#{mealtime.lunch}" th:text="#{mealtime.lunch}"></option>
+                                    <option th:value="#{mealtime.dinner}" th:text="#{mealtime.dinner}"></option>
+                                    <option th:value="#{mealtime.snack}" th:text="#{mealtime.snack}"></option>
+                                </select>
                                 <input type="text" id="description" name="description">
                             </div>
                             <button id="product-submit" type="submit" th:text="#{add.msg}">Submit</button>
@@ -53,23 +91,32 @@
                 </div>
             </div>
 
-            <table id="example" class="display" style="width:100%">
+            <table id="diaryTable" class="display" style="width:100%">
                 <thead>
                     <tr>
+                        <th>id</th>
                         <th th:text="#{table.mealtime}">Mealtime</th>
                         <th th:text="#{table.product}">Product</th>
-                        <th th:text="#{table.date}">Date</th>
                         <th th:text="#{table.amount}">Amount</th>
+                        <th th:text="#{table.time}">Time</th>
+                        <th th:text="#{table.description}">Description</th>
                     </tr>
                 </thead>
+                <tbody>
+                </tbody>
             </table>
         </div>
+
+    <div class="cloudcontainer"></div>
     </body>
 
+<script>src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"</script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.js"></script>
-<script>src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"</script>
+<!--<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.js"></script>-->
+<!--<script>src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"</script>-->
 <script src="/js/diaryentry.js"></script>
 </html>

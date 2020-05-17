@@ -1,44 +1,215 @@
 //author: Hans Zijlstra
 
 $(document).ready(function() {
+    var diaryTable;
     autocomplete(document.getElementById("productDescription"), getDescriptions());
-    $("productDescription").autocomplete({
-        source
-    })
 
-    var t = $('#example').DataTable();
-    var counter = 1;
+    autocomplete(document.getElementById("productInput"), getDescriptions());
+    
+    // make rows able for selecting
+    $('#diaryTable tbody').on('click', 'tr', function (e) {
+       if ( $(this).hasClass('row_selected')) {
+           $(this).removeClass('row_selected');
 
-    $('#addRow').on( 'click', function () {
-        t.row.add( [
-            counter +'.1',
-            counter +'.2',
-            counter +'.3',
-            counter +'.4',
-        ] ).draw( false );
 
-        counter++;
-    } );
+       } else {
+           diaryTable.$('tr.selected_row');
+           $(this).addClass('row_selected');
+       }
 
-    // Automatically add a first row of data
-    $('#addRow').click();
-
-    $(function () {
-    $("#product-submit").click(function(event){
-        // $("productDescription").val()
-        console.log("sending")
-        event.preventDefault();
-        $.post({
-            url : "/diary-entry/addtodiary",
-            data: $('#product-entry').serialize(),
-            succes: function (res) {
-                console.log(res)
-            }
-        });
     });
-});
+
+    $('#btn-remove').click(function(){
+        var anSelected = fnGetSelected( diaryTable );
+        for (var i = 0; i < anSelected.length; i++) {
+            var data = $('#diaryTable').DataTable().row(anSelected[i]).data();
+            $.ajax({
+                url : "/remove/diary-entry",
+                type: "POST",
+                dataType: 'json',
+                data: 'entry=' + data[0],
+                success: function (response) {
+                    console.log(response)
+                }
+
+
+            })
+        }
+        $(anSelected).remove();
+    });
+
+
+
+
+    /* Get the rows which are currently selected */
+    function fnGetSelected( diaryTableLocal )
+    {
+        return diaryTableLocal.$('tr.row_selected');
+    }
+
+    diaryTable = $('#diaryTable').DataTable();
+    diaryTable.columns( [0] ).visible( false );
+    getTodaysDiaryEntries(diaryTable);
+
+
+
+    $("#product-entry").submit(function(event){
+        event.preventDefault();
+
+
+        var diaryEntry = getDescriptions();
+        var data = {};
+
+        data["productDescription"] = $("#productDescription").val();
+        data["mealtime"] = $("#mealtime").val();
+        data["quantity"] = $("#quantity").val();
+        data["unit"] = $("#unit").val();
+        data["date"] = $("#date").val();
+        data["time"] = $("#time").val();
+        data["description"] = $("#description").val();
+
+        // console.log(diaryEntry.values)
+        // console.log(Object.values())
+        // console.log(getDescriptions().length)
+        // // checkForDescriptionInArray(diaryTable, data.productDescription);
+        // // if(checkForDescriptionInArray(diaryTable, data.productDescription)) {
+        // //     console.log("In Database")
+        // // } else {
+        // //     console.log("Not in database")
+        // // }
+
+
+
+            $.ajax({
+                url : "/diary-entry/addtodiary",
+                type: "POST",
+                dataType: 'json',
+                data: data,
+                success: function (response) {
+                    diaryTable.row.add([
+                        response.id,
+                        response.mealtime,
+                        response.productDescription,
+                        response.quantity + response.unit,
+                        response.time,
+                        response.description
+                    ]).draw( false );
+
+                }
+            });
+
+    });
+
 });
 
+function checkForDescriptionInArray(diaryTable, description) {
+    console.log("starting")
+    var result = false;
+    var i;
+    // for (i = 0; i < diaryTable.length; i++) {
+    //     console.log("looping")
+    //     console.log(diaryTable[i]);
+    //     if (diaryTable[i] === description) {
+    //         result = true
+    //     }
+    // }
+    for (i = 0; diaryTable.length < 5; i++) {
+        console.log(i)
+    }
+    console.log(result);
+    return result;
+}
+
+
+
+
+
+
+// @Author Tom Wagenaar
+// Variable used to make the input id's distinct from each other.
+var counter = 1;
+
+// Function that makes a new div consisting of the product the uses wants to submit and a remove product button.
+function addProductLine() {
+    // Get the product the user wants to add to the recipe
+    var input = document.getElementById("productInput").value;
+
+    // Make a new div consisting out of a text field with the product the user wants to add to the recipe + a button
+    // to remove the product.
+    var newDiv = document.createElement('div');
+    newDiv.className = "autocomplete";
+    newDiv.id = "productInput" + counter;
+
+    newDiv.innerHTML ="<input id = 'productInput"+counter+"' type='text' placeholder='"+input+"' name='recipeInput[]' value='"+input+"' style='width: 83%;' readonly>" +
+        "<input type='button' value='-' onclick='removeProductLine(this)' style='width: 15%;margin-left: 5px'>";
+
+    document.getElementById('dyanamicProductInput[0]').appendChild(newDiv);
+
+    // Clear the product in the input field
+    document.getElementById("productInput").value = "";
+
+    counter++;
+    console.log("Added a new product input field in the recipe form.")
+}
+
+// @Author Tom Wagenaar
+// Function that removes the current product and decreases the counter.
+function removeProductLine(btn) {
+    btn.parentNode.remove();
+    counter--;
+    console.log("Removed a product input field in the recipe form.")
+}
+
+
+$("#recipeSubmit").click(function (event) {
+    console.log("Sending info");
+    event.preventDefault();
+
+    var inputList = [];
+
+    var inputFields = document.getElementsByName("recipeInput[]");
+
+    for (var i = 0; i < inputFields.length; i++)
+        inputList[i] = inputFields[i].value;
+
+    var data = {};
+
+    data["userID"] = 2;
+    data["productDescriptionList"] = inputList;
+    data["recipeGroup"] = $("#recipeGroupInput").val();
+    data["quantity"] = $("#recipeGroupQuantityInput").val();
+    data["verified"] = 0;
+
+    console.log(JSON.stringify(data));
+
+    $.ajax({
+        type: "POST",
+        contentType : 'application/json; charset=utf-8',
+        dataType : 'json',
+        url: "/diary-entry/add-new-recipe",
+        data: JSON.stringify(data), // Note it is important
+        success :function(response) {
+            console.log(response);
+        }
+    });
+
+
+});
+
+
+function getMeasurementUnit(value) {
+    $.ajax({
+        type: 'POST',
+        url: '/diary-entry/product-measurement',
+        dataType: 'json',
+        data: 'productDescription=' + $('#productDescription').val(),
+        success: function (response) {
+            $("#unit").val(response.productUnit)
+
+        }
+
+    })
+}
 
 function getDescriptions() {
 
@@ -50,12 +221,35 @@ function getDescriptions() {
             for (var i = 0; i < data.length; i++) {
                 var obj = data[i];
                 descriptions.push(obj.descriptionDutch)
-
             }
         }
     });
     return descriptions
 }
+
+function getTodaysDiaryEntries(diaryTable) {
+    $.ajax({
+        url: '/product-entries-by-date',
+        dataType: 'json',
+        success: function (response) {
+            for (var i = 0; i < response.length; i++) {
+                var obj = response[i];
+                diaryTable.row.add([
+                    obj.id,
+                    obj.mealtime,
+                    obj.productDescription,
+                    obj.quantity + obj.unit,
+                    obj.time,
+                    obj.description
+                 ]).draw( false );
+        }
+    }
+
+})
+}
+
+
+
 
 
 
@@ -91,6 +285,7 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
+                    getMeasurementUnit(inp.value)
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
