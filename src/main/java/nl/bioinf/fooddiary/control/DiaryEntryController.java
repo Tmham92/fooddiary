@@ -111,10 +111,11 @@ public class DiaryEntryController {
         try {
             String language = locale.getLanguage();
             description = validateDescription(description);
-
+            System.out.println(quantity);
             ProductEntry productEntry = new ProductEntry(productDescription, checkQuantityForNull(quantity), unit, date, time, mealtime, description);
             int productId = productRepository.getProductId(language,productEntry.getProductDescription());
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println(productEntry.getProductDescription());
             productRepository.insertProductIntoDiary(language, getUserID(authentication), productId, productEntry);
             return ResponseEntity.ok(productEntry);
 

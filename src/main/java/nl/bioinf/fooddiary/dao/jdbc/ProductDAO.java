@@ -39,9 +39,9 @@ public class ProductDAO implements ProductRepository {
 
     @Override
     public int getProductId(String lang,String description) {
-        String sqlQuery = "select id from product where description_english = ?";
+        String sqlQuery = "select code from product where description_english = ?";
         if (lang.equals("nl")) {
-            sqlQuery = "select id from product where description_dutch = ?";
+            sqlQuery = "select code from product where description_dutch = ?";
         }
         return jdbcTemplate.queryForObject(
                 sqlQuery, new Object[] { description }, Integer.class);
@@ -183,7 +183,7 @@ public class ProductDAO implements ProductRepository {
 
     @Override
     public String getMeasurementUnitByDescription(int productId) {
-        String sqlQuery = "select measurement_unit from product where id = ?";
+        String sqlQuery = "select measurement_unit from product where code = ?";
         return  jdbcTemplate.queryForObject(
                 sqlQuery, new Object[] { productId }, String.class);
     }

@@ -97,6 +97,8 @@ $(document).ready(function() {
         data["time"] = $("#time").val();
         data["description"] = $("#description").val();
 
+        console.log(data.productDescription)
+
         if (!descriptions.includes(data.productDescription)) {
             document.getElementById("productDescription").setCustomValidity("The product you entered does not appear in our database");
         } else {
@@ -233,7 +235,7 @@ $("#recipeSubmit").click(function (event) {
 
     var data = {};
 
-    data["userID"] = 2;
+    data["userID"] = 1;
     data["productDescriptionList"] = inputList;
     data["recipeGroup"] = $("#recipeGroupInput").val();
     data["quantity"] = inputQuantity;
@@ -254,7 +256,6 @@ $("#recipeSubmit").click(function (event) {
         }
     });
 
-    location.href = "diary-entry";
 
 
 });
