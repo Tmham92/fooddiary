@@ -13,22 +13,26 @@ import java.util.List;
  */
 public interface ProductRepository {
 
-    int getProductId(String description);
+    int getProductId(String lang,String description);
 
     int getUserIdByUsername(String username);
 
     int insertProductData(Product product);
 
-    List<ProductDescription> getAllProductDescriptions();
+    List<String> getAllDutchProductDescriptions();
 
-    String getMeasurementUnitByDescription(String description);
+    List<String> getAllEnglishProductDescriptions();
 
-    int insertProductIntoDiary(int userId, int productId, ProductEntry productEntry);
+    String getMeasurementUnitByDescription(int productId);
 
-    List<ProductEntry> getDiaryEntriesByDate(int id, String date);
+    int insertProductIntoDiary(String lang, int userId, int productId, ProductEntry productEntry);
+
+    List<ProductEntry> getDiaryEntriesByDate(String lang,int id, String date);
 
     int removeDiaryEntryById(int diaryEntryId);
 
     Product getSpecificProduct(String productDescription);
+
+    List<ProductOccurrence> getProductOccurrences(String lang);
 
 }

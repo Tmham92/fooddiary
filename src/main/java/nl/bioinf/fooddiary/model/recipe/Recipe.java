@@ -19,7 +19,8 @@ public class Recipe {
     private int userID;
     private List<String> productDescriptionList;
     private String recipeGroup;
-    private int quantity;
+    private List<Integer> quantity;
+    private List<String> quantityUnit;
     private int verified;
 
 
@@ -33,6 +34,7 @@ public class Recipe {
         this.productDescriptionList = builder.productDescriptionList;
         this.recipeGroup = builder.recipeGroup;
         this.quantity = builder.quantity;
+        this.quantityUnit = builder.quantityUnit;
         this.verified = builder.verified;
     }
 
@@ -48,18 +50,18 @@ public class Recipe {
      * @param verified (int)
      * @return RecipeBuilder object that consists out of the required instance variables.
      */
-    public static RecipeBuilder builder(int userID, List<String> productDescriptionsList, String recipeGroup, String quantity, int verified) {
+    public static RecipeBuilder builder(int userID, List<String> productDescriptionsList, String recipeGroup, List<Integer> quantity, List<String> unit, int verified) {
         // Check the recipeGroup on null input and length, in between trim it.
         DataInputChecker.checkStringInputNull(recipeGroup, "recipeGroup");
         recipeGroup = recipeGroup.trim();
         DataInputChecker.checkInputLength(recipeGroup, 255, "recipeGroup");
 
-        // Check the quantity on null input, change it to an integer and check the quantity value.
-        DataInputChecker.checkStringInputNull(quantity, "quantity");
-        int checkedQuantity = DataInputChecker.changeStringToInt(quantity, "quantity");
-        DataInputChecker.checkInputSize(checkedQuantity, 9999, "quantity");
+//        // Check the quantity on null input, change it to an integer and check the quantity value.
+//        DataInputChecker.checkStringInputNull(quantity, "quantity");
+//        int checkedQuantity = DataInputChecker.changeStringToInt(quantity, "quantity");
+//        DataInputChecker.checkInputSize(checkedQuantity, 9999, "quantity");
 
-        return new RecipeBuilder(userID, productDescriptionsList, recipeGroup, checkedQuantity, verified);
+        return new RecipeBuilder(userID, productDescriptionsList, recipeGroup, quantity, unit, verified);
     }
 
     // Getters
@@ -69,7 +71,11 @@ public class Recipe {
 
     public String getRecipeGroup() { return recipeGroup; }
 
-    public int getQuantity() { return quantity; }
+    public List<Integer> getQuantity() { return quantity; }
+
+    public List<String> getQuantityUnit() {
+        return quantityUnit;
+    }
 
     public int getVerified() { return verified; }
 
@@ -78,11 +84,12 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "{" +
+        return "Recipe{" +
                 "userID=" + userID +
-                ", productDescriptionsList=" + productDescriptionList +
+                ", productDescriptionList=" + productDescriptionList +
                 ", recipeGroup='" + recipeGroup + '\'' +
                 ", quantity=" + quantity +
+                ", unit=" + quantityUnit +
                 ", verified=" + verified +
                 '}';
     }
@@ -97,14 +104,16 @@ public class Recipe {
         private final int userID;
         private final List<String> productDescriptionList;
         private final String recipeGroup;
-        private final int quantity;
+        private final List<Integer> quantity;
+        private final List<String> quantityUnit;
         private int verified;
 
-        public RecipeBuilder(int userID, List<String> productDescriptionList, String recipeGroup, int quantity, int verified) {
+        public RecipeBuilder(int userID, List<String> productDescriptionList, String recipeGroup, List<Integer> quantity, List<String> quantityUnit, int verified) {
             this.userID = userID;
             this.productDescriptionList = productDescriptionList;
             this.recipeGroup = recipeGroup;
             this.quantity = quantity;
+            this.quantityUnit = quantityUnit;
             this.verified = verified;
         }
 

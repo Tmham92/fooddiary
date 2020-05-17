@@ -9,11 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Tom Wagenaar
@@ -27,9 +26,6 @@ import java.util.List;
 @Repository
 public class ProductDAO implements ProductRepository {
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     private  JdbcTemplate jdbcTemplate;
 
@@ -42,8 +38,11 @@ public class ProductDAO implements ProductRepository {
     }
 
     @Override
-    public int getProductId(String description) {
-        String sqlQuery = "select id from product where description_dutch = ?";
+    public int getProductId(String lang,String description) {
+        String sqlQuery = "select code from product where description_english = ?";
+        if (lang.equals("nl")) {
+            sqlQuery = "select code from product where description_dutch = ?";
+        }
         return jdbcTemplate.queryForObject(
                 sqlQuery, new Object[] { description }, Integer.class);
     }
@@ -87,23 +86,41 @@ public class ProductDAO implements ProductRepository {
 
 
     @Override
-    public int insertProductIntoDiary(int userId, int productId, ProductEntry productEntry) {
-        String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
-                "(?,?,?,?,?,?)";
-        return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), productEntry.getMealtime(),
-                productEntry.getDescription());
+    public int insertProductIntoDiary(String lang,int userId, int productId, ProductEntry productEntry) {
+        String mealtime = productEntry.getMealtime();
+        if (lang.equals("nl")) {
+            System.out.println(Mealtimes.getMealtimes());
+            for (Map.Entry<String, String> entry : Mealtimes.getMealtimes().entrySet()) {
+                if (entry.getValue().equals(productEntry.getMealtime())) {
+                    mealtime = entry.getKey();
+                }
+            }
+        }
+            String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
+                    "(?,?,?,?,?,?)";
+            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), mealtime,
+                    productEntry.getDescription());
     }
 
     @Override
-    public List<ProductEntry> getDiaryEntriesByDate(int idUser, String currentDate) {
-        String sqlQuery = "select pe.id, user_id, product_id, description_dutch, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
+    public List<ProductEntry> getDiaryEntriesByDate(String lang, int idUser, String currentDate) {
+        String sqlQuery = "select pe.id, user_id, product_id, description_dutch, description_english, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
                 "from product_entry pe join product p on pe.product_id = p.code where pe.user_id = ? and pe.date = ?";
         return jdbcTemplate.query(sqlQuery, new Object[] { idUser, currentDate }, new RowMapper<ProductEntry>() {
             @Override
             public ProductEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
+                String description = "";
+                String mealtime = "";
+                if (lang.equals("nl")) {
+                    description = rs.getString("description_dutch");
+                    mealtime = Mealtimes.getMealtimes().get(rs.getString("mealtime"));
+                } else {
+                    description = rs.getString("description_english");
+                    mealtime = rs.getString("mealtime");
+                }
                 return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
-                        rs.getString("description_dutch"), rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
-                        rs.getString("date"), rs.getString("time_of_day"), rs.getString("mealtime"), rs.getString("description"));
+                        description, rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
+                        rs.getString("date"), rs.getString("time_of_day"), mealtime, rs.getString("description"));
             }
         });
     }
@@ -114,37 +131,64 @@ public class ProductDAO implements ProductRepository {
         return jdbcTemplate.update(sqlQuery, diaryEntryId);
     }
 
+    @Override
+    public List<ProductOccurrence> getProductOccurrences(String lang) {
+        String sqlQuery = "select product_id, description_dutch, count(product_id) as occurence from product_entry pe " +
+                "join product p on pe.product_id = p.code  group by pe.product_id order by occurence DESC limit 10";
+        return jdbcTemplate.query(sqlQuery, new RowMapper<ProductOccurrence>() {
+            @Override
+            public ProductOccurrence mapRow(ResultSet rs, int rowNum) throws SQLException {
+                String productDescription = "";
+                if(lang.equals("nl")) {
+                    productDescription = rs.getString("description_dutch");
+                } else {
+                    productDescription = rs.getString("description_english");
+                }
+                return new ProductOccurrence(rs.getInt("product_id"), productDescription, rs.getInt("occurence"));
+            }
+        });
+    }
+
 
     /**
      * @author Hans Zijlstra
-     * Method that fetches all the product descriptions of the products in the database in english and dutch
+     * Method that fetches all the product descriptions of the products in the database in  dutch
      * @return List<ProductDescription></> list of productdescriptions
      */
 
     @Override
-    public List<ProductDescription> getAllProductDescriptions() {
-        String sqlQuery = "select description_dutch, description_english from product;";
-        return jdbcTemplate.query(sqlQuery, new RowMapper<ProductDescription>() {
-            @Override
-            public ProductDescription mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return ProductDescription.builder(rs.getString("description_dutch"), rs.getString("description_english")).build();
-            }
-        });
+    public List<String> getAllDutchProductDescriptions() {
+        String sqlQuery = "select description_dutch from product;";
+        return jdbcTemplate.queryForList(sqlQuery,String.class);
+    }
+
+    /**
+     * @author Hans Zijlstra
+     * Method that fetches all the product descriptions of the products in the database in english
+     * @return List<ProductDescription></> list of productdescriptions
+     */
+
+    @Override
+    public List<String> getAllEnglishProductDescriptions() {
+        String sqlQuery = "select description_english from product;";
+        return jdbcTemplate.queryForList(sqlQuery,String.class);
     }
 
     /**
      * @author Hans Zijlstra
      * Method that fetches the measuring unit for the selected product in the database
-     * @param description String description of food product
+     * @param productId String description of food product
      * @return List<ProductDescription></> list of productdescriptions
      */
 
     @Override
-    public String getMeasurementUnitByDescription(String description) {
-        String sqlQuery = "select measurement_unit from product where description_dutch = ?";
-        return (String) jdbcTemplate.queryForObject(
-                sqlQuery, new Object[] { description }, String.class);
+    public String getMeasurementUnitByDescription(int productId) {
+        String sqlQuery = "select measurement_unit from product where code = ?";
+        return  jdbcTemplate.queryForObject(
+                sqlQuery, new Object[] { productId }, String.class);
     }
+
+
 
 
 
