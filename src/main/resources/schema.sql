@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS recipe
     product_code int(25),
     recipe_group varchar(255)                       NOT NULL,
     quantity     int(5)                             NOT NULL,
+    unit         varchar(10)                        NOT NULL,
     verified     boolean                            NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES user (id),
