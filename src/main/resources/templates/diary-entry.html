@@ -54,6 +54,39 @@
 
 
 
+            <p>
+                <!--@author Tom Wagenaar, button when clicked shows a pop up for adding a new recipe.-->
+                <button class="button" data-modal="addNewRecipe" th:text="#{addNewRecipe}">Add new recipe</button>
+            </p>
+
+            <div id="addNewRecipe" class="modal">
+                <div class="modal-content">
+                    <div class="entry-form">
+                        <a class="close">&times;</a>
+
+
+                        <form autocomplete="off" method="post" id="newRecipeForm" th:object="${recipeForm}">
+                            <h2 th:text="#{addNewRecipe.message}"></h2>
+                            <p th:text="#{newProductDisclaimer.message}">Disclaimer</p>
+
+                            <div id="recipeGroup">
+                                <input id="recipeGroupInput" type="text" th:placeholder="#{recipeGroupInput.message}">
+                            </div>
+
+                            <div class="autocomplete" id="dyanamicProductInput[0]">
+                                <input id="productInput" type="text" th:placeholder="#{recipeAddProduct.message}" style="display: inline-block">
+                                <input id="productQuantity" type="text" th:placeholder="#{recipeProductQuantity.message}" style="width:45%; display: inline-block">
+                                <input id="productQuantityUnit" type="text" th:placeholder="#{recipeProductQuantityUnit.message}" style=" width: 35%; display: inline-block">
+                                <input id="recipeAddProduct" type='button' value="Add" style=" width: 17%; display: inline-block">
+                            </div>
+
+                            <button id="recipeSubmit" type="submit" th:text="#{recipeSubmit.message}">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
             <div id="modalOne" class="modal">
                 <div class="modal-content">
                     <div class="entry-form">
@@ -103,8 +136,7 @@
     </div>
     </body>
 
-<script>src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"</script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>

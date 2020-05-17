@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.model.product;
 
-import nl.bioinf.fooddiary.model.ProductNutrientInputChecker;
+import nl.bioinf.fooddiary.model.DataInputChecker;
 
 /**
  * @author Tom Wagenaar
@@ -34,14 +34,14 @@ public class ProductDescription {
     public static ProductDescriptionBuilder builder(String descriptionDutch, String descriptionEnglish) {
 
         // Check the products dutch description, in between trim it.
-        ProductNutrientInputChecker.checkStringInputNull(descriptionDutch, "descriptionDutch");
+        DataInputChecker.checkStringInputNull(descriptionDutch, "descriptionDutch");
         descriptionDutch = descriptionDutch.trim();
-        ProductNutrientInputChecker.checkInputLength(descriptionDutch, 255, "descriptionDutch");
+        DataInputChecker.checkInputLength(descriptionDutch, 255, "descriptionDutch");
 
         // Check the products description english, in between trim it.
-        ProductNutrientInputChecker.checkStringInputNull(descriptionEnglish, "descriptionEnglish");
+        DataInputChecker.checkStringInputNull(descriptionEnglish, "descriptionEnglish");
         descriptionEnglish = descriptionEnglish.trim();
-        ProductNutrientInputChecker.checkInputLength(descriptionEnglish, 255, "descriptionEnglish");
+        DataInputChecker.checkInputLength(descriptionEnglish, 255, "descriptionEnglish");
 
         return new ProductDescriptionBuilder(descriptionDutch, descriptionEnglish);
     }
@@ -95,7 +95,7 @@ public class ProductDescription {
          */
         public ProductDescriptionBuilder synonymous(String synonymous) {
             // Checks on null input.
-            ProductNutrientInputChecker.checkStringInputNull(synonymous, "synonymous");
+            DataInputChecker.checkStringInputNull(synonymous, "synonymous");
 
             // Trim the synonymous.
             synonymous = synonymous.trim();
@@ -108,7 +108,7 @@ public class ProductDescription {
             }
 
             // Check if length of synonymous is appropriate.
-            ProductNutrientInputChecker.checkInputLength(this.synonymous, 255, "synonymous");
+            DataInputChecker.checkInputLength(this.synonymous, 255, "synonymous");
 
             return this;
         }

@@ -2,6 +2,7 @@ package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.product.*;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,8 @@ public interface ProductRepository {
     List<ProductEntry> getDiaryEntriesByDate(String lang,int id, String date);
 
     int removeDiaryEntryById(int diaryEntryId);
+
+    Product getSpecificProduct(String productDescription);
 
     List<ProductOccurrence> getProductOccurrences(String lang);
 

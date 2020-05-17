@@ -10,11 +10,11 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS product_nutrient;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS nutrient;
-
+DROP TABLE IF EXISTS unverified_product_picture_location;
 DROP SCHEMA IF EXISTS fooddiary;
 
 CREATE SCHEMA IF NOT EXISTS fooddiary;
-
+use fooddiary;
 CREATE TABLE IF NOT EXISTS user
 (
     id        int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS product_entry
     user_id     int(10),
     product_id  int(25),
     quantity    varchar(255)                       NOT NULL,
-    date        date                               NOT NULL,
+    date        date                              NOT NULL,
     time_of_day varchar(25)                        NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
     description varchar(255)                       NULL,
@@ -87,16 +87,28 @@ CREATE TABLE IF NOT EXISTS unverified_product_entry
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
+CREATE TABLE IF NOT EXISTS unverified_product_picture_location
+(
+    id                                  int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    unverified_product_id               int(10) NOT NULL,
+    unverified_product_picture_location varchar(255) NOT NULL,
+
+    FOREIGN Key (unverified_product_id) references unverified_product_entry(id)
+);
+
+
 CREATE TABLE IF NOT EXISTS recipe
 (
     id           int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id      int(10),
-    product_id   int(25),
-    recipe_group int(10)                            NOT NULL,
+    product_code int(25),
+    recipe_group varchar(255)                       NOT NULL,
+    quantity     int(5)                             NOT NULL,
+    unit         varchar(10)                        NOT NULL,
     verified     boolean                            NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (product_id) REFERENCES product (id)
+    FOREIGN KEY (product_code) REFERENCES product (code)
 );
 
 CREATE TABLE IF NOT EXISTS nutrient
