@@ -2,9 +2,10 @@
 
 $(document).ready(function() {
     var diaryTable;
-    autocomplete(document.getElementById("productDescription"), getDescriptions());
+    var descriptionTable = getDescriptions();
+    autocomplete(document.getElementById("productDescription"), descriptionTable);
 
-    autocomplete(document.getElementById("productInput"), getDescriptions());
+    autocomplete(document.getElementById("productInput"), descriptionTable);
     
     // make rows able for selecting
     $('#diaryTable tbody').on('click', 'tr', function (e) {
@@ -100,6 +101,59 @@ $(document).ready(function() {
 
     });
 
+    // @Author Tom Wagenaar
+    // Variable used to make the input id's distinct from each other.
+    var counter = 1;
+
+    // Function that makes a new div consisting of the product the uses wants to submit and a remove product button.
+    $('#recipeAddProduct').click(function() {
+        //
+        var inputProduct = document.getElementById("productInput").value;
+        var inputProductQuantity = document.getElementById("productQuantity").value;
+        var inputProductQuantityUnit = document.getElementById("productQuantityUnit").value;
+
+        inputProduct = inputProduct.trim();
+        inputProductQuantity = inputProductQuantity.trim();
+        inputProductQuantityUnit = inputProductQuantityUnit.trim();
+
+        if (!checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptionTable)) {
+            return false;
+        }
+
+
+        var recipeProduct = inputProductQuantity + " " + inputProductQuantityUnit + " " + inputProduct;
+
+        // Make a new div consisting out of a text field with the product the user wants to add to the recipe + a button
+        // to remove the product.
+        var addedProductDiv = document.createElement('div');
+        addedProductDiv.id = "productInput" + counter;
+
+        addedProductDiv.innerHTML = "<input id='recipeProuct"+counter+"' type='text' placeholder='"+recipeProduct+"' style='width: 83%;' readonly>" +
+            "<input type='button' value='-' onclick='removeProductLine(this)' style='width: 15%;margin-left: 5px'>";
+
+        document.getElementById('dyanamicProductInput[0]').appendChild(addedProductDiv);
+
+
+        var hiddenProductData = document.createElement('div');
+        hiddenProductData.id = "hiddenProductInput" + counter;
+
+        hiddenProductData.innerHTML =
+            "<input id = 'productInput"+counter+"' type='text' name='recipeInput[]' value='"+inputProduct+"' hidden>" +
+            "<input id='productInputQuantity"+counter+"' type='text' name='recipeInputQuantity[]' value='"+inputProductQuantity+"' hidden>" +
+            "<input id='inputProductQuantityUnit"+counter+"' type='text' name='recipeInputQuantityUnit[]' value='"+inputProductQuantityUnit+"' hidden>";
+
+
+        document.getElementById('dyanamicProductInput[0]').appendChild(hiddenProductData);
+
+        // Clear the product in the input field
+        document.getElementById("productInput").value = "";
+        document.getElementById("productQuantity").value = "";
+        document.getElementById("productQuantityUnit").value = "";
+
+        counter++;
+        console.log("Added a new product input field in the recipe form.")
+    });
+
 });
 
 function checkForDescriptionInArray(diaryTable, description) {
@@ -122,36 +176,6 @@ function checkForDescriptionInArray(diaryTable, description) {
 
 
 
-
-
-
-// @Author Tom Wagenaar
-// Variable used to make the input id's distinct from each other.
-var counter = 1;
-
-// Function that makes a new div consisting of the product the uses wants to submit and a remove product button.
-function addProductLine() {
-    // Get the product the user wants to add to the recipe
-    var input = document.getElementById("productInput").value;
-
-    // Make a new div consisting out of a text field with the product the user wants to add to the recipe + a button
-    // to remove the product.
-    var newDiv = document.createElement('div');
-    newDiv.className = "autocomplete";
-    newDiv.id = "productInput" + counter;
-
-    newDiv.innerHTML ="<input id = 'productInput"+counter+"' type='text' placeholder='"+input+"' name='recipeInput[]' value='"+input+"' style='width: 83%;' readonly>" +
-        "<input type='button' value='-' onclick='removeProductLine(this)' style='width: 15%;margin-left: 5px'>";
-
-    document.getElementById('dyanamicProductInput[0]').appendChild(newDiv);
-
-    // Clear the product in the input field
-    document.getElementById("productInput").value = "";
-
-    counter++;
-    console.log("Added a new product input field in the recipe form.")
-}
-
 // @Author Tom Wagenaar
 // Function that removes the current product and decreases the counter.
 function removeProductLine(btn) {
@@ -160,27 +184,64 @@ function removeProductLine(btn) {
     console.log("Removed a product input field in the recipe form.")
 }
 
+function checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptionTable) {
+
+    if (!descriptionTable.includes(inputProduct)) {
+        console.log("This product: " + inputProduct + " isn't in the database!");
+        // document.getElementById("productInput").setCustomValidity("The product you entered does not appear in our database");
+        alert("This product: " + inputProduct + " isn't in the database!");
+        return false;
+    }
+
+    if (!/^\d+$/.test(inputProductQuantity)) {
+        alert("Please make sure that the quantity is a positive number!");
+        return false;
+    }
+
+    if (!/\b(?:g|ml|)\b/.test(inputProductQuantityUnit)) {
+        alert("Unit must be either g or ml!")
+        return false;
+    }
+
+
+
+    return true;
+}
+
 
 $("#recipeSubmit").click(function (event) {
-    console.log("Sending info");
+
     event.preventDefault();
 
     var inputList = [];
+    var inputQuantity = [];
+    var inputQuantityUnit = [];
 
     var inputFields = document.getElementsByName("recipeInput[]");
+    var inputFieldsQuantity = document.getElementsByName("recipeInputQuantity[]");
+    var inputFieldsQuantityUnit = document.getElementsByName("recipeInputQuantityUnit[]");
+
 
     for (var i = 0; i < inputFields.length; i++)
         inputList[i] = inputFields[i].value;
+
+    for (var i = 0; i < inputFieldsQuantity.length; i++)
+        inputQuantity[i] = inputFieldsQuantity[i].value;
+
+    for (var i = 0; i < inputFieldsQuantityUnit.length; i++)
+        inputQuantityUnit[i] = inputFieldsQuantityUnit[i].value;
 
     var data = {};
 
     data["userID"] = 2;
     data["productDescriptionList"] = inputList;
     data["recipeGroup"] = $("#recipeGroupInput").val();
-    data["quantity"] = $("#recipeGroupQuantityInput").val();
+    data["quantity"] = inputQuantity;
+    data["quantityUnit"] = inputQuantityUnit;
     data["verified"] = 0;
 
-    console.log(JSON.stringify(data));
+    console.log(data);
+
 
     $.ajax({
         type: "POST",
@@ -192,6 +253,8 @@ $("#recipeSubmit").click(function (event) {
             console.log(response);
         }
     });
+
+    location.href = "diary-entry";
 
 
 });

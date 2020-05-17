@@ -9,5 +9,5 @@ import nl.bioinf.fooddiary.model.recipe.Recipe;
  */
 public interface RecipeRepository {
 
-    void insertNewRecipe(Recipe recipe, int productCode);
+    void insertNewRecipe(Recipe recipe, int productCode, int index);
 }
