@@ -242,6 +242,7 @@ $("#recipeSubmit").click(function (event) {
 
     console.log(data);
 
+
     $.ajax({
         type: "POST",
         contentType : 'application/json; charset=utf-8',
