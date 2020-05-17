@@ -39,3 +39,9 @@
 .banner-image {
     height: 25%;
 }
+
+.form-entry-error {
+    background: #FFC199; /
+    border-left: 9px solid #FF6600;
+    color: red;
+}
