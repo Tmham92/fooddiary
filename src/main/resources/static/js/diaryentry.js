@@ -2,8 +2,9 @@
 
 $(document).ready(function() {
     var diaryTable;
-    autocomplete(document.getElementById("productDescription"), getDescriptions());
-
+    var descriptions = getDescriptions();
+    getHistoryItems();
+    autocomplete(document.getElementById("productDescription"), descriptions);
 
     // make rows able for selecting
     $('#diaryTable tbody').on('click', 'tr', function (e) {
@@ -48,7 +49,34 @@ $(document).ready(function() {
 
     diaryTable = $('#diaryTable').DataTable();
     diaryTable.columns( [0] ).visible( false );
+
     getTodaysDiaryEntries(diaryTable);
+
+    $("#diaryDate").change(function (event) {
+        event.preventDefault();
+        diaryTable.clear();
+        $.ajax({
+            url: '/diary-by-date',
+            dataType: 'json',
+            data: 'date=' +  $("#diaryDate").val(),
+            success: function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var obj= response[i];
+                    diaryTable.row.add([
+                        obj.id,
+                        obj.mealtime,
+                        obj.productDescription,
+                        obj.quantity + obj.unit,
+                        obj.time,
+                        obj.description
+                    ]).draw(false);
+
+                }
+            }
+        })
+
+
+    });
 
 
 
@@ -56,7 +84,6 @@ $(document).ready(function() {
         event.preventDefault();
 
 
-        var diaryEntry = getDescriptions();
         var data = {};
 
         data["productDescription"] = $("#productDescription").val();
@@ -67,18 +94,9 @@ $(document).ready(function() {
         data["time"] = $("#time").val();
         data["description"] = $("#description").val();
 
-        // console.log(diaryEntry.values)
-        // console.log(Object.values())
-        // console.log(getDescriptions().length)
-        // // checkForDescriptionInArray(diaryTable, data.productDescription);
-        // // if(checkForDescriptionInArray(diaryTable, data.productDescription)) {
-        // //     console.log("In Database")
-        // // } else {
-        // //     console.log("Not in database")
-        // // }
-
-
-
+        if (!descriptions.includes(data.productDescription)) {
+            document.getElementById("productDescription").setCustomValidity("The product you entered does not appear in our database");
+        } else {
             $.ajax({
                 url : "/diary-entry/addtodiary",
                 type: "POST",
@@ -96,30 +114,11 @@ $(document).ready(function() {
 
                 }
             });
+        }
 
     });
 
 });
-
-function checkForDescriptionInArray(diaryTable, description) {
-    console.log("starting")
-    var result = false;
-    var i;
-    // for (i = 0; i < diaryTable.length; i++) {
-    //     console.log("looping")
-    //     console.log(diaryTable[i]);
-    //     if (diaryTable[i] === description) {
-    //         result = true
-    //     }
-    // }
-    for (i = 0; diaryTable.length < 5; i++) {
-        console.log(i)
-    }
-    console.log(result);
-    return result;
-}
-
-
 
 
 function getMeasurementUnit(value) {
@@ -136,6 +135,29 @@ function getMeasurementUnit(value) {
     })
 }
 
+function getHistoryItems() {
+    $.ajax({
+        url: '/occurences',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var history_data = '';
+            for (var i = 0; i < data.length; i++) {
+                obj = data[i];
+                history_data += '<tr>';
+                history_data += '<th scope="row"></th>';
+                history_data += '<td>'+obj.product_id+'</td>';
+                history_data+= '<td>'+obj.productDescription+'</td>';
+                history_data += '</tr>';
+
+            }
+            $("#historyTable").append(history_data);
+        }
+    });
+
+
+}
+
 function getDescriptions() {
     descriptions = [];
     $.ajax({
@@ -144,7 +166,7 @@ function getDescriptions() {
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
                 var obj = data[i];
-                descriptions.push(obj.descriptionDutch)
+                descriptions.push(obj)
             }
         }
     });
