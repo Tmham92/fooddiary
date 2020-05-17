@@ -63,9 +63,9 @@ public class DataController {
         logger.info("Inserted product data into the product table");
 
         logger.info("Inserting nutrient data into the nutrient table.");
-//        for (Nutrient nutrient:nutrientList) {
-//            nutrientRepository.insertNutrientData(nutrient);
-//        }
+        for (Nutrient nutrient:nutrientList) {
+            nutrientRepository.insertNutrientData(nutrient);
+        }
         logger.info("Inserted nutrient data into the nutrient table.");
 
 //        logger.info("Inserting data into the product_nutrient table.");

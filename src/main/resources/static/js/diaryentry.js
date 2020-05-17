@@ -2,11 +2,13 @@
 
 $(document).ready(function() {
     var diaryTable;
-    var descriptionTable = getDescriptions();
-    autocomplete(document.getElementById("productDescription"), descriptionTable);
+    var descriptions = getDescriptions();
+    getHistoryItems();
+    autocomplete(document.getElementById("productDescription"), descriptions);
 
-    autocomplete(document.getElementById("productInput"), descriptionTable);
-    
+
+    autocomplete(document.getElementById("productInput"), descriptions);
+
     // make rows able for selecting
     $('#diaryTable tbody').on('click', 'tr', function (e) {
        if ( $(this).hasClass('row_selected')) {
@@ -50,7 +52,34 @@ $(document).ready(function() {
 
     diaryTable = $('#diaryTable').DataTable();
     diaryTable.columns( [0] ).visible( false );
+
     getTodaysDiaryEntries(diaryTable);
+
+    $("#diaryDate").change(function (event) {
+        event.preventDefault();
+        diaryTable.clear();
+        $.ajax({
+            url: '/diary-by-date',
+            dataType: 'json',
+            data: 'date=' +  $("#diaryDate").val(),
+            success: function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var obj= response[i];
+                    diaryTable.row.add([
+                        obj.id,
+                        obj.mealtime,
+                        obj.productDescription,
+                        obj.quantity + obj.unit,
+                        obj.time,
+                        obj.description
+                    ]).draw(false);
+
+                }
+            }
+        })
+
+
+    });
 
 
 
@@ -58,7 +87,6 @@ $(document).ready(function() {
         event.preventDefault();
 
 
-        var diaryEntry = getDescriptions();
         var data = {};
 
         data["productDescription"] = $("#productDescription").val();
@@ -69,18 +97,11 @@ $(document).ready(function() {
         data["time"] = $("#time").val();
         data["description"] = $("#description").val();
 
-        // console.log(diaryEntry.values)
-        // console.log(Object.values())
-        // console.log(getDescriptions().length)
-        // // checkForDescriptionInArray(diaryTable, data.productDescription);
-        // // if(checkForDescriptionInArray(diaryTable, data.productDescription)) {
-        // //     console.log("In Database")
-        // // } else {
-        // //     console.log("Not in database")
-        // // }
+        console.log(data.productDescription)
 
-
-
+        if (!descriptions.includes(data.productDescription)) {
+            document.getElementById("productDescription").setCustomValidity("The product you entered does not appear in our database");
+        } else {
             $.ajax({
                 url : "/diary-entry/addtodiary",
                 type: "POST",
@@ -98,6 +119,7 @@ $(document).ready(function() {
 
                 }
             });
+        }
 
     });
 
@@ -116,7 +138,7 @@ $(document).ready(function() {
         inputProductQuantity = inputProductQuantity.trim();
         inputProductQuantityUnit = inputProductQuantityUnit.trim();
 
-        if (!checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptionTable)) {
+        if (!checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptions)) {
             return false;
         }
 
@@ -156,26 +178,6 @@ $(document).ready(function() {
 
 });
 
-function checkForDescriptionInArray(diaryTable, description) {
-    console.log("starting")
-    var result = false;
-    var i;
-    // for (i = 0; i < diaryTable.length; i++) {
-    //     console.log("looping")
-    //     console.log(diaryTable[i]);
-    //     if (diaryTable[i] === description) {
-    //         result = true
-    //     }
-    // }
-    for (i = 0; diaryTable.length < 5; i++) {
-        console.log(i)
-    }
-    console.log(result);
-    return result;
-}
-
-
-
 // @Author Tom Wagenaar
 // Function that removes the current product and decreases the counter.
 function removeProductLine(btn) {
@@ -184,9 +186,9 @@ function removeProductLine(btn) {
     console.log("Removed a product input field in the recipe form.")
 }
 
-function checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptionTable) {
+function checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptions) {
 
-    if (!descriptionTable.includes(inputProduct)) {
+    if (!descriptions.includes(inputProduct)) {
         console.log("This product: " + inputProduct + " isn't in the database!");
         // document.getElementById("productInput").setCustomValidity("The product you entered does not appear in our database");
         alert("This product: " + inputProduct + " isn't in the database!");
@@ -233,7 +235,7 @@ $("#recipeSubmit").click(function (event) {
 
     var data = {};
 
-    data["userID"] = 2;
+    data["userID"] = 1;
     data["productDescriptionList"] = inputList;
     data["recipeGroup"] = $("#recipeGroupInput").val();
     data["quantity"] = inputQuantity;
@@ -254,7 +256,6 @@ $("#recipeSubmit").click(function (event) {
         }
     });
 
-    location.href = "diary-entry";
 
 
 });
@@ -274,6 +275,29 @@ function getMeasurementUnit(value) {
     })
 }
 
+function getHistoryItems() {
+    $.ajax({
+        url: '/occurences',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var history_data = '';
+            for (var i = 0; i < data.length; i++) {
+                obj = data[i];
+                history_data += '<tr>';
+                history_data += '<th scope="row"></th>';
+                history_data += '<td>'+obj.product_id+'</td>';
+                history_data+= '<td>'+obj.productDescription+'</td>';
+                history_data += '</tr>';
+
+            }
+            $("#historyTable").append(history_data);
+        }
+    });
+
+
+}
+
 function getDescriptions() {
 
     descriptions = [];
@@ -283,7 +307,7 @@ function getDescriptions() {
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
                 var obj = data[i];
-                descriptions.push(obj.descriptionDutch)
+                descriptions.push(obj)
             }
         }
     });

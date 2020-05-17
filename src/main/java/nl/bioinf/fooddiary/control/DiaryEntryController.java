@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.dao.ProductRepository;
-import nl.bioinf.fooddiary.model.product.ProductDescription;
 import nl.bioinf.fooddiary.model.product.ProductEntry;
+import nl.bioinf.fooddiary.model.product.ProductOccurrence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +33,7 @@ import java.util.*;
 
 @Controller
 public class DiaryEntryController {
-
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
-    private static final double illegalQuantity = 0;
 
     @Autowired
     private ProductRepository productRepository;
@@ -80,16 +78,19 @@ public class DiaryEntryController {
 
     @RequestMapping(value = "/product-description", method = RequestMethod.GET)
     public @ResponseBody
-    List<ProductDescription> getTime() {
+    List<String> getProductDescription(Locale locale) {
         logger.info("/product-description url has been called returning all productDescription in JSON FORMAT");
-        return productRepository.getAllProductDescriptions();
+        if (locale.getLanguage().equals("nl")) {
+            return productRepository.getAllDutchProductDescriptions();
+
+        } else return productRepository.getAllEnglishProductDescriptions();
     }
 
     @PostMapping(value = "/diary-entry/product-measurement", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public String getProductMeasurement(@RequestParam String productDescription) throws JsonProcessingException {
+    public String getProductMeasurement(@RequestParam String productDescription, Locale locale) throws JsonProcessingException {
         Map<String, Object> params = new HashMap<>();
-        params.put("productUnit", productRepository.getMeasurementUnitByDescription(productDescription));
+        params.put("productUnit", productRepository.getMeasurementUnitByDescription(productRepository.getProductId(locale.getLanguage(),productDescription)));
         return new ObjectMapper().writeValueAsString(params);
     }
 
@@ -105,15 +106,19 @@ public class DiaryEntryController {
     @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<Object> addProductToDiary(@RequestParam String productDescription, @RequestParam double quantity, @RequestParam String unit,
-                                          @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime) {
+                                          @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime, Locale locale) {
 
         try {
+            String language = locale.getLanguage();
             description = validateDescription(description);
+            System.out.println(quantity);
             ProductEntry productEntry = new ProductEntry(productDescription, checkQuantityForNull(quantity), unit, date, time, mealtime, description);
-            int productId = productRepository.getProductId(productEntry.getProductDescription());
+            int productId = productRepository.getProductId(language,productEntry.getProductDescription());
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            productRepository.insertProductIntoDiary(getUserID(authentication), productId, productEntry);
+            System.out.println(productEntry.getProductDescription());
+            productRepository.insertProductIntoDiary(language, getUserID(authentication), productId, productEntry);
             return ResponseEntity.ok(productEntry);
+
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quantity cannot be null");
         }
@@ -122,24 +127,34 @@ public class DiaryEntryController {
     @PostMapping(value = "/remove/diary-entry", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public void deleteFromDiary(@RequestParam int entry) {
-        System.out.println("Success");
+        System.out.println(entry);
         productRepository.removeDiaryEntryById(entry);
     }
 
     @GetMapping(value = "/product-entries-by-date", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProductEntry> getProductEntriesByDate() {
+    public List<ProductEntry> getProductEntriesByDate(Locale locale) {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return productRepository.getDiaryEntriesByDate(getUserID(authentication), date) ;
+        return productRepository.getDiaryEntriesByDate(locale.getLanguage(),getUserID(authentication), date) ;
     }
 
+    @GetMapping(value = "/diary-by-date")
+    @ResponseBody
+    public List<ProductEntry> getProductEntriesBySelectedDate(@RequestParam String date, Locale locale) {
+        System.out.println(date);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return productRepository.getDiaryEntriesByDate(locale.getLanguage(),getUserID(authentication), date);
+    }
 
-
-
+    @GetMapping(value = "/occurences")
+    @ResponseBody
+    public List<ProductOccurrence> getHistoryItems(Locale locale) {
+        return productRepository.getProductOccurrences(locale.getLanguage());
+    }
 
     private String validateDescription(String description) {
         return Objects.requireNonNullElse(description, " ");
@@ -151,13 +166,15 @@ public class DiaryEntryController {
 
     }
 
-    private double checkQuantityForNull(double quantity) {
+    public static double checkQuantityForNull(double quantity) {
         if (quantity == 0) {
             throw new IllegalArgumentException();
         } else {
             return quantity;
         }
+
     }
+
 
 
 }
