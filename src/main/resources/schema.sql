@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS project
     name           varchar(50)                        NOT NULL,
     project_leader varchar(50)                        NOT NULL,
     creation_date  date                               NOT NULL,
-    closing_date   date                               NOT NULL
+    closing_date   date                               NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_project
