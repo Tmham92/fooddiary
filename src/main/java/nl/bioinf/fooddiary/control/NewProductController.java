@@ -95,12 +95,8 @@ public class NewProductController {
             logger.info("Form could not be validated.");
             return "/newproductform";
         }
-        logger.info("Try to upload file to " + uploadDir);
-        System.out.println(file);
 
         newProductService.addNewProduct(newProduct);
-        uploadFile(file);
-
         return "redirect:/addednewproduct";
     }
 

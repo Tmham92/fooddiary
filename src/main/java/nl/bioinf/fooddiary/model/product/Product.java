@@ -11,6 +11,7 @@ import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
  * code and several objects. These objects come from several classes in the model.product package.
  */
 public class Product {
+
     // Instance variable declaration
     private int code;
     private ProductGroup productGroup;
@@ -38,6 +39,8 @@ public class Product {
         this.productInfoExtra = productInfoExtra;
         this.nutrientValues = nutrientValues;
     }
+
+
 
     // Getters
     public int getCode() {
