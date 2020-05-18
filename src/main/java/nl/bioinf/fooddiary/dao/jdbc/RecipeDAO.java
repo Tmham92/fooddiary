@@ -22,9 +22,9 @@ public class RecipeDAO implements RecipeRepository {
 
 
     @Override
-    public void insertNewRecipe(Recipe recipe, int productCode) {
-        String sqlQuery = "insert into recipe (user_id, product_code, recipe_group, quantity, verified) values (?, ?, ?, ?, ?)";
+    public void insertNewRecipe(Recipe recipe, int productCode, int index) {
+        String sqlQuery = "insert into recipe (user_id, product_code, recipe_group, quantity, unit, verified) values (?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sqlQuery, recipe.getUserID(), productCode, recipe.getRecipeGroup(), recipe.getQuantity(), recipe.getVerified());
+        jdbcTemplate.update(sqlQuery, recipe.getUserID(), productCode, recipe.getRecipeGroup(), recipe.getQuantity().get(index), recipe.getQuantityUnit().get(index), recipe.getVerified());
     }
 }

@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS project
     name           varchar(50)                        NOT NULL,
     project_leader varchar(50)                        NOT NULL,
     creation_date  date                               NOT NULL,
-    closing_date   date                               NOT NULL
+    closing_date   date                               NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_project
@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS recipe
     product_code int(25),
     recipe_group varchar(255)                       NOT NULL,
     quantity     int(5)                             NOT NULL,
+    unit         varchar(10)                        NOT NULL,
     verified     boolean                            NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES user (id),

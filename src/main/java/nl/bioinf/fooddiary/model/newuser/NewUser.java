@@ -1,7 +1,6 @@
 package nl.bioinf.fooddiary.model.newuser;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,9 +18,7 @@ public class NewUser {
     @NotNull
     @Size(min = 3)
     private String password;
-    @NotNull
     private String role;
-    private final int enabled = 1;
 
     public int getId() {
         return id;
@@ -52,12 +49,12 @@ public class NewUser {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(Role role) {
+        this.role = role.toString();
     }
 
     public int getEnabled() {
-        return enabled;
+        return 1;
     }
 
     @Override
@@ -66,8 +63,7 @@ public class NewUser {
                 "id=" + id +
                 ", user_code='" + user_code + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", enabled=" + enabled +
+                ", role=" + role +
                 '}';
     }
 }

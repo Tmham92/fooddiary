@@ -78,20 +78,25 @@ button:hover {
     cursor: pointer;
 }
 button.button {
-    background:none;
-    border-top:none;
-    outline: none;
-    border-right:none;
-    border-left:none;
-    border-bottom:#02274a 1px solid;
-    padding:0 0 3px 0;
+    width: 15%;
+    padding: 10px;
+    border:none;
     font-size:16px;
     cursor:pointer;
+    background: #ff6e19;
+    color: #fff;
 }
-button.button:hover {
-    border-bottom:#a99567 1px solid;
-    color:#a99567;
+
+#btn-remove {
+    width: 15%;
+    padding: 10px;
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+    background: #ff6e19;
+    color: #fff;
 }
+
 /*the container must be positioned relative:*/
 .autocomplete {
     position: relative;
@@ -165,4 +170,13 @@ input[type=submit] {
 
 td.sorting_1 {
     background-color: transparent !important;
+}
+
+#diaryDate {
+    width: 15%;
+    float:right;
+}
+
+.action {
+    padding-top: 20px;
 }
