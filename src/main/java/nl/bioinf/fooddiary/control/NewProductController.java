@@ -36,9 +36,9 @@ public class NewProductController {
 
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
     @Autowired
-    NewProductService newProductService;
+    private NewProductService newProductService;
     @Autowired
-    PictureStorageService pictureStorageService;
+    private PictureStorageService pictureStorageService;
     @Value("${file.uploadDir}")
     private String uploadDir;
 
@@ -86,16 +86,14 @@ public class NewProductController {
     @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
     public String injectNewProduct(@Valid @ModelAttribute("newproductform")
                                                NewProduct newProduct,
-                                   @RequestParam("newProductPicture") MultipartFile file,
-                                   BindingResult bindingResult) {
+                                   BindingResult bindingResult,
+                                   @RequestParam("newProductPicture") MultipartFile file) {
         logger.info("Submitting NewProduct from newProductForm to database." +
                 "Redirecting user to /addednewproduct url.");
-
         if (bindingResult.hasErrors()) {
             logger.info("Form could not be validated.");
             return "/newproductform";
         }
-
         newProductService.addNewProduct(newProduct);
         return "redirect:/addednewproduct";
     }
