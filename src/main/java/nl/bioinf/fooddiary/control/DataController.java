@@ -55,11 +55,11 @@ public class DataController {
         logger.info("/data url has been called, inserting data into the database.");
 
 
-        logger.info("Inserting product data into the product table.");
-        for (Product product:productList) {
-
-            productRepository.insertProductData(product);
-        }
+//        logger.info("Inserting product data into the product table.");
+//        for (Product product:productList) {
+//
+//            productRepository.insertProductData(product);
+//        }
         logger.info("Inserted product data into the product table");
 
         logger.info("Inserting nutrient data into the nutrient table.");
@@ -68,13 +68,13 @@ public class DataController {
         }
         logger.info("Inserted nutrient data into the nutrient table.");
 
-//        logger.info("Inserting data into the product_nutrient table.");
-//        for (List<ProductNutrient> productNutrientList:productNutrientData) {
-//            for (ProductNutrient productNutrient:productNutrientList) {
-//                productNutrientRepository.insertProductNutrientData(productNutrient);
-//            }
-//        }
-//        logger.info("Inserted data into the product_nutrient table.");
+        logger.info("Inserting data into the product_nutrient table.");
+        for (List<ProductNutrient> productNutrientList:productNutrientData) {
+            for (ProductNutrient productNutrient:productNutrientList) {
+                productNutrientRepository.insertProductNutrientData(productNutrient);
+            }
+        }
+        logger.info("Inserted data into the product_nutrient table.");
 
         return "/data";
     }

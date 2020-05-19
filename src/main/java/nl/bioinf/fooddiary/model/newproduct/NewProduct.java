@@ -15,15 +15,15 @@ public class NewProduct {
 
     private Integer id;
     private Integer user_id;
-    @NotEmpty(message = "{newproductform.date.notempty}") @NotNull
+    @NotEmpty(message = "{NotEmpty.newproductform.date}") @NotNull
     private String date;
-    @NotEmpty(message = "{newproductform.time_of_day.notempty}") @NotNull
+    @NotEmpty(message = "{NotEmpty.newproductform.time_of_day}") @NotNull
     private String time_of_day;
     @NotEmpty @NotNull
     private String mealtime;
-    @NotEmpty(message = "{newproductform.description.notempty}") @NotNull
+    @NotEmpty(message = "{NotEmpty.newproductform.description}") @NotNull
     private String description;
-    @NotEmpty(message = "{newproductform.quantity.notempty}") @NotNull
+    @NotEmpty(message = "{NotEmpty.newproductform.quantity}") @NotNull
     private String quantity;
 
     public Integer getId() {

@@ -23,13 +23,10 @@ import java.util.List;
  */
 @Repository
 public class NewProductDAO implements IProductDAO {
-    private JdbcTemplate jdbcTemplate;
     private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
 
     @Autowired
-    public NewProductDAO(){
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Method that creates a list from all new products in the database.
@@ -38,7 +35,8 @@ public class NewProductDAO implements IProductDAO {
     @Override
     public List<NewProduct> getAllNewProducts() {
         String sql = "select id, user_id, date, time_of_day, mealtime, description, quantity from unverified_product_entry";
-        return this.jdbcTemplate.query(sql, rowMapper);
+        List<NewProduct> newProductList = jdbcTemplate.query(sql, rowMapper);
+        return newProductList;
     }
 
 

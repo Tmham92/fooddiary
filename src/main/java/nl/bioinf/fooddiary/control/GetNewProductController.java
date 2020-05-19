@@ -66,19 +66,19 @@ public class GetNewProductController {
      * @param productID (int)
      * @return (String)
      */
-    @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST, params="action=delete")
+    @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST)
     private String deleteNewProduct(@RequestParam int productID) {
         logger.info("Newly added product removed from database. Product ID is " + productID);
         newProductService.deleteNewProduct(productID);
         return "redirect:/getnewproducts";
     }
 
-    @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST, params="action=verify")
-    private String verifyNewProduct(@RequestParam int productID) {
-        //ADD LOGGER
-        System.out.println("Passing " + productID + " to verify Entry.");
-        newProductService.getNewProductById(productID);
-        return "redirect:/verifyproducts";
-    }
+//    @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST)
+//    private String verifyNewProduct(@RequestParam int productID) {
+//        //ADD LOGGER
+//        System.out.println("Passing " + productID + " to verify Entry.");
+//        newProductService.getNewProductById(productID);
+//        return "redirect:/verifyproducts";
+//    }
 
 }

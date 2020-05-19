@@ -22,10 +22,13 @@ public final class ProductGroup {
      * Constructor that takes a ProductGroupBuilder object (from the inner class) as an argument.
      * @param builder, ProductGroupBuilder object.
      */
-    private ProductGroup(ProductGroupBuilder builder) {
+    public ProductGroup(ProductGroupBuilder builder) {
         this.groupCode = builder.groupCode;
         this.groupCodeDescription = builder.groupCodeDescription;
     }
+
+
+
 
     /**
      * Static method that serves an instance of the inner ProductGroupBuilder class, taking the required groupCode
