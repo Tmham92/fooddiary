@@ -14,14 +14,17 @@ import nl.bioinf.fooddiary.model.DataInputChecker;
  */
 public class ProductDescription {
     // Instance variable declaration
-    private final String descriptionDutch;
-    private final String descriptionEnglish;
+    private String descriptionDutch;
+    private String descriptionEnglish;
     private String synonymous;
 
-    private ProductDescription(ProductDescriptionBuilder builder) {
+    public ProductDescription(ProductDescriptionBuilder builder) {
         this.descriptionDutch = builder.descriptionDutch;
         this.descriptionEnglish = builder.descriptionEnglish;
         this.synonymous = builder.synonymous;
+    }
+
+    public ProductDescription() {
     }
 
     /**
@@ -44,6 +47,18 @@ public class ProductDescription {
         DataInputChecker.checkInputLength(descriptionEnglish, 255, "descriptionEnglish");
 
         return new ProductDescriptionBuilder(descriptionDutch, descriptionEnglish);
+    }
+
+    // Setters
+    public void setDescriptionDutch(String descriptionDutch) {
+        this.descriptionDutch = descriptionDutch;
+    }
+
+    public void setDescriptionEnglish(String descriptionEnglish) {
+        this.descriptionEnglish = descriptionEnglish;
+    }
+    public void setSynonymous(String synonymous) {
+        this.synonymous = synonymous;
     }
 
     // Getters
@@ -74,8 +89,8 @@ public class ProductDescription {
      */
     public static class ProductDescriptionBuilder {
         // Required parameters
-        private final String descriptionDutch;
-        private final String descriptionEnglish;
+        private String descriptionDutch;
+        private String descriptionEnglish;
 
         // Optional parameter
         private String synonymous  = "_UNKNOWN_SYNONYMOUS_";

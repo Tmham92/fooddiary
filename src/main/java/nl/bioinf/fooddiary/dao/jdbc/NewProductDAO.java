@@ -101,8 +101,11 @@ public class NewProductDAO implements IProductDAO {
      * @param newProductId (int)
      */
     public void deleteNewProduct(int newProductId) {
-        String sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        String sql = "DELETE FROM unverified_product_picture_location WHERE unverified_product_id = ?";
         jdbcTemplate.update(sql, newProductId);
+        sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        jdbcTemplate.update(sql, newProductId);
+
     }
 
     /**

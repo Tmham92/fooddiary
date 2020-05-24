@@ -10,6 +10,8 @@
     <link rel="stylesheet" th:href="@{/css/home.css}" href="../static/css/home.css">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
     <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/diary-entry.css}" href="../static/css/diary-entry.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 
@@ -22,86 +24,40 @@
 
 <div th:insert="template :: navbar"></div>
 
-
 <body>
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-        <form action="#" method="post">
-            <table id="producttable">
-                <thead>
-                <tr>
-                    <th> GroupCode</th>
-                    <th> Group Description </th>
-                </tr>
-                </thead>
-                <tbody class="productGroupInfo">
-                    <td><select class="1-27" name="ProductGroupCode"></select></td>
-                    <td><input type="text" class="form-control" id="ProductGroupCode" name="ProductGroupDescription" value="Aardappelen"></td>
-                </tbody>
-                <thead>
-                <tr>
-                    <th>Description Dutch</th>
-                    <th>Description English</th>
-                    <th>Synonymous</th>
-                </tr>
-                </thead>
-                <tbody class="productDescription">
-                    <td><input type="text" name="productDescriptionDutch"></td>
-                    <td><input type="text" name="productDescriptionEnglish"></td>
-                    <td><input type="text" name="synonymous" value="_UNKNOWN_SYNONYMOUS_"></td>
-                </tbody>
-                <thead>
-                <tr>
-                    <th>Enriched with</th>
-                    <th>Traces Of</th>
-                </tr>
-                </thead>
-                <tbody class="productInfoExtra">
-                    <td><input type="checkbox" id=enrichedUnknown name="productEnrichedWith" value="_UNKNOWN_INFO_" >
-                    <label for="enrichedUnknown">Unknown Info</label>
-                        <input type="checkbox" id="enrichedWithFE" name="productEnrichedWithFE" value="0">
-                        <label for="enrichedWithFE">FE</label>
-                    </td>
-                    <td><input type="checkbox" name="productTracesOf" id="tracedOfUnknown" value="_UNKNOWN_INFO_">
-                    <label for="tracedOfUnknown">Unknown Info</label>
-                    </td>
-                </tbody>
-                <thead>
-                <tr>
-                    <th>Measurement Unit</th>
-                    <th>Measurement Quantity</th>
-                    <th>Measurement Comment</th>
-                </tr>
-                </thead>
-                <tbody class="productMeasurement">
-                    <td><input type="text" id="measurementUnit" name="measurementUnit" value="g"></td>
-                    <td><input type="text" id="measurementQuantity" name="measurementQuantity" value="100"></td>
-                    <td><input type="text" id="measurementComment" name="measurementComment" value="per 100g."></td>
-                </tbody>
 
-            </table>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-6">
-                    <button type="submit" class="btn btn-default">Submit</button>
+
+
+<p>
+    <button class="button" data-modal="addproductdescription" th:text="#{description-form.addbutton}"></button>
+</p>
+
+<div id="addproductdescription" class="modal">
+    <div class="modal-content">
+        <div class="entry-form">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+
+
+            <form method="post" id="descriptionform" th:action="@{/verifyproducts/description}" th:object="${productdescription}">
+                <h2 th:text="#{descriptionForm.header}"></h2>
+                <p th:text="#{descriptionForm.text}"></p>
+
+                <div class="descriptionForm">
+                    <label th:text="#{descriptionForm.dutch}"></label>
+                    <input type="text" th:field="*{descriptionDutch}" />
+                    <label th:text="#{descriptionForm.english}"></label>
+                    <input type="text" th:field="*{descriptionEnglish}" />
+                    <label th:text="#{descriptionForm.synonyms}"></label>
+                    <input type="text" th:field="*{synonymous}" />
                 </div>
-            </div>
-        </form>
-
-
-
-    </div>
-    <div class="col-md-1">
+                <button id="productdescriptionsubmit" type="submit" th:text="#{discriptionForm.submit}"></button>
+            </form>
+        </div>
     </div>
 </div>
-</body>
 
-
-
-
-<body>
 <div th:insert="template :: footer"></div>
 </body>
 <script src="//code.jquery.com/jquery.min.js"></script>
-<script src="/js/formToJson.js"></script>
+<script src="/js/diaryentry.js>"></script>
 <script src="/js/unverifiedProductForm.js"></script>

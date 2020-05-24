@@ -24,33 +24,40 @@ import java.util.Locale;
 public class VerifyProductController {
 
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
-
+    ProductDescription productDescription = new ProductDescription();
+    ProductGroup productGroup = new ProductGroup();
+    ProductInfoExtra productInfoExtra = new ProductInfoExtra();
+    ProductMeasurement productMeasurement = new ProductMeasurement();
 
 
     @RequestMapping(value = {"/verifyproducts"}, method = RequestMethod.GET)
     public String verifyproductWithoutLocale(Locale locale, Model model) {
         logger.info("/verifyproduct url has been called, Open /verifyproducts in requested language.");
-//        ProductGroup productGroup = new ProductGroup();
-//        ProductDescription productDescription = new ProductDescription(ProductDescription.builder());
-//        ProductInfoExtra productInfoExtra = new ProductInfoExtra();
-//        ProductMeasurement productMeasurement = new ProductMeasurement();
-//        model.addAttribute("productGroup", productGroup);
-        model.addAttribute("page_name", "verifyproducts");
+
+        model.addAttribute("productgroup", productGroup);
+        model.addAttribute("productdescription", productDescription);
+        model.addAttribute("productmeasurement", productMeasurement);
+        model.addAttribute("productinfoextra", productInfoExtra);
         return "redirect:" + locale.getLanguage() + "/verifyproducts";
     }
 
     @RequestMapping(value = "/{locale}/verifyproducts", method = RequestMethod.GET)
     public String  contactWithLocale(Model model) {
         logger.info("/verifyproduct url has been called, Open /verifyproducts in requested language.");
-        model.addAttribute("page_name", "verifyproducts");
+        model.addAttribute("productGroup", productGroup);
+        model.addAttribute("productdescription", productDescription);
+        model.addAttribute("productmeasurement", productMeasurement);
+        model.addAttribute("productinfoextra", productInfoExtra);
         return "verifyproducts";
     }
 
-    @RequestMapping(value = "/verifyproducts", method = RequestMethod.POST)
-    @ResponseBody
-    public String submittingUnverifiedProductForm(@RequestBody String inputJson) throws JSONException {
-        JSONObject jsonObj = new JSONObject(inputJson);
-        System.out.println(jsonObj);
-        return "/verifyproducts";
+    @PostMapping("/verifyproducts/description")
+    public String injectNewProduct(@ModelAttribute ProductDescription productDescription, Model model) {
+        model.addAttribute("productGroup", productGroup);
+        model.addAttribute("productdescription", productDescription);
+        model.addAttribute("productmeasurement", productMeasurement);
+        model.addAttribute("productinfoextra", productInfoExtra);
+        System.out.println("THIS IS WORKING");
+        return "results";
     }
 }
