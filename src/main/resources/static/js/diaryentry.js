@@ -1,12 +1,32 @@
 //author: Hans Zijlstra
 
 $(document).ready(function() {
+    var userLang = navigator.language || navigator.userLanguage;
+    console.log(userLang)
     var diaryTable;
     var descriptions = getDescriptions();
     getHistoryItems();
+
+    //Select table rows for history items
+
+    $("#historyTable tbody").on('click', 'tr', function (e) {
+        var $row = jQuery(this).closest('tr');
+        var $columns = $row.find('td');
+
+        $columns.addClass('row-highlight');
+        var values = [];
+
+        jQuery.each($columns, function(i, item) {
+            values.push(item.innerHTML)
+        });
+        document.getElementById("historyMealtime").value = values[0]
+        document.getElementById("historyProductDescription").value = values[1]
+        document.getElementById("historyUnit").value = values[2]
+    });
+
+
+
     autocomplete(document.getElementById("productDescription"), descriptions);
-
-
     autocomplete(document.getElementById("productInput"), descriptions);
 
     // make rows able for selecting
@@ -21,6 +41,7 @@ $(document).ready(function() {
        }
 
     });
+
 
     $('#btn-remove').click(function(){
         var anSelected = fnGetSelected( diaryTable );
@@ -52,7 +73,6 @@ $(document).ready(function() {
 
     diaryTable = $('#diaryTable').DataTable();
     diaryTable.columns( [0] ).visible( false );
-
     getTodaysDiaryEntries(diaryTable);
 
     $("#diaryDate").change(function (event) {
@@ -81,13 +101,32 @@ $(document).ready(function() {
 
     });
 
+    function addToDiary(data) {
+        $.ajax({
+            url : "/diary-entry/addtodiary",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                diaryTable.row.add([
+                    response.id,
+                    response.mealtime,
+                    response.productDescription,
+                    response.quantity + response.unit,
+                    response.time,
+                    response.description
+                ]).draw( false );
 
+            }
+        });
+
+    }
 
     $("#product-entry").submit(function(event){
         event.preventDefault();
-
-
         var data = {};
+
 
         data["productDescription"] = $("#productDescription").val();
         data["mealtime"] = $("#mealtime").val();
@@ -97,31 +136,50 @@ $(document).ready(function() {
         data["time"] = $("#time").val();
         data["description"] = $("#description").val();
 
-        console.log(data.productDescription)
 
         if (!descriptions.includes(data.productDescription)) {
-            document.getElementById("productDescription").setCustomValidity("The product you entered does not appear in our database");
-        } else {
-            $.ajax({
-                url : "/diary-entry/addtodiary",
-                type: "POST",
-                dataType: 'json',
-                data: data,
-                success: function (response) {
-                    diaryTable.row.add([
-                        response.id,
-                        response.mealtime,
-                        response.productDescription,
-                        response.quantity + response.unit,
-                        response.time,
-                        response.description
-                    ]).draw( false );
+            var message = '';
+            if (userLang === "nl") {
+                message = "Het ingevoerde product komt niet voor in onze database"
+            } else {
+                message = "The product you entered does not appear in our database"
 
-                }
-            });
+            }
+            document.getElementById("productDescription").setCustomValidity(message);
+        } else {
+            addToDiary(data)
         }
 
     });
+
+    $("#history-entry").submit(function(event){
+        event.preventDefault();
+        var data = {};
+        data["productDescription"] = $("#historyProductDescription").val();
+        data["mealtime"] = $("#historyMealtime").val();
+        data["quantity"] = $("#historyQuantity").val();
+        data["unit"] = $("#historyUnit").val();
+        data["date"] = $("#historyDate").val();
+        data["time"] = $("#historyTime").val();
+        data["description"] = $("#historyDescription").val();
+
+        if (!descriptions.includes(data.productDescription)) {
+            var message = '';
+            if (userLang === "nl") {
+                message = "Het ingevoerde product komt niet voor in onze database"
+            } else {
+                message = "The product you entered does not appear in our database"
+
+            }
+            document.getElementById("historyProductDescription").setCustomValidity(message);
+        } else {
+            addToDiary(data)
+        }
+
+    });
+
+
+
 
     // @Author Tom Wagenaar
     // Variable used to make the input id's distinct from each other.
@@ -175,6 +233,9 @@ $(document).ready(function() {
         counter++;
         console.log("Added a new product input field in the recipe form.")
     });
+
+
+
 
 });
 
@@ -256,19 +317,21 @@ $("#recipeSubmit").click(function (event) {
         }
     });
 
+    alert("recipe added to database")
+
 
 
 });
 
 
-function getMeasurementUnit(value) {
+function getMeasurementUnit(productDescription, unitId) {
     $.ajax({
         type: 'POST',
         url: '/diary-entry/product-measurement',
         dataType: 'json',
-        data: 'productDescription=' + $('#productDescription').val(),
+        data: 'productDescription=' + $(productDescription).val(),
         success: function (response) {
-            $("#unit").val(response.productUnit)
+            unitId.val(response.productUnit)
 
         }
 
@@ -285,16 +348,15 @@ function getHistoryItems() {
             for (var i = 0; i < data.length; i++) {
                 obj = data[i];
                 history_data += '<tr>';
-                history_data += '<th scope="row"></th>';
-                history_data += '<td>'+obj.product_id+'</td>';
-                history_data+= '<td>'+obj.productDescription+'</td>';
+                history_data += '<td>'+obj.mealtime+'</td>';
+                history_data += '<td>'+obj.productDescription+'</td>';
+                history_data += '<td>'+obj.meassurementUnit+'</td>';
                 history_data += '</tr>';
 
             }
             $("#historyTable").append(history_data);
         }
     });
-
 
 }
 
@@ -372,7 +434,10 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
-                    getMeasurementUnit(inp.value)
+
+                    var unitId = $("#unit");
+                    getMeasurementUnit(inp, unitId);
+
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();

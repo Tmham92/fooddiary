@@ -1,5 +1,6 @@
 package nl.bioinf.fooddiary.model.product;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -14,14 +15,23 @@ public class ProductEntry {
     private int id;
     private int user_id;
     private int product_id;
+    @NotBlank(message = "product description is mandatory")
     private String productDescription;
+    @NotBlank(message = "Quantity is mandatory")
     private double quantity;
+    @NotBlank(message = "Unit is mandatory")
     private String unit;
+    @NotBlank(message = "Date is mandatory")
     private String date;
+    @NotBlank(message = "Time is mandatory")
     private String time;
+    @NotBlank(message = "mealtime is mandatory")
     private String mealtime;
     private String description;
 
+    public ProductEntry() {
+
+    }
     public ProductEntry(int id, int user_id, int product_id, String productDescription, double quantity, String unit, String date, String time, String mealtime, String description) {
         this.id = id;
         this.user_id = user_id;

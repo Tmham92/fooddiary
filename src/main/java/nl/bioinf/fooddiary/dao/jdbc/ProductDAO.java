@@ -2,7 +2,6 @@ package nl.bioinf.fooddiary.dao.jdbc;
 
 
 import nl.bioinf.fooddiary.dao.ProductRepository;
-import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
 import nl.bioinf.fooddiary.model.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -89,16 +88,15 @@ public class ProductDAO implements ProductRepository {
     public int insertProductIntoDiary(String lang,int userId, int productId, ProductEntry productEntry) {
         String mealtime = productEntry.getMealtime();
         if (lang.equals("nl")) {
-            System.out.println(Mealtimes.getMealtimes());
             for (Map.Entry<String, String> entry : Mealtimes.getMealtimes().entrySet()) {
                 if (entry.getValue().equals(productEntry.getMealtime())) {
                     mealtime = entry.getKey();
                 }
             }
         }
-            String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
-                    "(?,?,?,?,?,?)";
-            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), mealtime,
+            String sqlQuery = "insert into product_entry(user_id, product_id, quantity, date, time_of_day, mealtime, description) VALUES " +
+                    "(?,?,?,?,?,?,?)";
+            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getQuantity(), productEntry.getDate(), productEntry.getTime(), mealtime,
                     productEntry.getDescription());
     }
 
@@ -133,18 +131,21 @@ public class ProductDAO implements ProductRepository {
 
     @Override
     public List<ProductOccurrence> getProductOccurrences(String lang) {
-        String sqlQuery = "select product_id, description_dutch, count(product_id) as occurence from product_entry pe " +
+        String sqlQuery = "select product_id, pe.mealtime, description_dutch, description_english, measurement_unit, count(product_id) as occurence from product_entry pe " +
                 "join product p on pe.product_id = p.code  group by pe.product_id order by occurence DESC limit 10";
         return jdbcTemplate.query(sqlQuery, new RowMapper<ProductOccurrence>() {
             @Override
             public ProductOccurrence mapRow(ResultSet rs, int rowNum) throws SQLException {
+                String mealtime = "";
                 String productDescription = "";
                 if(lang.equals("nl")) {
                     productDescription = rs.getString("description_dutch");
+                    mealtime = Mealtimes.getMealtimes().get(rs.getString("mealtime"));
                 } else {
                     productDescription = rs.getString("description_english");
+                    mealtime = rs.getString("mealtime");
                 }
-                return new ProductOccurrence(rs.getInt("product_id"), productDescription, rs.getInt("occurence"));
+                return new ProductOccurrence(rs.getInt("product_id"), productDescription, rs.getInt("occurence"), rs.getString("measurement_unit"), mealtime);
             }
         });
     }
