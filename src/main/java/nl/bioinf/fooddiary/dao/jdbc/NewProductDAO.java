@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.dao.jdbc;
 
-import nl.bioinf.fooddiary.dao.IProductDAO;
+import nl.bioinf.fooddiary.dao.NewProductRepository;
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,9 +22,9 @@ import java.util.List;
  * Class which funtions as a Data Accesss Object to inject or retrieve data from the database.
  */
 @Repository
-public class NewProductDAO implements IProductDAO {
-    private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
+public class NewProductDAO implements NewProductRepository {
 
+    private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

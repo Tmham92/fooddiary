@@ -8,7 +8,7 @@ import java.util.List;
 /**
     @Author Tobias Ham
  */
-public interface IProductDAO {
+public interface NewProductRepository {
     List<NewProduct> getAllNewProducts();
 
     NewProduct getNewProduct(Integer id, String description, Date date, Time time_of_day, String mealtime, double quantity);

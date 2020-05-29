@@ -26,38 +26,156 @@
 
 <body>
 
-
-
 <p>
-    <button class="button" data-modal="addproductdescription" th:text="#{description-form.addbutton}"></button>
+    <button class="button" data-modal="add-product-group" th:text="#{group-form.addbutton}"></button>
+    <button class="button" data-modal="add-product-description" th:text="#{description-form.addbutton}"></button>
+    <button class="button" data-modal="add-product-info-extra" th:text="#{info-extra-form.addbutton}"></button>
+    <button class="button" data-modal="add-product-measurement" th:text="#{measurement-form.addbutton}"></button>
+    <button class="button" data-modal="add-product-nutrient-values" th:text="#{nutrient-form.addbutton}"></button>
 </p>
 
-<div id="addproductdescription" class="modal">
+<div id="add-product-group" class="modal">
     <div class="modal-content">
         <div class="entry-form">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+            <a class="close">&times;</a>
+            <form action="#" method="post" id="verify-groupcode-form" th:action="@{/verifyproducts/productgroupcode}" th:object="${productgroup}">
+                <h2 th:text="#{group-form.header}"></h2>
+                <p th:text="#{group-form.text}"></p>
+                <div class="group-form">
+                    <label th:text="#{group-form.groupcode}"></label>
 
-
-            <form method="post" id="descriptionform" th:action="@{/verifyproducts/description}" th:object="${productdescription}">
-                <h2 th:text="#{descriptionForm.header}"></h2>
-                <p th:text="#{descriptionForm.text}"></p>
-
-                <div class="descriptionForm">
-                    <label th:text="#{descriptionForm.dutch}"></label>
-                    <input type="text" th:field="*{descriptionDutch}" />
-                    <label th:text="#{descriptionForm.english}"></label>
-                    <input type="text" th:field="*{descriptionEnglish}" />
-                    <label th:text="#{descriptionForm.synonyms}"></label>
-                    <input type="text" th:field="*{synonymous}" />
+                    <select th:field="*{groupCode}">
+                        <option th:each="i : ${#numbers.sequence(1, 27)}" th:value="${i}" th:text="#{${i}}">
+                        </option>
+                    </select>
                 </div>
-                <button id="productdescriptionsubmit" type="submit" th:text="#{discriptionForm.submit}"></button>
+                <div class="col">
+                    <button id="product-group-submit" type="submit" th:text="#{description-form.submit}"></button>
+                </div>
             </form>
         </div>
     </div>
+</div>
+
+<div id="add-product-description" class="modal">
+    <div class="modal-content">
+        <div class="entry-form">
+            <a class="close">&times;</a>
+            <form action="#" method="post" id="verify-description-form" th:action="@{/verifyproducts/productdescription}" th:object="${productdescription}">
+                <h2 th:text="#{description-form.header}"></h2>
+                <p th:text="#{description-form.text}"></p>
+                <div class="description-form">
+                    <label th:text="#{description-form.dutch}"></label>
+                    <input type="text" th:field="*{descriptionDutch}" />
+                    <label th:text="#{description-form.english}"></label>
+                    <input type="text" th:field="*{descriptionEnglish}" />
+                    <label th:text="#{description-form.synonyms}"></label>
+                    <input type="text" th:field="*{synonymous}" placeholder="_UNKNOWN_SYNONYMOUS_"/>
+                </div>
+                <button id="product-description-submit" data-modal="add-product-description" type="submit" th:text="#{description-form.submit}"></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="add-product-info-extra" class="modal">
+    <div class="modal-content">
+        <div class="entry-form">
+            <a class="close">&times;</a>
+            <form action="#" method="post" id="verify-extra-info-form" th:action="@{/verifyproducts/productextrainfo}" th:object="${productinfoextra}">
+                <h2 th:text="#{extra-info-form.header}"></h2>
+                <p th:text="#{extra-info-form.text}"></p>
+                <div class="description-form">
+                    <label th:text="#{extra-info-form.enriched-with}"></label>
+                    <input type="text" th:field="*{enrichedWith}" placeholder="_UNKNOWN_INFO_"/>
+                    <label th:text="#{extra-info-form.traces-of}"></label>
+                    <input type="text" th:field="*{tracesOf}" placeholder="_UNKNOWN_INFO_"/>
+                </div>
+                <button id="product-extra-info-submit" type="submit" th:text="#{description-form.submit}"></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="add-product-measurement" class="modal">
+    <div class="modal-content">
+        <div class="entry-form">
+            <a class="close">&times;</a>
+            <form action="#" method="post" id="verify-measurement-form" th:action="@{/verifyproducts/productmeasurement}" th:object="${productmeasurement}">
+                <h2 th:text="#{measurement-form.header}"></h2>
+                <p th:text="#{measurement-form.text}"></p>
+                <div class="description-form">
+                    <label th:text="#{measurement-form.measurement-unit}"></label>
+                    <input type="text" th:field="*{measurementUnit}" placeholder="g"/>
+                    <label th:text="#{measurement-form.measurement-quantity}"></label>
+                    <input type="text" th:field="*{measurementQuantity}" placeholder="100"/>
+                    <label th:text="#{measurement-form.measurement-comment}"></label>
+                    <input type="text" th:field="*{measurementComment}" placeholder="Per 100g."/>
+                </div>
+                <button id="product-measurement-submit" type="submit" th:text="#{description-form.submit}"></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="add-product-nutrient-values" class="modal">
+    <div class="modal-content">
+        <div class="entry-form">
+            <a class="close">&times;</a>
+
+                <h2 th:text="#{nutrient-form.header}"></h2>
+                <p th:text="#{nutrient-form.text}"></p>
+                <div class="nutrient-form">
+                    <form action="#" method="post" id="verify-nutrient-values-form" th:action="@{/verifyproducts/nutrientvalues}" th:object="${nutrientnameslist}">
+                   <table>
+                       <thead>
+                       <tr>
+                           <th>Nutrient ID</th>
+                           <th>Nutrient Name</th>
+                           <th>Nutrient Abbr.</th>
+                           <th>Enter Values:</th>
+                       </thead>
+                       <tbody>
+                       <tr th:each="nutrientName, iteration : ${nutrientnameslist}">
+                           <td><span th:text="${nutrientName.id}"></span></td>
+                           <td><span th:text="${nutrientName.name}"></span></td>
+                           <td><span th:text="${nutrientName.abbreviation}"></span></td>
+                           <td><input type="text" th:field="*{values}" placeholder="Per 100g"/></td>
+                       </tr>
+                       </tbody>
+                   </table>
+                    </form>
+                </div>
+                <div class="col">
+                    <button id="product-nutrient-submit" type="submit" th:text="#{description-form.submit}"></button>
+                </div>
+
+        </div>
+    </div>
+</div>
+<div>
+    <div>
+    <p><span th:utext="${verified.productGroup}"></span></p>
+    </div>
+    <div>
+        <p><span th:utext="${verified.productDescription}"></span></p>
+    </div>
+    <div>
+        <p><span th:text="${verified.productInfoExtra}"></span></p>
+    </div>
+    <div>
+        <p><span th:text="${verified.productMeasurement}"></span></p>
+    </div>
+</div>
+
+<div>
+    <form action="#" id="submit-product-to-backend" method="post" th:action="@{/verifyproducts/submitverifiedproduct}" th:object="${verified}">
+        <button type="submit">Submit product</button>
+    </form>
 </div>
 
 <div th:insert="template :: footer"></div>
 </body>
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="/js/diaryentry.js>"></script>
-<script src="/js/unverifiedProductForm.js"></script>
+<script src="/js/unverified-product-form.js"></script>

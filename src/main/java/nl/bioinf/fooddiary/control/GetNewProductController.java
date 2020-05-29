@@ -66,6 +66,7 @@ public class GetNewProductController {
      * @param productID (int)
      * @return (String)
      */
+
     @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST)
     private String deleteNewProduct(@RequestParam int productID) {
         logger.info("Newly added product removed from database. Product ID is " + productID);

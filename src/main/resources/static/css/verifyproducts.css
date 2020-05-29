@@ -18,6 +18,19 @@
     border: 1px solid #888;
     width: 60%; /* Could be more or less, depending on screen size */
 }
+
+.modal-nutrient {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 8888; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 150%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 @media (min-width: 1366px) {
     .modal-content {
         background-color: #fefefe;
@@ -62,4 +75,19 @@ button.button {
     cursor:pointer;
     background: #ff6e19;
     color: #fff;
+}
+.modal-header {
+    text-align: center;
+}
+
+.modal-content-nutrient { /* Width */
+    width: fit-content;
+    background-color: #fefefe;
+    margin: 10vh auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+.nutrient-form {
+    display: inline;
 }

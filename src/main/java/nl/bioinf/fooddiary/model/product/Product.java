@@ -12,6 +12,7 @@ import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
  */
 public class Product {
 
+
     // Instance variable declaration
     private int code;
     private ProductGroup productGroup;
@@ -40,7 +41,34 @@ public class Product {
         this.nutrientValues = nutrientValues;
     }
 
+    public Product() {
+    }
 
+    // Setters
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public void setProductGroup(ProductGroup productGroup) {
+        this.productGroup = productGroup;
+    }
+
+    public void setProductDescription(ProductDescription productDescription) {
+        this.productDescription = productDescription;
+    }
+
+    public void setProductMeasurement(ProductMeasurement productMeasurement) {
+        this.productMeasurement = productMeasurement;
+    }
+
+    public void setProductInfoExtra(ProductInfoExtra productInfoExtra) {
+        this.productInfoExtra = productInfoExtra;
+    }
+
+    public void setNutrientValues(NutrientValues nutrientValues) {
+        this.nutrientValues = nutrientValues;
+    }
 
     // Getters
     public int getCode() {

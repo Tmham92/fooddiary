@@ -35,6 +35,10 @@ public class NutrientValues {
      */
     public static NutrientValuesBuilder builder() {return new NutrientValuesBuilder(); }
 
+    public void setNutrients(List<NutrientValue> nutrients) {
+        this.nutrients = nutrients;
+    }
+
     // GETTER
     public List<NutrientValue> getNutrients() {
         return nutrients;
