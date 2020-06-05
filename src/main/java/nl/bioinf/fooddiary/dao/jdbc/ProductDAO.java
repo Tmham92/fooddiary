@@ -38,7 +38,7 @@ public class ProductDAO implements ProductRepository {
     }
 
     @Override
-    public int getProductId(String lang,String description) {
+    public int getProductId(String lang, String description) {
         String sqlQuery = "select code from product where description_english = ?";
         if (lang.equals("nl")) {
             sqlQuery = "select code from product where description_dutch = ?";
@@ -96,9 +96,9 @@ public class ProductDAO implements ProductRepository {
                 }
             }
         }
-            String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
-                    "(?,?,?,?,?,?)";
-            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), mealtime,
+            String sqlQuery = "insert into product_entry(user_id, product_id, quantity,date, time_of_day, mealtime, description) VALUES " +
+                    "(?,?,?,?,?,?,?)";
+            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getQuantity(),productEntry.getDate(), productEntry.getTime(), mealtime,
                     productEntry.getDescription());
     }
 
