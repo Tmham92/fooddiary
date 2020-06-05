@@ -180,3 +180,39 @@ td.sorting_1 {
 .action {
     padding-top: 20px;
 }
+
+/*@author Tom Wagenaar */
+#productInput {
+    display: inline-block;
+}
+
+#productQuantity {
+    display: inline-block;
+    width: 45%;
+}
+
+#productQuantityUnit {
+    display: inline-block;
+    width: 35%;
+}
+
+#recipeAddProduct {
+    display: inline-block;
+    width: 17%;
+}
+
+#recipeProductInput {
+    width: 83%;
+}
+
+#recipeRemoveButton {
+    width: 15%;
+    margin-left: 5px;
+}
+
+#errorMessageDiv {
+    color: red;
+    border-color: red;
+    padding: 10px;
+    font-size: 18px;
+}
