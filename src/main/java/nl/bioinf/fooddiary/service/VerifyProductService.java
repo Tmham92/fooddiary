@@ -2,16 +2,13 @@ package nl.bioinf.fooddiary.service;
 
 import nl.bioinf.fooddiary.dao.jdbc.VerifyProductDAO;
 import nl.bioinf.fooddiary.model.nutrient.NutrientNames;
+import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
+import nl.bioinf.fooddiary.model.nutrient.NutrientValues.NutrientValue;
 import nl.bioinf.fooddiary.model.product.Product;
-import nl.bioinf.fooddiary.model.product.ProductDescription;
-import nl.bioinf.fooddiary.model.product.ProductGroup;
-import nl.bioinf.fooddiary.model.product.ProductInfoExtra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class VerifyProductService implements IVerifyProductService {
@@ -27,7 +24,6 @@ public class VerifyProductService implements IVerifyProductService {
 
     @Override
     public String toString(Product product) {
-        System.out.println(product);
         return null;
     }
 
@@ -36,17 +32,22 @@ public class VerifyProductService implements IVerifyProductService {
         return verifyProductDAO.getNutrientNamesAndAbbr();
     }
 
-//    @Override
-//    public List<String> nutrientAbbreviations() {
-//        var nutrientAbbrList = verifyProductDAO.getAllNutrientAbbreviations();
-//        return nutrientAbbrList;
-//    }
-//
-//    @Override
-//    public List<String> nutrientNames() {
-//        var nutrientNameList = verifyProductDAO.getAllNutrientNames();
-//        return nutrientNameList;
-//    }
+    @Override
+    public NutrientValues createNutrientValueList(List<String> values) {
+        String[] valueList = values.toArray(new String[0]);
+        NutrientValues.NutrientValuesBuilder builder = new NutrientValues.NutrientValuesBuilder();
+        builder.nutrientValue(valueList);
+        NutrientValues nutrientValues = new NutrientValues(builder);
+        return nutrientValues;
+    }
 
+    public boolean checkProductCode(int code) {
+        return verifyProductDAO.checkProductCode(code);
+    }
 
+    @Override
+    public void submitProductToDatabase(Product product) {
+        verifyProductDAO.submitProductInfoToDatabase(product);
+        verifyProductDAO.submitProductNutrientsToDatabase(product);
+    }
 }

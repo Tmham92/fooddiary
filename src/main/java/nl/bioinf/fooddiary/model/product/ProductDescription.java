@@ -2,6 +2,8 @@ package nl.bioinf.fooddiary.model.product;
 
 import nl.bioinf.fooddiary.model.DataInputChecker;
 
+
+
 /**
  * @author Tom Wagenaar
  * @version 0.0.5
@@ -57,6 +59,7 @@ public class ProductDescription {
     public void setDescriptionEnglish(String descriptionEnglish) {
         this.descriptionEnglish = descriptionEnglish;
     }
+
     public void setSynonymous(String synonymous) {
         this.synonymous = synonymous;
     }

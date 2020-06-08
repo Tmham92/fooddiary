@@ -5,6 +5,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NutrientNamesRowMapper implements RowMapper<NutrientNames> {
 
@@ -14,6 +16,7 @@ public class NutrientNamesRowMapper implements RowMapper<NutrientNames> {
         nutrientNames.setId(row.getInt("id"));
         nutrientNames.setName(row.getString("name_english"));
         nutrientNames.setAbbreviation(row.getString("nutrient_code"));
+        nutrientNames.setMeasurementUnit(row.getString("measurement_unit"));
         return nutrientNames;
     }
 }

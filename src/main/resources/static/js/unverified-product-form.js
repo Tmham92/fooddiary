@@ -40,3 +40,47 @@ $(document).ready( function() {
         } );
     } );
 } );
+
+$(function() {
+    $("verify-description-form").validate({
+        rules: {
+            descriptiondutch: {
+                required: true,
+            },
+            descriptionenglish: {
+                required: true,
+            },
+            action: "required"
+        },
+        messages: {
+            descriptionenglish: {
+                required: "Please enter some data",
+            },
+            descriptiondutch: {
+                required: "Please enter some data"
+            },
+            action: "Please provide some data"
+        }
+    });
+
+    $("verify-measurement-form").validate({
+        rules: {
+            measurementunit: {
+                required: true,
+            },
+            measurementquantity: {
+                required: true,
+            },
+            action: "required"
+        },
+        messages: {
+            measurementunit: {
+                required: "Please enter unit"
+            },
+            measurementquantity: {
+                required: "Please enter quantity"
+            },
+            action: "Please fill in empty fields"
+        }
+    });
+});

@@ -11,7 +11,7 @@ import java.util.List;
  *
  * Class that is used to store data that the user provides in the recipe form, this object is then used to insert
  * data into the recipe table from the fooddiary database. This class doesn't have any setters and the variables are
- * final to ensure immutability, except verified. In this class there is an inner builder class, this class implemented
+ * final to ensure immutability, except creatingProduct. In this class there is an inner builder class, this class implemented
  * in such a way to give the class atomic construction, easy combination of parameters and very readable client code. In
  * the builder method the userID and productDescriptionsList aren't checker, because they are foreign keys to other tables.
  */
@@ -42,7 +42,7 @@ public class Recipe {
 
     /**
      * Method that receives the required values for the instance variables, makes a new inner builder class and passing
-     * those values on to the class. Before that check the recipeGroup, quantity and verified input.
+     * those values on to the class. Before that check the recipeGroup, quantity and creatingProduct input.
      * @param userID (int)
      * @param productDescriptionsList (List<String>)
      * @param recipeGroup (String)
@@ -79,7 +79,7 @@ public class Recipe {
 
     public int getVerified() { return verified; }
 
-    // Setter for verified.
+    // Setter for creatingProduct.
     public void setVerified(int verified) { this.verified = verified; }
 
     @Override
@@ -90,7 +90,7 @@ public class Recipe {
                 ", recipeGroup='" + recipeGroup + '\'' +
                 ", quantity=" + quantity +
                 ", unit=" + quantityUnit +
-                ", verified=" + verified +
+                ", creatingProduct=" + verified +
                 '}';
     }
 

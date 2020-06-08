@@ -1,3 +1,4 @@
+/* Author Tobias Ham*/
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -19,25 +20,13 @@
     width: 60%; /* Could be more or less, depending on screen size */
 }
 
-.modal-nutrient {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 8888; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 150%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
 @media (min-width: 1366px) {
     .modal-content {
         background-color: #fefefe;
         margin: 10vh auto; /* 15% from the top and centered */
         padding: 20px;
         border: 1px solid #888;
-        width: 30%; /* Could be more or less, depending on screen size */
+        width: 50%; /* Could be more or less, depending on screen size */
     }
 }
 
@@ -65,6 +54,7 @@ button.button {
     cursor:pointer;
     background: #ff6e19;
     color: #fff;
+    border-radius: 8px;
 }
 
 #btn-remove {
@@ -80,14 +70,76 @@ button.button {
     text-align: center;
 }
 
-.modal-content-nutrient { /* Width */
-    width: fit-content;
-    background-color: #fefefe;
-    margin: 10vh auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-}
-
 .nutrient-form {
     display: inline;
+}
+.group-form {
+    padding-bottom: 10px;
+}
+
+.right {
+    text-align: right;
+    margin-right: 1em;
+}
+
+.nutrient-value-table {
+    text-align: center;
+}
+
+.nutrient-value-table td {
+    width: 150px;
+}
+
+.banner-image{
+    background-image: url('../images/food.png');
+    height: 40%;
+
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    margin: 0;
+}
+
+.banner-text {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.action {
+    text-align: center;
+}
+
+
+#overview {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#overview td, #overview th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#overview tr:nth-child(even){background-color: #f2f2f2;}
+
+#overview tr:hover {background-color: #ddd;}
+
+#overview th {
+    width: auto;
+    border-radius: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: rgb(255, 110, 25);
+    color: white;
+}
+
+.padding-top {
+    padding-top: 25px;
 }

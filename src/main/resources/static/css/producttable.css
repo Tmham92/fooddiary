@@ -1,20 +1,20 @@
 /* Author Tobias Ham*/
-#producttable {
+#overview {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#producttable td, #producttable th {
+#overview td, #overview th {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-#producttable tr:nth-child(even){background-color: #f2f2f2;}
+#overview tr:nth-child(even){background-color: #f2f2f2;}
 
-#producttable tr:hover {background-color: #ddd;}
+#overview tr:hover {background-color: #ddd;}
 
-#producttable th {
+#overview th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;

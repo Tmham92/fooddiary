@@ -2,6 +2,10 @@ package nl.bioinf.fooddiary.model.product;
 
 import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * @author Tom Wagenaar
  * @version 0.0.1

@@ -1,16 +1,20 @@
 package nl.bioinf.fooddiary.dao.jdbc;
 
-import ch.qos.logback.classic.pattern.Abbreviator;
 import nl.bioinf.fooddiary.dao.VerifyProductRepository;
-import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import nl.bioinf.fooddiary.model.nutrient.NutrientNames;
+import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
+import nl.bioinf.fooddiary.model.product.Product;
+import org.assertj.core.internal.bytebuddy.pool.TypePool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class VerifyProductDAO implements VerifyProductRepository {
@@ -20,12 +24,6 @@ public class VerifyProductDAO implements VerifyProductRepository {
 
     private NutrientNamesRowMapper rowMapper = new NutrientNamesRowMapper();
 
-    public int getAllProductGroupNumbers() {
-        String sql = "select count(distinct group_code) from product;";
-        int amountOfGroupNumbers = jdbcTemplate.queryForObject(sql, Integer.class);
-        return amountOfGroupNumbers;
-    }
-
     public String getGroupCodeDescription(int groupcode) {
         String sql = "SELECT DISTINCT group_code_description FROM product WHERE group_code = ?";
         String groupCodeDescription = (String) jdbcTemplate.queryForObject(sql, String.class, groupcode);
@@ -34,35 +32,64 @@ public class VerifyProductDAO implements VerifyProductRepository {
 
     @Override
     public List<NutrientNames> getNutrientNamesAndAbbr() {
-        String sql = "SELECT distinct id, nutrient_code, name_english FROM nutrient";
+        String sql = "SELECT distinct id, nutrient_code, name_english, measurement_unit FROM nutrient";
         List<NutrientNames> nutrientNamesList = jdbcTemplate.query(sql, rowMapper);
+        for (NutrientNames nutrientNames : nutrientNamesList) {
+            nutrientNames.setValues("_NO_VALUE_");
+        }
         return nutrientNamesList;
     }
 
+    @Override
+    public boolean checkProductCode(int code) {
+        try {
+            String sql = "SELECT id FROM product WHERE code = ?";
+            jdbcTemplate.queryForObject(sql, Long.class, code);
+            return false;
+        } catch (EmptyResultDataAccessException e) {
+            return true;
+        }
+    }
 
-//    @Override
-//    public List<String> getAllNutrientAbbreviations() {
-//        List<String> nutrientValueAbbr = new ArrayList<>();
-//        String sql = "SELECT DISTINCT nutrient_code FROM product_nutrient";
-//        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(sql);
-//        for (int i = 0; i < rows.size(); i++) {
-//            String nutrientAbbr = String.valueOf(rows.get(i));
-//            nutrientAbbr = nutrientAbbr.substring(15, nutrientAbbr.length() - 1);
-//            nutrientValueAbbr.add(nutrientAbbr);
-//        }
-//        return nutrientValueAbbr;
-//    }
-//
-//    @Override
-//    public List<String> getAllNutrientNames() {
-//        List<String> nutrientValueNames = new ArrayList<>();
-//        String sql = "SELECT DISTINCT name_english FROM nutrient";
-//        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-//        for (int i = 0;  i < rows.size(); i++) {
-//            String nutrientName = String.valueOf(rows.get(i));
-//            nutrientName = nutrientName.substring(14, nutrientName.length() -1);
-//            nutrientValueNames.add(nutrientName);
-//        }
-//        return nutrientValueNames;
-//    }
+    @Override
+    public void submitProductInfoToDatabase(Product product) {
+        String sql = "INSERT INTO product (code, group_code, group_code_description, description_dutch, description_english, "
+                + " synonymous, measurement_unit, measurement_quantity, measurement_comment, enriched_with, traces_of) values " +
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, product.getCode(), product.getProductGroup().getGroupCode(), product.getProductGroup().getGroupCodeDescription(),
+                product.getProductDescription().getDescriptionDutch(), product.getProductDescription().getDescriptionEnglish(),
+                product.getProductDescription().getSynonymous(), product.getProductMeasurement().getMeasurementUnit(),
+                product.getProductMeasurement().getMeasurementQuantity(), product.getProductMeasurement().getMeasurementComment(),
+                product.getProductInfoExtra().getEnrichedWith(), product.getProductInfoExtra().getTracesOf());
+    }
+
+    @Override
+    public List<String> getNutrientCodes() {
+        List<String> nutrientCodes;
+        String sql = "select distinct nutrient_code from product_nutrient ORDER BY id ASC";
+        nutrientCodes = jdbcTemplate.queryForList(sql, String.class);
+        return nutrientCodes;
+    }
+
+    @Override
+    public void submitProductNutrientsToDatabase(Product product) {
+        String sql = "INSERT INTO product_nutrient (product_code, nutrient_code, nutrient_value) values (?, ?, ?)";
+        int productCode = product.getCode();
+        List<String> nutrientCodes = getNutrientCodes();
+
+        int[] updateCounts = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setInt(1, productCode);
+                ps.setString(2, nutrientCodes.get(i));
+                ps.setString(3, product.getNutrientValues().getNutrients().get(i).getValue());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return product.getNutrientValues().getNutrients().size();
+            }
+        });
+    }
 }

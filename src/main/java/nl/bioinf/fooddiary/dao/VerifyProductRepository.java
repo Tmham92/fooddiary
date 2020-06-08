@@ -1,18 +1,21 @@
 package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.nutrient.NutrientNames;
+import nl.bioinf.fooddiary.model.product.Product;
 
 import java.util.List;
 
 public interface VerifyProductRepository {
 
-    int getAllProductGroupNumbers();
-
     String getGroupCodeDescription(int groupcode);
-//
-//     List<String> getAllNutrientNames();
-//
-//    List<String> getAllNutrientAbbreviations();
 
     List<NutrientNames> getNutrientNamesAndAbbr();
+
+    boolean checkProductCode(int code);
+
+    void submitProductInfoToDatabase(Product product);
+
+    List<String> getNutrientCodes();
+
+    void submitProductNutrientsToDatabase(Product product);
 }
