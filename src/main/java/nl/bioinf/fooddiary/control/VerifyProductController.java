@@ -164,7 +164,6 @@ public class VerifyProductController {
                                           @RequestParam("newProductID") Integer productID,
                                           BindingResult bindingResult) {
         int minimumNumber = 10000;
-
         if (bindingResult.hasErrors()) {
             logger.info("Validation Error in product form");
             return "redirect:/verifyproducts";
