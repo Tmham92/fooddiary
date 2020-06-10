@@ -99,10 +99,8 @@ public class Recipe {
 
     public int getVerified() { return verified; }
 
-    // Setter for verified.
     public void setUserID(int userID) { this.userID = userID; }
 
-    // Setter for creatingProduct.
     public void setVerified(int verified) { this.verified = verified; }
 
     @Override

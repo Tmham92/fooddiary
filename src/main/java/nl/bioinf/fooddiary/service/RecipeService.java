@@ -1,7 +1,6 @@
 package nl.bioinf.fooddiary.service;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
-import nl.bioinf.fooddiary.dao.IProductDAO;
 import nl.bioinf.fooddiary.dao.ProductRepository;
 import nl.bioinf.fooddiary.dao.RecipeRepository;
 import nl.bioinf.fooddiary.model.product.Product;
@@ -13,7 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+/**
+ * Service class that acts as a layer that separates the controller class and the connected DAO classes. This service
+ * class receives form data from the recipe controller, retrieves the current user and passes the data on to the
+ * corresponding repository. This service is also used to call the methods in the ProductDAO that retrieve the all the
+ * recipe groups in the recipe table.
+ */
 @Service
 public class RecipeService {
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
@@ -24,6 +28,7 @@ public class RecipeService {
     @Autowired
     private ProductRepository productRepository;
 
+    // TODO: Back-end check on if the recipe is already in the database.
     public void insertRecipe(Recipe recipe) {
         logger.info("Inserting a new recipe in the recipe table");
 
@@ -35,7 +40,7 @@ public class RecipeService {
             String productDescription = recipe.getProductDescriptionList().get(index);
 
             logger.info("Retrieving product that contains the description: " + productDescription);
-            Product product = productRepository.getSpecificProduct(productDescription);
+            Product product = productRepository.getSpecificProductByDescription(productDescription);
 
             logger.info("Inserting linking table recipe with a new product: " + productDescription);
             recipeRepository.insertNewRecipe(recipe, product.getCode(), index);
