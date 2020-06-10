@@ -1,6 +1,7 @@
 package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.recipe.Recipe;
+import nl.bioinf.fooddiary.model.recipe.SingleRecipeProduct;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface RecipeRepository {
     List<String> getRecipeGroup();
 
     int getCurrentUser();
+
+    List<SingleRecipeProduct> getAllRecipes();
 }

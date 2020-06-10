@@ -2,6 +2,7 @@ package nl.bioinf.fooddiary.dao.jdbc;
 
 import nl.bioinf.fooddiary.dao.RecipeRepository;
 import nl.bioinf.fooddiary.model.recipe.Recipe;
+import nl.bioinf.fooddiary.model.recipe.SingleRecipeProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
@@ -51,9 +52,24 @@ public class RecipeDAO implements RecipeRepository {
         Object[] param = new Object[] {
                 auth.getName()
         };
-        String sqlGetId = "SELECT id FROM user WHERE user_code = ?";
+        String sqlGetId = "select id from user where user_code = ?";
         int user_id = jdbcTemplate.queryForObject(sqlGetId, param, Integer.class);
         return user_id;
+    }
+
+    @Override
+    public List<SingleRecipeProduct> getAllRecipes() {
+        String sqlQuery = "select * from recipe";
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) ->
+                new SingleRecipeProduct(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("product_code"),
+                        rs.getString("recipe_group"),
+                        rs.getInt("quantity"),
+                        rs.getString("unit"),
+                        rs.getInt("verified")
+                ));
     }
 
 

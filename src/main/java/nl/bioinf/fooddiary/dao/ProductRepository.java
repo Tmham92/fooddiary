@@ -31,7 +31,9 @@ public interface ProductRepository {
 
     int removeDiaryEntryById(int diaryEntryId);
 
-    Product getSpecificProduct(String productDescription);
+    Product getSpecificProductByDescription(String productDescription);
+
+    Product getSpecificProductByProductCode(int productCode);
 
     List<ProductOccurrence> getProductOccurrences(String lang);
 
