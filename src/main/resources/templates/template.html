@@ -7,6 +7,16 @@
 </head>
 <body>
 
+<div th:fragment="banner">
+    <div class="banner-image">
+        <div class="banner-text">
+            <h1>Food Diary</h1>
+            <p><strong>Simple and Resourceful</strong></p>
+        </div>
+    </div>
+</div>
+
+
 <div th:fragment="navbar">
 <!--        home page navbar-->
         <nav class="navbar navbar-expand-sm navbar-dark">
@@ -51,16 +61,20 @@
                         <a class="nav-link" th:href="@{'/logout'}" th:text="#{logout}"></a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                           th:href="@{/(locale=nl)}">
-                            <img src="/images/nl-flag-icon.png">
-                        </a>
+                    <li  class="nav-item dropdown">
+                            <a th:if="${#locale.getLanguage().toString().equals('nl')}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                               th:href="@{/(locale=nl)}">
+                                <img src="/images/nl-flag-icon.png">
+                            </a>
+                            <a th:if="${#locale.getLanguage().toString().equals('en')}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                               th:href="@{/(locale=en)}">
+                                <img src="/images/en-flag-icon.png">
+                            </a>
+
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" th:href="@{/(locale=nl)}">
+                            <a th:if="${#locale.getLanguage().toString().equals('en')}" class="dropdown-item" th:href="@{/(locale=nl)}">
                                 <img src="/images/nl-flag-icon.png"></a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" th:href="@{/(locale=en)}">
+                            <a th th:if="${#locale.getLanguage().toString().equals('nl')}" class="dropdown-item" th:href="@{/(locale=en)}">
                                 <img src="/images/en-flag-icon.png"></a>
                         </div>
                     </li>

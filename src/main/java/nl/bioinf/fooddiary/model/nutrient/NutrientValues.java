@@ -1,9 +1,13 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
+import com.sun.xml.bind.v2.TODO;
 import nl.bioinf.fooddiary.model.DataInputChecker;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -40,16 +44,7 @@ public class NutrientValues {
         return nutrients;
     }
 
-    @Override
-    public String toString() {
-        // Use java 8 stream to get every single nutrient and parse it together for a print.
-        String nutrientValueStr = nutrients.stream()
-                .map(i -> i.value)
-                .collect(Collectors.joining(" & "));
-        return "NutrientValues{" +
-                "\n\tvalue=" + nutrientValueStr +
-                '}';
-    }
+
 
     /**
      * Inner builder class that serves the NutrientValues class.
@@ -88,30 +83,30 @@ public class NutrientValues {
      * value. This object is then returned to the inner builder class.
      */
     public static class NutrientValue {
-        private String value = "_NO_VALUE_";
+        private double value = -9999;
 
         public NutrientValue() {}
 
         // Checking the nutrient value and assigning a _NO_VALUE_ string whenever the nutrient is not known.
         public NutrientValue value(String value) {
             // Check on null input.
-            DataInputChecker.checkStringInputNull(value, "nutrientValue");
 
-            // Trim the value.
-            value = value.trim();
+
+            //TODO replacement of comma to point --Hans Zijlstra
 
             // Assign a _NO_VALUE_ whenever value is a "".
             if (value.equals("")) {
-                this.value = "_NO_VALUE_"; return this;
+                this.value = -9999; return this;
             } else {
-                this.value = value;
+                value = value.replace(",", ".");
+                this.value = Double.parseDouble(value);
             }
 
             return this;
         }
 
         // Getter for a single value.
-        public String getValue() {
+        public double getValue() {
             return value;
         }
 
