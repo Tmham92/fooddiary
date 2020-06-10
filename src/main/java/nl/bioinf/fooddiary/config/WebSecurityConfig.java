@@ -68,10 +68,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/js/**", "/contact",
-                        "/*/contact", "/**/verifyproducts/", "/verifyproducts", "/verifyproducts/**", "/results", "**/results").permitAll()
-                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser",
-                        "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct","/getnewproducts", "/**/getnewproducts").hasRole("USER")
+                .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/js/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
+                        ,"/getnewproducts", "/**/getnewproducts").permitAll()
+                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser", "/**/verifyproducts/", "/verifyproducts", "/verifyproducts/**").authenticated()
+                .antMatchers("*/diary-reports", "diary-reports/*", "/fetch-reports").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

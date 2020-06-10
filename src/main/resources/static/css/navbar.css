@@ -100,3 +100,6 @@
 .dropdown-menu{z-index: 2; position: relative}
 .dropdown-divider{z-index: 2; position: relative}
 
+li.nav-item.dropdown.show {
+    z-index: 1 !important;
+}
