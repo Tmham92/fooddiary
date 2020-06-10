@@ -101,8 +101,7 @@ public class Recipe {
 
     // Setter for verified.
     public void setUserID(int userID) { this.userID = userID; }
-
-    // Setter for creatingProduct.
+    
     public void setVerified(int verified) { this.verified = verified; }
 
     @Override
