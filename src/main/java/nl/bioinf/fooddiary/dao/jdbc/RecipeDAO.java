@@ -4,12 +4,18 @@ import nl.bioinf.fooddiary.dao.RecipeRepository;
 import nl.bioinf.fooddiary.model.recipe.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author Tom Wagenaar
  * date: 11-05-2020
  *
+ * Repository that is used to insert new recipe's in the recipe table, get all recipe groups from the recipe table and
+ * get current user from the database.
  */
 @Repository
 public class RecipeDAO implements RecipeRepository {
@@ -27,4 +33,28 @@ public class RecipeDAO implements RecipeRepository {
 
         jdbcTemplate.update(sqlQuery, recipe.getUserID(), productCode, recipe.getRecipeGroup(), recipe.getQuantity().get(index), recipe.getQuantityUnit().get(index), recipe.getVerified());
     }
+
+    @Override
+    public List<String> getRecipeGroup() {
+        String sqlQuery = "select recipe_group from recipe";
+        return jdbcTemplate.queryForList(sqlQuery, String.class);
+    }
+
+    /**
+     * Get the current user that is logged in the application and check if it is authenticated. Then get the id of the
+     * user and return it.
+     * @return Id of the current user.
+     */
+    @Override
+    public int getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object[] param = new Object[] {
+                auth.getName()
+        };
+        String sqlGetId = "SELECT id FROM user WHERE user_code = ?";
+        int user_id = jdbcTemplate.queryForObject(sqlGetId, param, Integer.class);
+        return user_id;
+    }
+
+
 }
