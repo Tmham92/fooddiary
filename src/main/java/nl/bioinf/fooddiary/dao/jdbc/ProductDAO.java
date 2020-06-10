@@ -116,9 +116,13 @@ public class ProductDAO implements ProductRepository {
                     description = rs.getString("description_english");
                     mealtime = rs.getString("mealtime");
                 }
-                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
-                        description, rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
-                        rs.getString("date"), rs.getString("time_of_day"), mealtime, rs.getString("description"));
+                return ProductEntry.builder().id(rs.getInt("id")).user_id(rs.getInt("user_id")).product_id(rs.getInt("product_id"))
+                        .productDescription(description).quantity(rs.getDouble("measurement_quantity"))
+                        .unit(rs.getString("measurement_unit")).date(rs.getString("date"))
+                        .time(rs.getString("time_of_day")).mealtime(mealtime).description( rs.getString("description")).build();
+//                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
+//                        description, rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
+//                        rs.getString("date"), rs.getString("time_of_day"), mealtime, rs.getString("description"));
             }
         });
     }

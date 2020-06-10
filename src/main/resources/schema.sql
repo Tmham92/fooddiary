@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS product_entry
     id          int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id     int(10),
     product_id  int(25),
-    quantity    varchar(255)                       NOT NULL,
+    quantity    double                      NOT NULL,
     date        date                              NOT NULL,
     time_of_day varchar(25)                        NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS product_nutrient
     id             int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     product_code   int(25),
     nutrient_code  varchar(25),
-    nutrient_value varchar(10)                            NOT NULL,
+    nutrient_value double(10)                            NOT NULL,
 
     FOREIGN KEY (product_code) REFERENCES product (code),
     FOREIGN KEY (nutrient_code) REFERENCES nutrient (nutrient_code)

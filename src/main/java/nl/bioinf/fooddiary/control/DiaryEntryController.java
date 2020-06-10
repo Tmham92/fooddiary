@@ -132,8 +132,8 @@ public class DiaryEntryController {
             return ResponseEntity.ok(productEntry);
 
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong");
-        }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Illegal quantity ");
+    }
 
     }
 
