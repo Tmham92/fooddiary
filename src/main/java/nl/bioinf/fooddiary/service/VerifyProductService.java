@@ -3,7 +3,6 @@ package nl.bioinf.fooddiary.service;
 import nl.bioinf.fooddiary.dao.jdbc.VerifyProductDAO;
 import nl.bioinf.fooddiary.model.nutrient.NutrientNames;
 import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
-import nl.bioinf.fooddiary.model.nutrient.NutrientValues.NutrientValue;
 import nl.bioinf.fooddiary.model.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,7 @@ import java.util.List;
 
 @Service
 public class VerifyProductService implements IVerifyProductService {
-
-    @Autowired
+        @Autowired
     private VerifyProductDAO verifyProductDAO;
 
     @Override
@@ -49,5 +47,15 @@ public class VerifyProductService implements IVerifyProductService {
     public void submitProductToDatabase(Product product) {
         verifyProductDAO.submitProductInfoToDatabase(product);
         verifyProductDAO.submitProductNutrientsToDatabase(product);
+    }
+
+    @Override
+    public int checkHighestProductCode() {
+        return verifyProductDAO.getHighestProductCode();
+    }
+
+    @Override
+    public void deleteVerifiedProductFromUnverified(Integer id) {
+        verifyProductDAO.deleteVerifiedProductFromUnverified(id);
     }
 }

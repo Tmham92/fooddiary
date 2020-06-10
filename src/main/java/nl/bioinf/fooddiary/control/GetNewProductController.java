@@ -3,14 +3,17 @@ package nl.bioinf.fooddiary.control;
 import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import nl.bioinf.fooddiary.service.NewProductService;
+import nl.bioinf.fooddiary.service.VerifyProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +31,9 @@ public class GetNewProductController {
 
     @Autowired
     NewProductService newProductService;
+    @Autowired
+    VerifyProductService verifyProductService;
+
     /**
      * Method that sends web request to retrieve all newly added unknown products
      * from database to the new product service when locale is unknown.
@@ -42,7 +48,6 @@ public class GetNewProductController {
 
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
-        model.addAttribute("page_name", "getnewproducts");
         return "redirect:" + locale.getLanguage() + "/getnewproducts";
     }
 
@@ -57,8 +62,7 @@ public class GetNewProductController {
         logger.info("{locale}/getnewproducts is being called. Open /getnewproducts in requested language");
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
-        model.addAttribute("page_name", "newproductform");
-        return "/getnewproducts";
+          return "/getnewproducts";
     }
 
     /**
@@ -67,19 +71,19 @@ public class GetNewProductController {
      * @return (String)
      */
 
-    @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     private String deleteNewProduct(@RequestParam int productID) {
         logger.info("Newly added product removed from database. Product ID is " + productID);
         newProductService.deleteNewProduct(productID);
         return "redirect:/getnewproducts";
     }
 
-//    @RequestMapping(value = "/getnewproducts", method = RequestMethod.POST)
-//    private String verifyNewProduct(@RequestParam int productID) {
-//        //ADD LOGGER
-//        System.out.println("Passing " + productID + " to verify Entry.");
-//        newProductService.getNewProductById(productID);
-//        return "redirect:/verifyproducts";
-//    }
-
+    @RequestMapping(value = "/verifyproduct", method = RequestMethod.POST)
+    private String verifyProduct(@RequestParam int productID, final RedirectAttributes redirectAttributes) {
+        logger.info("Directing to verify products page with productID.");
+        NewProduct newProduct = new NewProduct();
+        newProduct.setId(productID);
+        redirectAttributes.addFlashAttribute("newProduct", newProduct);
+        return "redirect:/verifyproducts";
+    }
 }

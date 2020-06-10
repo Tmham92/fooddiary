@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -91,5 +90,17 @@ public class VerifyProductDAO implements VerifyProductRepository {
                 return product.getNutrientValues().getNutrients().size();
             }
         });
+    }
+
+    @Override
+    public int getHighestProductCode() {
+        String sql = "SELECT MAX(code) FROM product";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Override
+    public void deleteVerifiedProductFromUnverified(Integer id) {
+        String sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

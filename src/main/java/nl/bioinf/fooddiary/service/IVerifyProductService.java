@@ -20,4 +20,7 @@ public interface IVerifyProductService {
 
     void submitProductToDatabase(Product product);
 
+    int checkHighestProductCode();
+
+    void deleteVerifiedProductFromUnverified(Integer id);
 }

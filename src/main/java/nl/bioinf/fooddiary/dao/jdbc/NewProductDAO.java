@@ -64,7 +64,7 @@ public class NewProductDAO implements NewProductRepository {
         int user_id = getUserIdFromUserCode(newProduct);
         String sql = "INSERT INTO unverified_product_entry " +
                 "(user_id, date, time_of_day, mealtime, description, quantity) values (?,?,?,?,?,?);";
-        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTime_of_day(),
+        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTimeOfDay(),
                 newProduct.getMealtime(), newProduct.getDescription(), newProduct.getQuantity());
     }
 

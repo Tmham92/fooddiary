@@ -18,4 +18,8 @@ public interface VerifyProductRepository {
     List<String> getNutrientCodes();
 
     void submitProductNutrientsToDatabase(Product product);
+
+    int getHighestProductCode();
+
+    void deleteVerifiedProductFromUnverified(Integer id);
 }

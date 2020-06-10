@@ -78,15 +78,12 @@ public class NutrientValues {
                 nutrientValue.value(value);
                 this.nutrients.add(nutrientValue);
             }
-
             return this;
         }
-
         // Serves the NutrientValues class.
         public NutrientValues build() {
             return new NutrientValues(this);
         }
-
     }
 
     /**
