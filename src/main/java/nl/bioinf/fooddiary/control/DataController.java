@@ -78,6 +78,11 @@ public class DataController {
 
         return "/data";
     }
+    public void insertProductData() {
+        List<Product> productList = new ProductCsvParser().readCsvFile();
+        //Process productList by calling Service
+
+    }
 
 
 }

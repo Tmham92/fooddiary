@@ -21,6 +21,9 @@ public class ProductInfoExtra {
         this.tracesOf = builder.tracesOf;
     }
 
+    public ProductInfoExtra() {
+    }
+
     /**
      * Static method that serves an instance of the inner class ProductMeasurementBuilder, taking no required
      * parameters.
@@ -37,6 +40,16 @@ public class ProductInfoExtra {
 
     public String getTracesOf() {
         return tracesOf;
+    }
+
+    // Setters
+
+    public void setEnrichedWith(String enrichedWith) {
+        this.enrichedWith = enrichedWith;
+    }
+
+    public void setTracesOf(String tracesOf) {
+        this.tracesOf = tracesOf;
     }
 
     @Override

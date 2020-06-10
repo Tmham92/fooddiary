@@ -15,8 +15,8 @@ import nl.bioinf.fooddiary.model.DataInputChecker;
  */
 public final class ProductGroup {
     // Instance variable declaration
-    private final int groupCode;
-    private final String groupCodeDescription;
+    private int groupCode;
+    private String groupCodeDescription;
 
     /**
      * Constructor that takes a ProductGroupBuilder object (from the inner class) as an argument.
@@ -27,7 +27,8 @@ public final class ProductGroup {
         this.groupCodeDescription = builder.groupCodeDescription;
     }
 
-
+    public ProductGroup() {
+    }
 
 
     /**
@@ -53,6 +54,8 @@ public final class ProductGroup {
     }
 
 
+
+
     // Getter for the group code.
     public int getGroupCode() {
         return groupCode;
@@ -61,6 +64,16 @@ public final class ProductGroup {
     // Getter for the group code description
     public String getGroupCodeDescription() {
         return groupCodeDescription;
+    }
+
+    // Setters
+
+    public void setGroupCode(int groupCode) {
+        this.groupCode = groupCode;
+    }
+
+    public void setGroupCodeDescription(String groupCodeDescription) {
+        this.groupCodeDescription = groupCodeDescription;
     }
 
     @Override
@@ -76,8 +89,8 @@ public final class ProductGroup {
      */
     public static class ProductGroupBuilder {
         // Required parameters
-        private final int groupCode;
-        private final String groupCodeDescription;
+        private int groupCode;
+        private String groupCodeDescription;
 
         private ProductGroupBuilder(int groupCode, String groupCodeDescription) {
             this.groupCode = groupCode;

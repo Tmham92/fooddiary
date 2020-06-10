@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.dao.jdbc;
 
-import nl.bioinf.fooddiary.dao.IProductDAO;
+import nl.bioinf.fooddiary.dao.NewProductRepository;
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,9 +22,9 @@ import java.util.List;
  * Class which funtions as a Data Accesss Object to inject or retrieve data from the database.
  */
 @Repository
-public class NewProductDAO implements IProductDAO {
-    private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
+public class NewProductDAO implements NewProductRepository {
 
+    private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -64,7 +64,7 @@ public class NewProductDAO implements IProductDAO {
         int user_id = getUserIdFromUserCode(newProduct);
         String sql = "INSERT INTO unverified_product_entry " +
                 "(user_id, date, time_of_day, mealtime, description, quantity) values (?,?,?,?,?,?);";
-        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTime_of_day(),
+        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTimeOfDay(),
                 newProduct.getMealtime(), newProduct.getDescription(), newProduct.getQuantity());
     }
 
@@ -101,8 +101,11 @@ public class NewProductDAO implements IProductDAO {
      * @param newProductId (int)
      */
     public void deleteNewProduct(int newProductId) {
-        String sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        String sql = "DELETE FROM unverified_product_picture_location WHERE unverified_product_id = ?";
         jdbcTemplate.update(sql, newProductId);
+        sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        jdbcTemplate.update(sql, newProductId);
+
     }
 
     /**

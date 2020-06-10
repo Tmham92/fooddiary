@@ -97,6 +97,7 @@ button.button {
     color: #fff;
 }
 
+
 /*the container must be positioned relative:*/
 .autocomplete {
     position: relative;
@@ -160,7 +161,15 @@ input[type=submit] {
     width: 75%;
 }
 
+#historyQuantity {
+    width: 75%;
+}
+
 #unit {
+    width:23%
+}
+
+#historyUnit {
     width:23%
 }
 
@@ -216,3 +225,17 @@ td.sorting_1 {
     padding: 10px;
     font-size: 18px;
 }
+
+#historyTable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#historyTable td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+
