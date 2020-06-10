@@ -34,29 +34,24 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8" id="home-page-text">
-                <h2 th:text="#{welcome.message}"></h2>
-                <p>
-                    This application is used to collect digital food diaries to be used for academic research.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h2 th:text="#{welcome.header}"></h2>
+                <p th:text="#{welcome.msg}"></p>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <form th:action="@{'/home'}" method="post">
                             <div class="form-group">
-                                <label for="username">Username:</label>
+                                <label for="username" th:text="#{username.msg}">Username:</label>
                                 <input type="text"  class="form-control" id="username" name="username">
                             </div>
                             <div class="form-group">
-                                <label for="pwd">Password:</label>
+                                <label for="pwd" th:text="#{password.msg}">Password:</label>
                                 <input type="password" class="form-control" id="pwd" name="password">
                             </div>
                             <input class="login-submit" type="submit" value="Login">
                         </form>
-                        <p class="forgot-pwd"><a href=""><i class="fa fa-chevron-right"></i> Forgot password</a> </p>
+                        <p class="forgot-pwd"><a href="" th:text="#{forgotpas.msg}"><i class="fa fa-chevron-right"></i> Forgot password</a> </p>
                     </div>
                     <p th:if="${loginError}" class="error"> <span th:text="${loginError.error}"></span></p>
                 </div>
@@ -64,7 +59,6 @@
         </div>
     </div>
 </div>
-
 
 <div th:insert="template :: footer"></div>
 </body>
