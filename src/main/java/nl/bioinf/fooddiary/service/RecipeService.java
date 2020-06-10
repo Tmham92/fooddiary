@@ -1,7 +1,6 @@
 package nl.bioinf.fooddiary.service;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
-import nl.bioinf.fooddiary.dao.IProductDAO;
 import nl.bioinf.fooddiary.dao.ProductRepository;
 import nl.bioinf.fooddiary.dao.RecipeRepository;
 import nl.bioinf.fooddiary.model.product.Product;

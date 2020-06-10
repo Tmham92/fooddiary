@@ -28,29 +28,32 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <table id="producttable">
+            <table class="verifyproducttable" id="overview">
                 <thead>
                 <tr>
-                    <th> Product ID </th>
-                    <th> User ID </th>
-                    <th> Description </th>
-                    <th> Date </th>
-                    <th> Quantity </th>
-                    <th> Mealtime </th>
+                    <th th:text="#{productid}"></th>
+                    <th th:text="#{userid}"></th>
+                    <th th:text="#{description}"></th>
+                    <th th:text="#{date}"></th>
+                    <th th:text="#{quantity}"></th>
+                    <th th:text="#{mealtime}"></th>
+                    <th th:text="#{verify}"></th>
+                    <th th:text="#{delete}"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="newproduct : ${getNewProducts}">
                     <td><span th:text="${newproduct.id}"> Product ID </span></td>
-                    <td><span th:text="${newproduct.user_id}"> User ID </span></td>
+                    <td><span th:text="${newproduct.userId}"> User ID </span></td>
                     <td><span th:text="${newproduct.description}"> Description </span></td>
                     <td><span th:text="${newproduct.date}"> Date </span></td>
                     <td><span th:text="${newproduct.quantity}"> Quantity </span></td>
                     <td><span th:text="${newproduct.mealtime}"> Mealtime </span></td>
-<!--                    <td><form id="verifyProductButton" th:action="@{/verifyproducts/__${newproduct.id}__}">-->
-<!--                        <input type="submit" value="verifyProduct" onclick="return confirm('Verify This Product?')"/>-->
-<!--                    </form></td>-->
-                    <td><form id="deleteNewProduct" th:action="@{/getnewproducts}" method="post">
+                    <td><form id="verifyProductButton" th:action="@{/verifyproduct}" method="post">
+                        <input type="hidden" th:value="${newproduct.id}" name="productID"/>
+                        <input type="submit" th:text="#{verifyproduct}" onclick="return confirm('Verify This Product?')"/>
+                    </form></td>
+                    <td><form id="deleteNewProduct" th:action="@{/delete}" method="post">
                         <input type="hidden" th:value="${newproduct.id}" name="productID"/>
                         <input type="submit" action="delete" value="Delete" class="btn btn-danger"
                                onclick="return confirm('Are you sure you want to DELETE this entry?')"/>

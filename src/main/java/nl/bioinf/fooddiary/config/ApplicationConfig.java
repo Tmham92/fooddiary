@@ -28,6 +28,8 @@ import java.util.Locale;
  * For internationalization purposes the clients locale is used to resolve messages
  * This class further controlls login functionallity and database and page access.
  */
+
+
 @ComponentScan
 @Configuration
 public class ApplicationConfig implements WebMvcConfigurer {
@@ -63,7 +65,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
      * @return MessageSource
      */
 
-    @Bean
+    @Bean("messageSource")
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/i18n/messages");

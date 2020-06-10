@@ -2,6 +2,7 @@ package nl.bioinf.fooddiary.model.nutrient;
 
 import nl.bioinf.fooddiary.model.DataInputChecker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,12 +20,13 @@ import java.util.stream.Collectors;
 public class NutrientValues {
     private List<NutrientValue> nutrients;
 
+
     /**
      * Constructor where every NutrientValue in the nutrients list in the inner builder class is added to the nutrient
      * List in this class.
      * @param builder, NutrientValuesBuilder object.
      */
-    private NutrientValues(NutrientValuesBuilder builder) {
+    public NutrientValues(NutrientValuesBuilder builder) {
         this.nutrients = new ArrayList<>();
         this.nutrients.addAll(builder.nutrients);
     }
@@ -34,6 +36,10 @@ public class NutrientValues {
      * @return NutrientValuesBuilder object.
      */
     public static NutrientValuesBuilder builder() {return new NutrientValuesBuilder(); }
+
+    public void setNutrients(List<NutrientValue> nutrients) {
+        this.nutrients = nutrients;
+    }
 
     // GETTER
     public List<NutrientValue> getNutrients() {
@@ -58,7 +64,7 @@ public class NutrientValues {
         private List<NutrientValue> nutrients = new ArrayList<>();
 
         // Constructor with no required parameters.
-        private NutrientValuesBuilder() {}
+        public NutrientValuesBuilder() {}
 
         /**
          * Method that is called whenever a String array is passed on, every string in this array is then transformed
@@ -72,22 +78,19 @@ public class NutrientValues {
                 nutrientValue.value(value);
                 this.nutrients.add(nutrientValue);
             }
-
             return this;
         }
-
         // Serves the NutrientValues class.
         public NutrientValues build() {
             return new NutrientValues(this);
         }
-
     }
 
     /**
      * Class that receives and stores a single nutrient value and then assign it with _NO_VALUE_ or it holds it original
      * value. This object is then returned to the inner builder class.
      */
-    public static class NutrientValue {
+    public static class NutrientValue implements Serializable {
         private String value = "_NO_VALUE_";
 
         public NutrientValue() {}
@@ -108,6 +111,10 @@ public class NutrientValues {
             }
 
             return this;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
         }
 
         // Getter for a single value.
