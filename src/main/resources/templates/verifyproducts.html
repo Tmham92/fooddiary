@@ -156,8 +156,8 @@
             <table class="table w-auto verifyproducttable" id="verifyproducttable">
                 <thead>
                 <tr>
-                    <th>Product Attribute</th>
-                    <th>Values</th>
+                    <th th:text="#{attributes}"></th>
+                    <th th:text="#{values}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -180,7 +180,6 @@
                 </tbody>
             </table>
         </div>
-        <p th:text="${newProduct.id}"></p>
         <div>
             <form action="#" method="post" id="verify-productcode"  th:action="@{/verifyproducts/submitproduct}" th:object="${verifiedproduct}">
                 <input type="hidden" th:value="${newProduct.id}" name="newProductID">
