@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS product_entry
     id          int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id     int(10),
     product_id  int(25),
-    quantity    varchar(255)                       NOT NULL,
+    quantity    double                            NOT NULL,
     date        date                              NOT NULL,
     time_of_day varchar(25)                        NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
