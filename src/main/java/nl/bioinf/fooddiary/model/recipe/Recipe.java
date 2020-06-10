@@ -2,6 +2,11 @@ package nl.bioinf.fooddiary.model.recipe;
 
 import nl.bioinf.fooddiary.model.DataInputChecker;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
 /**
@@ -15,12 +20,29 @@ import java.util.List;
  * in such a way to give the class atomic construction, easy combination of parameters and very readable client code. In
  * the builder method the userID and productDescriptionsList aren't checker, because they are foreign keys to other tables.
  */
+
+
 public class Recipe {
+    @NotNull
+    @Min(0)
     private int userID;
+
+    @NotNull
     private List<String> productDescriptionList;
+
+    @NotNull
+    @Size(min = 3, max = 255)
     private String recipeGroup;
+
+    @NotNull
     private List<Integer> quantity;
+
+    @NotNull
     private List<String> quantityUnit;
+
+    @NotNull
+    @Min(0)
+    @Max(1)
     private int verified;
 
 
@@ -80,6 +102,8 @@ public class Recipe {
     public int getVerified() { return verified; }
 
     // Setter for verified.
+    public void setUserID(int userID) { this.userID = userID; }
+
     public void setVerified(int verified) { this.verified = verified; }
 
     @Override

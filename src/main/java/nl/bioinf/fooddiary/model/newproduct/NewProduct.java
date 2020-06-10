@@ -14,16 +14,16 @@ import javax.validation.constraints.NotNull;
 public class NewProduct {
 
     private Integer id;
-    private Integer user_id;
-    @NotEmpty(message = "{newproductform.date.notempty}") @NotNull
+    private Integer userId;
+    @NotEmpty(message = "{NotEmpty.newproductform.date}") @NotNull
     private String date;
-    @NotEmpty(message = "{newproductform.time_of_day.notempty}") @NotNull
-    private String time_of_day;
+    @NotEmpty(message = "{NotEmpty.newproductform.time_of_day}") @NotNull
+    private String timeOfDay;
     @NotEmpty @NotNull
     private String mealtime;
-    @NotEmpty(message = "{newproductform.description.notempty}") @NotNull
+    @NotEmpty(message = "{NotEmpty.newproductform.description}") @NotNull
     private String description;
-    @NotEmpty(message = "{newproductform.quantity.notempty}") @NotNull
+    @NotEmpty(message = "{NotEmpty.newproductform.quantity}") @NotNull
     private String quantity;
 
     public Integer getId() {
@@ -34,12 +34,12 @@ public class NewProduct {
         this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getDate() {
@@ -48,12 +48,12 @@ public class NewProduct {
 
     public void setDate(String date) { this.date = date; }
 
-    public String getTime_of_day() {
-        return time_of_day;
+    public String getTimeOfDay() {
+        return timeOfDay;
     }
 
-    public void setTime_of_day(String time_of_day) {
-        this.time_of_day = time_of_day;
+    public void setTimeOfDay(String timeOfDay) {
+        this.timeOfDay = timeOfDay;
     }
 
     public String getMealtime() {
@@ -79,7 +79,7 @@ public class NewProduct {
     public String toString() {
         String message = " Description: " + description + " Quantity: " +
                 quantity + " Date: " + date + " Time of Day: " +
-                time_of_day + " Mealtime: " + mealtime;
+                timeOfDay + " Mealtime: " + mealtime;
         return message;
     }
 

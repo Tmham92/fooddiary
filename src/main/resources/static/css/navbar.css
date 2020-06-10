@@ -85,6 +85,9 @@
     animation-name: fadeInUp;
     -webkit-animation-name: fadeInUp;
 }
+#collapsibleNavbar {
+    z-index: 2;
+}
 
 .nav-item::after{content:'';display:block;width:0px;height:2px;background:rgb(255, 110, 25);transition: 0.2s;}
 .nav-item:hover::after{width:100%;}

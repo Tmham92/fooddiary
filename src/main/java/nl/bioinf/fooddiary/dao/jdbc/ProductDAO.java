@@ -37,7 +37,7 @@ public class ProductDAO implements ProductRepository {
     }
 
     @Override
-    public int getProductId(String lang,String description) {
+    public int getProductId(String lang, String description) {
         String sqlQuery = "select code from product where description_english = ?";
         if (lang.equals("nl")) {
             sqlQuery = "select code from product where description_dutch = ?";

@@ -1,13 +1,10 @@
 package nl.bioinf.fooddiary.model.nutrient;
 
-import com.sun.xml.bind.v2.TODO;
 import nl.bioinf.fooddiary.model.DataInputChecker;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -23,12 +20,13 @@ import java.util.stream.Collectors;
 public class NutrientValues {
     private List<NutrientValue> nutrients;
 
+
     /**
      * Constructor where every NutrientValue in the nutrients list in the inner builder class is added to the nutrient
      * List in this class.
      * @param builder, NutrientValuesBuilder object.
      */
-    private NutrientValues(NutrientValuesBuilder builder) {
+    public NutrientValues(NutrientValuesBuilder builder) {
         this.nutrients = new ArrayList<>();
         this.nutrients.addAll(builder.nutrients);
     }
@@ -39,12 +37,25 @@ public class NutrientValues {
      */
     public static NutrientValuesBuilder builder() {return new NutrientValuesBuilder(); }
 
+    public void setNutrients(List<NutrientValue> nutrients) {
+        this.nutrients = nutrients;
+    }
+
     // GETTER
     public List<NutrientValue> getNutrients() {
         return nutrients;
     }
 
-
+    @Override
+    public String toString() {
+        // Use java 8 stream to get every single nutrient and parse it together for a print.
+        String nutrientValueStr = nutrients.stream()
+                .map(i -> i.value)
+                .collect(Collectors.joining(" & "));
+        return "NutrientValues{" +
+                "\n\tvalue=" + nutrientValueStr +
+                '}';
+    }
 
     /**
      * Inner builder class that serves the NutrientValues class.
@@ -53,7 +64,7 @@ public class NutrientValues {
         private List<NutrientValue> nutrients = new ArrayList<>();
 
         // Constructor with no required parameters.
-        private NutrientValuesBuilder() {}
+        public NutrientValuesBuilder() {}
 
         /**
          * Method that is called whenever a String array is passed on, every string in this array is then transformed
@@ -67,46 +78,47 @@ public class NutrientValues {
                 nutrientValue.value(value);
                 this.nutrients.add(nutrientValue);
             }
-
             return this;
         }
-
         // Serves the NutrientValues class.
         public NutrientValues build() {
             return new NutrientValues(this);
         }
-
     }
 
     /**
      * Class that receives and stores a single nutrient value and then assign it with _NO_VALUE_ or it holds it original
      * value. This object is then returned to the inner builder class.
      */
-    public static class NutrientValue {
-        private double value = -9999;
+    public static class NutrientValue implements Serializable {
+        private String value = "_NO_VALUE_";
 
         public NutrientValue() {}
 
         // Checking the nutrient value and assigning a _NO_VALUE_ string whenever the nutrient is not known.
         public NutrientValue value(String value) {
             // Check on null input.
+            DataInputChecker.checkStringInputNull(value, "nutrientValue");
 
-
-            //TODO replacement of comma to point --Hans Zijlstra
+            // Trim the value.
+            value = value.trim();
 
             // Assign a _NO_VALUE_ whenever value is a "".
             if (value.equals("")) {
-                this.value = -9999; return this;
+                this.value = "_NO_VALUE_"; return this;
             } else {
-                value = value.replace(",", ".");
-                this.value = Double.parseDouble(value);
+                this.value = value;
             }
 
             return this;
         }
 
+        public void setValue(String value) {
+            this.value = value;
+        }
+
         // Getter for a single value.
-        public double getValue() {
+        public String getValue() {
             return value;
         }
 
