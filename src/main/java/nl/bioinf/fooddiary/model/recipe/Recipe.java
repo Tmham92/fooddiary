@@ -79,9 +79,6 @@ public class Recipe {
 
     public int getVerified() { return verified; }
 
-    // Setter for verified.
-    public void setVerified(int verified) { this.verified = verified; }
-
     @Override
     public String toString() {
         return "Recipe{" +
