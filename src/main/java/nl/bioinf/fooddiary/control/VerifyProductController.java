@@ -56,14 +56,14 @@ public class VerifyProductController {
      * @param redirectAttributes (RedirectAttributes)
      * @return
      */
-    @RequestMapping(value = {"/verifyproducts"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/verify-products"}, method = RequestMethod.GET)
     public String verifyproductWithoutLocale(@ModelAttribute("newProduct") NewProduct newProduct,
                                              Locale locale,
                                              final RedirectAttributes redirectAttributes) {
         logger.info("/verifyproduct url has been called without locale, Open /verifyproducts in requested language.");
         redirectAttributes.addFlashAttribute("newProduct", newProduct);
 
-        return "redirect:" + locale.getLanguage() + "verify-products";
+        return "redirect:" + locale.getLanguage() + "/verify-products";
     }
 
     /**
@@ -73,7 +73,7 @@ public class VerifyProductController {
      * @param model (Model)
      * @return
      */
-    @RequestMapping(value = "/{locale}/verifyproducts", method = RequestMethod.GET)
+    @RequestMapping(value = "/{locale}/verify-products", method = RequestMethod.GET)
     public String  contactWithLocale(@ModelAttribute("newProduct") NewProduct newProduct, Model model) {
         logger.info("/verifyproduct url has been called, Open /verifyproducts in requested language.");
         model.addAttribute("verifiedproduct", verifiedProduct);
@@ -89,7 +89,7 @@ public class VerifyProductController {
         if (newProduct.getId() != null) {
             //verifyProductService.getProductPicture(newProduct);
         }
-        return "verify-products";
+        return "/verify-products";
     }
 
 
@@ -99,7 +99,7 @@ public class VerifyProductController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/verifyproducts/productgroupcode", method = RequestMethod.POST)
+    @RequestMapping(value = "/verify-products/productgroupcode", method = RequestMethod.POST)
     public String createVerifiedProductGroupCode(@ModelAttribute("productgroup") ProductGroup productGroup,
                                                  Model model) {
         logger.info("creating productgroupcode object and binding it to product object.");
@@ -109,7 +109,7 @@ public class VerifyProductController {
         model.addAttribute("creatingProduct", createdProduct);
         model.addAttribute("productgroupverified", productGroup);
         verifiedProduct.setProductGroup(productGroup);
-        return "redirect:/verifyproducts";
+        return "redirect:/verify-products";
     }
 
     /**
@@ -120,7 +120,7 @@ public class VerifyProductController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/verifyproducts/productdescription", method = RequestMethod.POST)
+    @RequestMapping(value = "/verify-products/productdescription", method = RequestMethod.POST)
     public String createVerifiedProductDescription(@Valid @ModelAttribute("productdescription") ProductDescription productDescription,
                                                    BindingResult bindingResult,
                                                    Model model) {
@@ -136,7 +136,7 @@ public class VerifyProductController {
         model.addAttribute("creatingProduct", createdProduct);
         verifiedProduct.setProductDescription(productDescription);
 
-        return "redirect:/verifyproducts";
+        return "redirect:/verify-products";
     }
 
     /**
@@ -146,7 +146,7 @@ public class VerifyProductController {
      * @param model
      * @return
      */
-    @RequestMapping(value= "/verifyproducts/productextrainfo", method = RequestMethod.POST)
+    @RequestMapping(value= "/verify-products/productextrainfo", method = RequestMethod.POST)
     public String createVerifiedProductExtraInfo(@ModelAttribute("productextrainfo") ProductInfoExtra productInfoExtra,
                                                  Model model) {
         logger.info("Creating productInfoExtra object and binding it to Product object.");
@@ -160,7 +160,7 @@ public class VerifyProductController {
         model.addAttribute("creatingProduct", createdProduct);
 
         verifiedProduct.setProductInfoExtra(productInfoExtra);
-        return "redirect:/verifyproducts";
+        return "redirect:/verify-products";
     }
 
     /**
@@ -170,7 +170,7 @@ public class VerifyProductController {
      * @param model
      * @return
      */
-    @RequestMapping(value= "/verifyproducts/productmeasurement", method = RequestMethod.POST)
+    @RequestMapping(value= "/verify-products/productmeasurement", method = RequestMethod.POST)
     public String createVerifiedProductMeasurement(@ModelAttribute("productmeasurement") ProductMeasurement productMeasurement,
                                                    Model model) {
         logger.info("Creating productMeasurement object and binding it to Product object.");
@@ -184,7 +184,7 @@ public class VerifyProductController {
         model.addAttribute("creatingProduct", createdProduct);
 
         verifiedProduct.setProductMeasurement(productMeasurement);
-        return "redirect:/verifyproducts";
+        return "redirect:/verify-products";
     }
 
     /**
@@ -194,17 +194,17 @@ public class VerifyProductController {
      * @param bindingResult
      * @return
      */
-    @RequestMapping(value="/verifyproducts/nutrientvalues", method = RequestMethod.POST)
+    @RequestMapping(value="/verify-products/nutrientvalues", method = RequestMethod.POST)
     public String createVerifiedNutrientList(@ModelAttribute("nutrientDTO") @Validated NutrientValuesDTO nutrientValuesDTO,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             logger.info("Validation Error in Nutrientvalues form.");
-            return "redirect:/verifyproducts";
+            return "redirect:/verify-products";
         }
         logger.info("Creating nutrient value list");
         nutrientValues = verifyProductService.createNutrientValueList(nutrientValuesDTO.getValues());
         verifiedProduct.setNutrientValues(nutrientValues);
-        return "redirect:/verifyproducts";
+        return "redirect:/verify-products";
     }
 
     /**
@@ -215,14 +215,14 @@ public class VerifyProductController {
      * @param bindingResult
      * @return
      */
-    @RequestMapping(value="/verifyproducts/submitproduct", method = RequestMethod.POST)
+    @RequestMapping(value="/verify-products/submitproduct", method = RequestMethod.POST)
     public String addProductCodeToProduct(@ModelAttribute("verifiedproduct") Product product,
                                           @RequestParam("newProductID") Integer productID,
                                           BindingResult bindingResult) {
         int minimumNumber = 10000;
         if (bindingResult.hasErrors()) {
             logger.info("Validation Error in product form");
-            return "redirect:/verifyproducts";
+            return "redirect:/verify-products";
         }
 
         logger.info("Set productcode to unique value above 6000");
@@ -239,7 +239,7 @@ public class VerifyProductController {
             verifyProductService.submitProductToDatabase(verifiedProduct);
             logger.info("Product successfully added to database");
         }
-        return "redirect:/getnewproducts";
+        return "redirect:/get-new-products";
     }
 
 }
