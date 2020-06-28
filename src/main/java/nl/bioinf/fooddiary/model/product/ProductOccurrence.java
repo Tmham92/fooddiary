@@ -2,9 +2,11 @@ package nl.bioinf.fooddiary.model.product;
 
 /**
  * @author Hans Zijlstra
+ * Class that keeps track how often a product occurres in a persons food diary
+ * It stores information about the product like measurement unit and at what time the product was taken
  */
 public class ProductOccurrence {
-    private int product_id;
+    private int productId;
     private String productDescription;
     private int occurence;
     private String meassurementUnit;
@@ -12,7 +14,7 @@ public class ProductOccurrence {
 
 
     public ProductOccurrence(int product_id, String productDescription, int occurence, String meassurementUnit, String mealtime) {
-        this.product_id = product_id;
+        this.productId = product_id;
         this.productDescription = productDescription;
         this.occurence = occurence;
         this.meassurementUnit = meassurementUnit;
@@ -27,8 +29,8 @@ public class ProductOccurrence {
         return occurence;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 
     public String getMeassurementUnit() {
