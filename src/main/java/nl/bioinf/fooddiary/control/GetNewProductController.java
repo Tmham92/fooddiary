@@ -40,14 +40,14 @@ public class GetNewProductController {
      * @param model (Model object)
      * @return (String)
      */
-    @RequestMapping(value= {"/getnewproducts"}, method = RequestMethod.GET)
+    @RequestMapping(value= {"/get-new-products"}, method = RequestMethod.GET)
     public String getAllNewProductsWithoutLocale(Locale locale, Model model) {
         logger.info("/getnewproducts is being called with unknown locale. Requesting Locale and open " +
                 "/getnewproducts in requested language");
 
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
-        return "redirect:" + locale.getLanguage() + "get-new-products";
+        return "redirect:" + locale.getLanguage() + "/get-new-products";
     }
 
     /**
@@ -56,12 +56,12 @@ public class GetNewProductController {
      * @param model (Model object)
      * @return (String)
      */
-    @RequestMapping(value = "/{locale}/getnewproducts")
+    @RequestMapping(value = "/{locale}/get-new-products")
     public String getAllNewProductsWithLocale(Model model) {
         logger.info("{locale}/getnewproducts is being called. Open /getnewproducts in requested language");
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
-          return "get-new-products";
+          return "/get-new-products";
     }
 
     /**
@@ -74,7 +74,7 @@ public class GetNewProductController {
     private String deleteNewProduct(@RequestParam int productID) {
         logger.info("Newly added product removed from database. Product ID is " + productID);
         newProductService.deleteNewProduct(productID);
-        return "redirect:/getnewproducts";
+        return "redirect:/get-new-products";
     }
 
     /**
@@ -84,12 +84,12 @@ public class GetNewProductController {
      * @param redirectAttributes (newProduct)
      * @return
      */
-    @RequestMapping(value = "/verifyproduct", method = RequestMethod.POST)
+    @RequestMapping(value = "/verify-products", method = RequestMethod.POST)
     private String verifyProduct(@RequestParam int productID, final RedirectAttributes redirectAttributes) {
         logger.info("Directing to verify products page with productID.");
         NewProduct newProduct = new NewProduct();
         newProduct.setId(productID);
         redirectAttributes.addFlashAttribute("newProduct", newProduct);
-        return "redirect:/verifyproducts";
+        return "redirect:/verify-products";
     }
 }

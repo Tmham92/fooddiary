@@ -28,8 +28,6 @@ public class ProductNutrient {
     }
 
     public static ProductNutrientBuilder builder(int productCode, String nutrientCode, String nutrientValue) {
-
-
         return new ProductNutrientBuilder(productCode, nutrientCode, nutrientValue);
     }
 

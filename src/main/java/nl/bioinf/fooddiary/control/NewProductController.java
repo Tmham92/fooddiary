@@ -50,13 +50,13 @@ public class NewProductController {
      * @param model  (Model)
      * @return (String)
      */
-    @RequestMapping(value = {"/newproductform"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/new-product-form"}, method = RequestMethod.GET)
     public String newProductFormWithoutLocale(Locale locale, Model model) {
         logger.info("/newproductform url has been called without a known Locale." +
                 "Requesting Locale and opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "redirect:" + locale.getLanguage() + "new-product-form";
+        return "redirect:" + locale.getLanguage() + "/new-product-form";
     }
 
 
@@ -66,13 +66,13 @@ public class NewProductController {
      * @param model (Model)
      * @return (String)
      */
-    @RequestMapping(value = "/{locale}/newproductform")
+    @RequestMapping(value = "/{locale}/new-product-form")
     public String newProductFormWithLocale(Model model) {
         logger.info("/newproductform url has been called with a known Locale." +
                 "Opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "new-product-form";
+        return "/new-product-form";
     }
 
 
@@ -83,7 +83,7 @@ public class NewProductController {
      * @param bindingResult (BindingResult object)
      * @return (String)
      */
-    @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
+    @RequestMapping(value = "/added-new-product", method = RequestMethod.POST)
     public String injectNewProduct(@Valid @ModelAttribute("newproductform")
                                                NewProduct newProduct,
                                    BindingResult bindingResult,
@@ -92,7 +92,7 @@ public class NewProductController {
                 "Redirecting user to /addednewproduct url.");
         if (bindingResult.hasErrors()) {
             logger.info("Form could not be validated.");
-            return "new-product-form";
+            return "/new-product-form";
         }
 
 
@@ -101,7 +101,7 @@ public class NewProductController {
         //newProductService.addNewProductPictureLocation(uploadDir + "/" + fileName);
 
         newProductService.addNewProduct(newProduct);
-        return "redirect:/addednewproduct";
+        return "redirect:/added-new-product";
     }
 
     /**
@@ -110,7 +110,7 @@ public class NewProductController {
      * @param locale (Locale)
      * @return (String)
      */
-    @RequestMapping(value = {"/addednewproduct"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/added-newp-roduct"}, method = RequestMethod.GET)
     public String addedNewProductWithoutLocale(Locale locale) {
         logger.info("/addednewproduct url has been called without known Locale." +
                 "Requesting Locale and opening web page in right language.");
@@ -126,7 +126,7 @@ public class NewProductController {
     public String addedNewProductWithLocale() {
         logger.info("/addednewproduct url has been called with known Locale." +
                 "Opening web page in right language.");
-        return "added-new-product";
+        return "/added-new-product";
     }
 
     /**
@@ -135,7 +135,7 @@ public class NewProductController {
      * @return (NewProductPictureResponds)
      */
 
-    @PostMapping("/newproductform")
+    @PostMapping("/new-product-form")
     public NewProductPictureResponse uploadFile(@RequestParam("newProductPicture") MultipartFile file) {
         String fileName = pictureStorageService.storeFile(file);
         logger.info("Storing picture in upload Directory");

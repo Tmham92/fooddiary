@@ -34,13 +34,13 @@ public class AddUserController {
      * @param model New-user-form used for filling in account information for new accounts
      * @return returns the locale + add-user.html page
      */
-    @RequestMapping(value = {"/adduser"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/add-user"}, method = RequestMethod.GET)
     public String newUserFormWithoutLocale(Locale locale, Model model) {
-        logger.info("/adduser url has been called");
+        logger.info("/add-user url has been called");
         NewUser newUser = new NewUser();
         logger.info("/adding the new-user-form to the attributes");
         model.addAttribute("newuserform", newUser);
-        return "redirect:" + locale.getLanguage() + "add-user";
+        return "redirect:" + locale.getLanguage() + "/add-user";
     }
 
     /**
@@ -48,13 +48,13 @@ public class AddUserController {
      * @param model New-user-form used for filling in account information for new accounts
      * @return returns the add-user.html page
      */
-    @RequestMapping(value = "/{locale}/adduser", method = RequestMethod.GET)
+    @RequestMapping(value = "/{locale}/add-user", method = RequestMethod.GET)
     public String newUserFormWithLocale(Model model) {
-        logger.info("/adduser url has been called");
+        logger.info("/add-user url has been called");
         NewUser newUser = new NewUser();
         logger.info("/adding the new-user-form to the attributes");
         model.addAttribute("newuserform", newUser);
-        return "add-user";
+        return "/add-user";
     }
 
     /**
@@ -62,12 +62,12 @@ public class AddUserController {
      * @param newUser the user data from the new-user-form
      * @return redirects to /adduser to reload the page
      */
-    @RequestMapping(value = "/adduser", method = RequestMethod.POST)
+    @RequestMapping(value = "/add-user", method = RequestMethod.POST)
     public String injectNewUser(@ModelAttribute("newuserform")
                                    @Validated NewUser newUser, BindingResult bindingResult) {
         logger.info("submitted the new-user-form");
         newUserService.addNewUser(newUser);
         logger.info("redirect to /adduser url");
-        return "redirect:/adduser";
+        return "redirect:/add-user";
     }
 }
