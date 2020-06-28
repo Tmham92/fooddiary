@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Tom Wagenaar
+ * @author Tom Wagenaar, Hans Zijlstra
  *
  * This class represent the Data Access Object or DAO for the product table in the fooddairy database. The DAO allows
  * for isolation of the application layer from the database layer. Both layers can evolve separately without knowing
@@ -25,9 +25,7 @@ import java.util.Map;
 @Repository
 public class ProductDAO implements ProductRepository {
 
-
     private  JdbcTemplate jdbcTemplate;
-
 
     private RowMapper<Product> rowMapper = new ProductRowMapper();
 
@@ -82,8 +80,6 @@ public class ProductDAO implements ProductRepository {
      * @param productEntry productEntry object containing product data
      * @return List<ProductDescription></> list of productdescriptions
      */
-
-
     @Override
     public int insertProductIntoDiary(String lang,int userId, int productId, ProductEntry productEntry) {
         String mealtime = productEntry.getMealtime();
@@ -193,12 +189,6 @@ public class ProductDAO implements ProductRepository {
                 sqlQuery, new Object[] { productId }, String.class);
     }
 
-
-
-
-
-
-    // TODO: !Reminder! Denk even na over of de product_id in recipe niet veranderd moet worden naar product_code - Tom
     /**
      * @author Tom Wagenaar
      * Date: 13-05-2020
@@ -208,6 +198,7 @@ public class ProductDAO implements ProductRepository {
      * @param productDescription, string that is either the description in Dutch or English.
      * @return Product that correspond to the description.
      */
+
     @Override
     public Product getSpecificProductByDescription(String productDescription) {
         String sqlQuery = "select * from product where description_dutch = ?";
@@ -222,10 +213,11 @@ public class ProductDAO implements ProductRepository {
      * @param productCode (int)
      * @return Product
      */
+
     @Override
     public Product getSpecificProductByProductCode(int productCode) {
         String sqlQuery = "select * from product where code = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, rowMapper, productCode);
+        return jdbcTemplate.queryForObject(sqlQuery, new Object[]{productCode}, rowMapper);
     }
 
 

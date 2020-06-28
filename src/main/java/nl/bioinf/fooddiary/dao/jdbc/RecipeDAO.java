@@ -5,8 +5,6 @@ import nl.bioinf.fooddiary.model.recipe.Recipe;
 import nl.bioinf.fooddiary.model.recipe.SingleRecipeProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,7 +25,13 @@ public class RecipeDAO implements RecipeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
+    /**
+     * Insert a single product from a recipe into the database. Use the index to get the specific product out of the
+     * list in the recipe object.
+     * @param recipe object holding the information about a recipe
+     * @param productCode code for a specific product in the recipe
+     * @param index used to retrieve the correct data out of the recipe object
+     */
     @Override
     public void insertNewRecipe(Recipe recipe, int productCode, int index) {
         String sqlQuery = "insert into recipe (user_id, product_code, recipe_group, quantity, unit, verified) values (?, ?, ?, ?, ?, ?)";
@@ -39,22 +43,6 @@ public class RecipeDAO implements RecipeRepository {
     public List<String> getRecipeGroup() {
         String sqlQuery = "select recipe_group from recipe";
         return jdbcTemplate.queryForList(sqlQuery, String.class);
-    }
-
-    /**
-     * Get the current user that is logged in the application and check if it is authenticated. Then get the id of the
-     * user and return it.
-     * @return Id of the current user.
-     */
-    @Override
-    public int getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object[] param = new Object[] {
-                auth.getName()
-        };
-        String sqlGetId = "select id from user where user_code = ?";
-        int user_id = jdbcTemplate.queryForObject(sqlGetId, param, Integer.class);
-        return user_id;
     }
 
     @Override
@@ -71,6 +59,4 @@ public class RecipeDAO implements RecipeRepository {
                         rs.getInt("verified")
                 ));
     }
-
-
 }

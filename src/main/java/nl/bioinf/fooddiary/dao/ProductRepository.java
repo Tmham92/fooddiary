@@ -2,7 +2,6 @@ package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.product.*;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -36,5 +35,4 @@ public interface ProductRepository {
     Product getSpecificProductByProductCode(int productCode);
 
     List<ProductOccurrence> getProductOccurrences(String lang);
-
 }
