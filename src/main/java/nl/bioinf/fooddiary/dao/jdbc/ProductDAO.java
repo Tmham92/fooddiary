@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Tom Wagenaar
+ * @author Tom Wagenaar & Hans Zijlstra
  *
  * This class represent the Data Access Object or DAO for the product table in the fooddairy database. The DAO allows
  * for isolation of the application layer from the database layer. Both layers can evolve separately without knowing
@@ -36,6 +36,11 @@ public class ProductDAO implements ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Method that fetches all the product descriptions of the products in the database in  dutch
+     * @return List<ProductDescription></> list of productdescriptions
+     */
     @Override
     public int getProductId(String lang, String description) {
         String sqlQuery = "select code from product where description_english = ?";
@@ -46,6 +51,12 @@ public class ProductDAO implements ProductRepository {
                 sqlQuery, new Object[] { description }, Integer.class);
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Returns the users id by the user his username
+     * @param username
+     * @return int id
+     */
     @Override
     public int getUserIdByUsername(String username) {
         String sqlQuery = "select id from user where user_code = ? ";
@@ -82,8 +93,6 @@ public class ProductDAO implements ProductRepository {
      * @param productEntry productEntry object containing product data
      * @return List<ProductDescription></> list of productdescriptions
      */
-
-
     @Override
     public int insertProductIntoDiary(String lang,int userId, int productId, ProductEntry productEntry) {
         String mealtime = productEntry.getMealtime();
@@ -100,6 +109,14 @@ public class ProductDAO implements ProductRepository {
                     productEntry.getDescription());
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Retrieves all the registered products added to the users diary for a certain date
+     * @param lang the language in which the entries need to be returned in
+     * @param idUser The user his id
+     * @param currentDate which date to retrieve by
+     * @return List<ProductEntry> list of productentries
+     */
     @Override
     public List<ProductEntry> getDiaryEntriesByDate(String lang, int idUser, String currentDate) {
         String sqlQuery = "select pe.id, user_id, product_id, description_dutch, description_english, measurement_quantity, measurement_unit, date, time_of_day, mealtime, description " +
@@ -120,23 +137,32 @@ public class ProductDAO implements ProductRepository {
                         .productDescription(description).quantity(rs.getDouble("measurement_quantity"))
                         .unit(rs.getString("measurement_unit")).date(rs.getString("date"))
                         .time(rs.getString("time_of_day")).mealtime(mealtime).description( rs.getString("description")).build();
-//                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
-//                        description, rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
-//                        rs.getString("date"), rs.getString("time_of_day"), mealtime, rs.getString("description"));
             }
         });
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Removes a certain product from a user his diary by the product id
+     * @param diaryEntryId the id to retrieve by
+     * @return number of rows matched
+     */
     @Override
     public int removeDiaryEntryById(int diaryEntryId) {
         String sqlQuery = "delete from product_entry where id = ?";
         return jdbcTemplate.update(sqlQuery, diaryEntryId);
     }
 
+    /**
+     * @author Hans Zijlstra
+     * Returns The 15 most queried products
+     * @param lang language the result needs to be returned in
+     * @return List<ProductOccurrence> list of product occurrences
+     */
     @Override
     public List<ProductOccurrence> getProductOccurrences(String lang) {
         String sqlQuery = "select product_id, pe.mealtime, description_dutch, description_english, measurement_unit, count(product_id) as occurence from product_entry pe " +
-                "join product p on pe.product_id = p.code  group by pe.product_id order by occurence DESC limit 10";
+                "join product p on pe.product_id = p.code  group by pe.product_id order by occurence DESC limit 15";
         return jdbcTemplate.query(sqlQuery, new RowMapper<ProductOccurrence>() {
             @Override
             public ProductOccurrence mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -185,7 +211,6 @@ public class ProductDAO implements ProductRepository {
      * @param productId String description of food product
      * @return List<ProductDescription></> list of productdescriptions
      */
-
     @Override
     public String getMeasurementUnitByDescription(int productId) {
         String sqlQuery = "select measurement_unit from product where code = ?";
@@ -193,12 +218,6 @@ public class ProductDAO implements ProductRepository {
                 sqlQuery, new Object[] { productId }, String.class);
     }
 
-
-
-
-
-
-    // TODO: !Reminder! Denk even na over of de product_id in recipe niet veranderd moet worden naar product_code - Tom
     /**
      * @author Tom Wagenaar
      * Date: 13-05-2020

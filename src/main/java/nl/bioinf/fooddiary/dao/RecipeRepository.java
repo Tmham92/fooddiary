@@ -11,7 +11,6 @@ import java.util.List;
  * Interface that supports the RecipeDAO class, this interface is used to insert new recipes in the recipe table, get
  * all the recipe names from the recipe table and get the current user.
  *
- * TODO: refactor the getCurrentUser to a own Interface / Repository!
  */
 public interface RecipeRepository {
 

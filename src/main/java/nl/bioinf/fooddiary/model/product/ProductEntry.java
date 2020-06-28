@@ -1,7 +1,6 @@
 package nl.bioinf.fooddiary.model.product;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 /**
  * @author Hans Zijlstra
@@ -13,8 +12,8 @@ import java.util.Date;
 
 public class ProductEntry {
     private int id;
-    private int user_id;
-    private int product_id;
+    private int userId;
+    private int productId;
     @NotBlank(message = "product description is mandatory")
     private String productDescription;
     @NotBlank(message = "Quantity is mandatory")
@@ -26,8 +25,8 @@ public class ProductEntry {
     public String toString() {
         return "ProductEntry{" +
                 "id=" + id +
-                ", user_id=" + user_id +
-                ", product_id=" + product_id +
+                ", user_id=" + userId +
+                ", product_id=" + productId +
                 ", productDescription='" + productDescription + '\'' +
                 ", quantity=" + quantity +
                 ", unit='" + unit + '\'' +
@@ -46,12 +45,12 @@ public class ProductEntry {
         return id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 
     public String getProductDescription() {
@@ -92,8 +91,8 @@ public class ProductEntry {
 
     public ProductEntry(Builder builder) {
         this.id = builder.id;
-        this.user_id = builder.user_id;
-        this.product_id = builder.product_id;
+        this.userId = builder.userId;
+        this.productId = builder.product_id;
         this.productDescription = builder.productDescription;
         this.quantity = builder.quantity;
         this.unit = builder.unit;
@@ -103,9 +102,13 @@ public class ProductEntry {
         this.description = builder.description;
     }
 
+
+    /**
+     * Inner class that is used as a builder for the ProductEntry class.
+     */
     public static class Builder {
         private int id;
-        private int user_id;
+        private int userId;
         private int product_id;
         private String productDescription;
         private double quantity;
@@ -123,7 +126,7 @@ public class ProductEntry {
         }
 
         public Builder user_id(int user_id) {
-            this.user_id = user_id;
+            this.userId = user_id;
             return this;
         }
 
@@ -167,12 +170,12 @@ public class ProductEntry {
             return this;
         }
 
+        /* Static class that serves an instance of the inner class ProductEntry, taking the required
+        * @return ProductDescriptionBuilder object
+        */
         public ProductEntry build() {
             return new ProductEntry(this);
         }
-
-
-
 
     }
 
