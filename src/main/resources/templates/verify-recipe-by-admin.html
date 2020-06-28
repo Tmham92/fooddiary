@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>verify-recipe-by-admin</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Tom Wagenaar">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" th:href="@{/css/home.css}" href="../static/css/home.css">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+
+</head>
+<body>
+    <div class="banner-image">
+        <div class="banner-text">
+            <h1>Food Diary</h1>
+            <p><strong>Simple and Resourceful</strong></p>
+        </div>
+    </div>
+
+    <div th:insert="template :: navbar"></div>
+
+    <!-- Table that consists out of a recipe name and the containing products -->
+    <table id="verify-recipes-table" class="display">
+        <thead>
+            <tr>
+                <th th:text="#{table.verify-form.recipe-name}">Recipe name</th>
+                <th th:text="#{table.verify-form.products}">Products</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <div th:insert="template :: footer"></div>
+
+
+    <!-- Script tags that are needed to use JQuery, JQuery data tables, bootstrap and our own verify-recipe javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="/js/verify-recipe.js"></script>
+</body>
+</html>
