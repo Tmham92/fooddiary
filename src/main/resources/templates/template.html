@@ -40,7 +40,7 @@
                     </li>
 
                     <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <a class="nav-link" th:href="@{'/adduser'}" th:text="#{navbar.adduser}"></a>
+                        <a class="nav-link" th:href="@{'/add-user'}" th:text="#{navbar.adduser}"></a>
                     </li>
 
                     <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -52,9 +52,9 @@
                            th:text="#{navbar.newproduct}">
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" th:href="@{'/newproductform'}" th:text="#{navbar.newproductform}"></a>
+                            <a class="dropdown-item" th:href="@{'/new-product-form'}" th:text="#{navbar.newproductform}"></a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" th:href="@{'/getnewproducts'}" th:text="#{navbar.getnewproducts}"></a>
+                            <a class="dropdown-item" th:href="@{'/get-new-products'}" th:text="#{navbar.getnewproducts}"></a>
                         </div>
                     </li>
 
