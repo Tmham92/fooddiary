@@ -25,9 +25,7 @@ import java.util.Map;
 @Repository
 public class ProductDAO implements ProductRepository {
 
-
     private  JdbcTemplate jdbcTemplate;
-
 
     private RowMapper<Product> rowMapper = new ProductRowMapper();
 
@@ -227,10 +225,26 @@ public class ProductDAO implements ProductRepository {
      * @param productDescription, string that is either the description in Dutch or English.
      * @return Product that correspond to the description.
      */
+
     @Override
-    public Product getSpecificProduct(String productDescription) {
+    public Product getSpecificProductByDescription(String productDescription) {
         String sqlQuery = "select * from product where description_dutch = ?";
         return jdbcTemplate.queryForObject(sqlQuery, rowMapper, productDescription);
+    }
+
+    /**
+     * @author Tom Wagenaar
+     * Date: 09-06-2020
+     *
+     * Get a product from the database using a given product code.
+     * @param productCode (int)
+     * @return Product
+     */
+
+    @Override
+    public Product getSpecificProductByProductCode(int productCode) {
+        String sqlQuery = "select * from product where code = ?";
+        return jdbcTemplate.queryForObject(sqlQuery, new Object[]{productCode}, rowMapper);
     }
 
 

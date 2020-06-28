@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Tom Wagenaar
+ *
+ * Class that is used insert product-nutrient data into the database, this data is received from the service layer.
+ */
 @Repository
 public class ProductNutrientDAO implements ProductNutrientRepository {
 
@@ -15,7 +20,6 @@ public class ProductNutrientDAO implements ProductNutrientRepository {
     public ProductNutrientDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
 
     @Override
     public int insertProductNutrientData(ProductNutrient productNutrient) {

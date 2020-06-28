@@ -1,16 +1,12 @@
 package nl.bioinf.fooddiary.control;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
-import nl.bioinf.fooddiary.dao.ProductRepository;
-import nl.bioinf.fooddiary.dao.RecipeRepository;
-import nl.bioinf.fooddiary.model.product.Product;
 import nl.bioinf.fooddiary.model.recipe.Recipe;
 import nl.bioinf.fooddiary.service.RecipeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +63,7 @@ public class RecipeController {
      */
     @RequestMapping(value = "/diary-entry/get-recipe-group", method = RequestMethod.GET)
     public @ResponseBody List<String> getRecipeGroup() {
+        logger.info("/diary-entry/get-recipe-group called, retrieving all the recipe names from the database!");
         return recipeService.getRecipeGroups();
     }
 

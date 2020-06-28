@@ -27,7 +27,7 @@ public class ProjectController {
      * Shows the add-user-form on the /adduser url page.
      * @param locale loads the web page in the current language setting
      * @param model New-user-form used for filling in account information for new accounts
-     * @return returns the locale + adduser.html page
+     * @return returns the locale + add-user.html page
      */
     @RequestMapping(value = {"/project"}, method = RequestMethod.GET)
     public String projectWithoutLocale(Locale locale, Model model) {
@@ -41,7 +41,7 @@ public class ProjectController {
     /**
      * Shows the add-user-form on the /adduser url page.
      * @param model New-user-form used for filling in account information for new accounts
-     * @return returns the adduser.html page
+     * @return returns the add-user.html page
      */
     @RequestMapping(value = "/{locale}/project", method = RequestMethod.GET)
     public String projectWithLocale(Model model) {
