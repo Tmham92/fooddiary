@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title th:text="#{contact.title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Hugo Donkerbroek">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/navbar.css}" href=../static/css/navbar.css>
-    <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+
+    <div th:replace="template :: stylingHeader"></div>
+
     <link rel="stylesheet" th:href="@{/css/contact.css}" href="../static/css/contact.css">
 </head>
 <body>
