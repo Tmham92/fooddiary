@@ -13,8 +13,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import java.util.Locale;
+
+/**
+ * @Author Hugo Donkerbroek
+ */
 
 @Controller
 public class ProjectController {
@@ -24,10 +27,10 @@ public class ProjectController {
     ProjectService projectService;
 
     /**
-     * Shows the add-user-form on the /adduser url page.
+     * Shows the newprojectform and the newprojectuserform on the /project url page.
      * @param locale loads the web page in the current language setting
-     * @param model New-user-form used for filling in account information for new accounts
-     * @return returns the locale + add-user.html page
+     * @param model newproject- and newprojectuserform used for filling in information for projects
+     * @return returns the locale + project.html page
      */
     @RequestMapping(value = {"/project"}, method = RequestMethod.GET)
     public String projectWithoutLocale(Locale locale, Model model) {
@@ -42,9 +45,9 @@ public class ProjectController {
     }
 
     /**
-     * Shows the add-user-form on the /adduser url page.
-     * @param model New-user-form used for filling in account information for new accounts
-     * @return returns the add-user.html page
+     * Shows the newprojectform and the newprojectuserform on the /project url page.
+     * @param model newproject- and newprojectuserform used for filling in information for projects
+     * @return returns the project.html page
      */
     @RequestMapping(value = "/{locale}/project", method = RequestMethod.GET)
     public String projectWithLocale(Model model) {
@@ -59,9 +62,9 @@ public class ProjectController {
     }
 
     /**
-     * Handles the page post request. The data sent with the post request is saved in the newUser class
-     * @param newProject the user data from the new-user-form
-     * @return redirects to /adduser to reload the page
+     * Handles the page post request. The data sent with the post request is saved in the NewProject class
+     * @param newProject the new project data from the newprojectform
+     * @return redirects to /project to reload the page
      */
     @RequestMapping(value = "/new-project", method = RequestMethod.POST)
     public String injectNewProject(@ModelAttribute("newprojectform")
@@ -72,6 +75,11 @@ public class ProjectController {
         return "redirect:/project";
     }
 
+    /**
+     * Handles the page post request. The data sent with the post request is saved in the NewProjectUser class
+     * @param newProjectUser the project and user data from the newprojectuserform
+     * @return redirects to /project to reload the page
+     */
     @RequestMapping(value = "/new-project-user", method = RequestMethod.POST)
     public String test(@ModelAttribute("newprojectuserform")
                                    @Validated NewProjectUser newProjectUser) {
