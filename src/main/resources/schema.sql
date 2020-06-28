@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS product_nutrient;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS nutrient;
-DROP TABLE IF EXISTS unverified_product_picture_location;
+DROP TABLE IF EXISTS unverified_product_picture;
 DROP SCHEMA IF EXISTS fooddiary;
 
 CREATE SCHEMA IF NOT EXISTS fooddiary;
