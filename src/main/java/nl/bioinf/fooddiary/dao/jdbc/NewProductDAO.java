@@ -101,7 +101,7 @@ public class NewProductDAO implements NewProductRepository {
      * @param newProductId (int)
      */
     public void deleteNewProduct(int newProductId) {
-        String sql = "DELETE FROM unverified_product_picture_location WHERE unverified_product_id = ?";
+        String sql = "DELETE FROM unverified_product_picture WHERE unverified_product_id = ?";
         jdbcTemplate.update(sql, newProductId);
         sql = "DELETE FROM unverified_product_entry WHERE id = ?";
         jdbcTemplate.update(sql, newProductId);
@@ -133,8 +133,10 @@ public class NewProductDAO implements NewProductRepository {
 
 
     public void addNewProductPictureLocation(String pictureLocation) {
+
         int unverified_product_id = jdbcTemplate.queryForObject("SELECT MAX(id) FROM unverified_product_entry", Integer.class);
-        String sql = "INSERT INTO unverified_product_picture_location " +
+        System.out.println(unverified_product_id);
+        String sql = "INSERT INTO unverified_product_picture " +
                 "(unverified_product_id,  unverified_product_picture_location) VALUES (?,?);";
         jdbcTemplate.update(sql, unverified_product_id, pictureLocation);
     }

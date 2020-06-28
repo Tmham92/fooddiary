@@ -42,4 +42,6 @@ public class NewProductService implements INewProductService {
     @Override
     public void addNewProductPictureLocation(String pictureLocation) { newProductDAO.addNewProductPictureLocation(pictureLocation);
     }
+
+
 }

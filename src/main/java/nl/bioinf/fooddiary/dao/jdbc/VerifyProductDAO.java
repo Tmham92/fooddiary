@@ -103,4 +103,14 @@ public class VerifyProductDAO implements VerifyProductRepository {
         String sql = "DELETE FROM unverified_product_entry WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public String getProductPicture(int productId) {
+        String sql = "SELECT unverified_product_picture_location FROM unverified_product_picture WHERE " +
+                "unverified_product_id = ?";
+        String location = jdbcTemplate.queryForObject(sql, String.class, productId);
+        System.out.println("____IN DOA GOING BACK TO SERVICE_____");
+        System.out.println(location);
+        return location;
+    }
 }

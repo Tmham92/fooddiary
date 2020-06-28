@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS unverified_product_entry
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-CREATE TABLE IF NOT EXISTS unverified_product_picture_location
+CREATE TABLE IF NOT EXISTS unverified_product_picture
 (
     id                                  int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     unverified_product_id               int(10) NOT NULL,

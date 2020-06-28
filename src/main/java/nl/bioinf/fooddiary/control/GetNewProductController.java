@@ -78,6 +78,13 @@ public class GetNewProductController {
         return "redirect:/getnewproducts";
     }
 
+    /**
+     * Method which sends a newProduct Object to be used as an Attribute when directing the user to
+     * verifyproducts.
+     * @param productID (int)
+     * @param redirectAttributes (newProduct)
+     * @return
+     */
     @RequestMapping(value = "/verifyproduct", method = RequestMethod.POST)
     private String verifyProduct(@RequestParam int productID, final RedirectAttributes redirectAttributes) {
         logger.info("Directing to verify products page with productID.");

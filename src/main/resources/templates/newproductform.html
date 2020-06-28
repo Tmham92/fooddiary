@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="description" th:text="#{form.description}"></label>
                     <div class="col-sm-6">
-                        <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Quacker Crueslie 4 nuts" name="description">
+                        <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Enter description" name="description">
                         <td class="form-entry-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
                     </div>
                 </div>

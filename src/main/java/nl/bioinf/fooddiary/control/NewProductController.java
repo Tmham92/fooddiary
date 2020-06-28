@@ -94,6 +94,12 @@ public class NewProductController {
             logger.info("Form could not be validated.");
             return "/newproductform";
         }
+
+
+        String fileName = pictureStorageService.storeFile(file);
+        logger.info("Storing picture in upload Directory");
+        //newProductService.addNewProductPictureLocation(uploadDir + "/" + fileName);
+
         newProductService.addNewProduct(newProduct);
         return "redirect:/addednewproduct";
     }
