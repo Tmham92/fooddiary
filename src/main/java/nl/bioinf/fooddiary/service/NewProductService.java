@@ -16,6 +16,7 @@ import java.util.List;
  */
 @Service
 public class NewProductService implements INewProductService {
+
     @Autowired
     private NewProductDAO newProductDAO;
 

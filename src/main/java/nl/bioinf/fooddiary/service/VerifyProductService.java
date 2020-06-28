@@ -12,11 +12,18 @@ import java.util.List;
 /**
  @Author Tobias Ham
  */
+
 @Service
 public class VerifyProductService implements IVerifyProductService {
-        @Autowired
+
+
+    @Autowired
     private VerifyProductDAO verifyProductDAO;
 
+    /**
+     * @param groupcode
+     * @return
+     */
     @Override
     public String getGroupCodeDescription(int groupcode) {
         String groupCodeDescription = verifyProductDAO.getGroupCodeDescription(groupcode);
@@ -65,7 +72,6 @@ public class VerifyProductService implements IVerifyProductService {
     @Override
     public String getProductPicture(NewProduct newProduct) {
         int productId = newProduct.getId();
-        System.out.println("service __ ID = " + productId);
         return verifyProductDAO.getProductPicture(productId);
     }
 }
