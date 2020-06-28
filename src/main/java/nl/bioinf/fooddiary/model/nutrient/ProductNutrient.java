@@ -28,12 +28,6 @@ public class ProductNutrient {
     }
 
     public static ProductNutrientBuilder builder(int productCode, String nutrientCode, String nutrientValue) {
-
-        // Check the nutrientValue on null input and length.
-        DataInputChecker.checkStringInputNull(nutrientValue, "nutrientValue");
-        nutrientValue = nutrientValue.trim();
-        DataInputChecker.checkInputLength(nutrientValue, 15, "nutrientValue");
-
         return new ProductNutrientBuilder(productCode, nutrientCode, nutrientValue);
     }
 
