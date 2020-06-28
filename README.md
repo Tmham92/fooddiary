@@ -1,17 +1,33 @@
-# README #
+Food Diary Application
+==================
 
-### Repository setup ###
+The goal of this project is to make a viable, user-friendly web-based application to receive and store food diaries. 
+Food diaries are a way to track a participant’s food intake for research in nutrition and dietetics.
+
+
+### Description
+The goal of this project is to make a viable, user-friendly web-based application to receive and store food diaries. 
+Food diaries are a way to track a participant’s food intake for research in nutrition and dietetics. 
+Participants write down exactly what, when and how much they ate or drank in these diaries, giving a complete view of the participant’s intake. 
+The current state of handling the data is very time consuming. Researches receive handwritten diaries, 
+which they enter in an online application that stores the information and calculates the nutritional values. 
+In order to speed up this process and minimalize potential mistakes a new application has been made. 
+By ensuring that the participants can fill in his food diaries in a clear, quick and simple manner, the researchers have less work, and the chances of mistakes are minimized. 
+For researchers it is not always clear in advance which variables and relationships are important. Therefore, the application data output is made highly customizable.
+
 ---
 
-## Fork this repository ##
+# Installation
+
+### Fork this repository
 1. From the repository, click + in the leftmost global sidebar and select "Fork this repository" under "Get to work".
 2. In the Fork dialog, define the options for your fork.
----
-## Clone forked repository ##
+
+### Clone forked repository
 1. In your forked repository click "clone" in the top right.
 2. Copy the "git clone" command in the terminal (this will create the repository directory in the current directory)
----
-## IntelliJ git usage ##
+
+# IntelliJ git usage
 
 **commit and push:**
 
@@ -58,18 +74,15 @@ If merge conflicts occur after pulling:
 5. Click merge, this will bring up a window where you can solve the merge conflicts.
 
 ---
-## Create a pull request for the _upstream repository_ ##
 
-***Always try to keep up to date with the upstream repository!***
+# Authors
+Students of the Hanzehogeschool:
 
-1. Go to your forked repository on [bitbucket](bitbucket.org/)
-2. In the sidebar click "Pull requests"
-3. In the new window click "Create pull request" in the topright.
-4. Give the request a title and description of the work that you want to put into the master repository.
-	+ **DO NOT** select "Close master after the pull request is merged".
-	
-5. Click "Create pull request"
+- Hans Zijlstra
+- Hugo Donkerbroek
+- Tobias Ham
+- Tom Wagenaar
 
-The pull request will be reviewed and if everything is good it will be added to the upstream repository.
-After something is added to the upstream repository you should fetch the updates.
----
+# Acknowledgments
+This project is being done in collaboration with dr. Berber Vlieg-Boerstra, senior researcher dietitian, Maaike Smelt, teacher Life Sciences and Annemarie Brummelman, teacher Nutrition and Dietetics,
+teacher and project leader Michiel Noback
