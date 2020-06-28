@@ -27,18 +27,21 @@
 
     <div th:insert="template :: navbar"></div>
 
-    <!-- Table that consists out of a recipe name and the containing products -->
-    <table id="verify-recipes-table" class="display">
-        <thead>
+    <div class="container">
+        <!-- Table that consists out of a recipe name and the containing products -->
+        <table id="verify-recipes-table" class="display">
+            <thead>
             <tr>
                 <th th:text="#{table.verify-form.recipe-name}">Recipe name</th>
                 <th th:text="#{table.verify-form.products}">Products</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+
 
     <div th:insert="template :: footer"></div>
 
