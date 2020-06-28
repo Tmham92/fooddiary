@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // TODO: /verifyproduct should only be accessable by admin or higher -Tobias
     // TODO; /results is for testing purposes.
     // TODO: /adduser, /verify-recipe-by-admin can be accessed by role USER, should change to only be accessible by ADMIN. -Hugo
+    // TODO: verify-recipe-by-admin to role admin
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -71,8 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/js/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
                         ,"/getnewproducts", "/**/getnewproducts").permitAll()
-                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser", "/**/verifyproducts/", "/verifyproducts", "/verifyproducts/**").authenticated()
-                .antMatchers("*/diary-reports", "diary-reports/*", "/fetch-reports").hasRole("ADMIN")
+                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser", "/**/verifyproducts/", "/verifyproducts", "/verifyproducts/**", "/**/verify-recipe-by-admin").authenticated()
+                .antMatchers("*/diary-reports", "diary-reports/*", "/fetch-reports", "/verify-recipe-by-admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
