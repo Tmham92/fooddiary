@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -56,7 +55,7 @@ public class DiaryEntryController {
 
     /**
      * Method that listens to the local interceptor and serves the food diary to the visitor
-     * returns the page in english or dutch with the current time and date
+     * returns the page in english or dutch with the current time fand date
      * @return diary-entry (String)
      */
 
@@ -83,106 +82,122 @@ public class DiaryEntryController {
         } else return productRepository.getAllEnglishProductDescriptions();
     }
 
+    /*
+    * Returns the measurement unit from the database
+     * @param ProductDescription name of the product
+     * @param locale locale interceptor
+     * @return measurement unit
+    */
     @PostMapping(value = "/diary-entry/product-measurement", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public String getProductMeasurement(@RequestParam String productDescription, Locale locale) throws JsonProcessingException {
+        logger.info("/diary-entry/product-measurement url has been called returning measurement unit in JSON FORMAT");
         Map<String, Object> params = new HashMap<>();
         params.put("productUnit", productRepository.getMeasurementUnitByDescription(productRepository.getProductId(locale.getLanguage(),productDescription)));
         return new ObjectMapper().writeValueAsString(params);
     }
 
-
     /**
-     * Method that handles the ajax post request for a product entry into the user his food diary
-     * When the fields are valid a ProductEntry object is returned and shown on the page of the food diary
-     * for the particulair user.
-     * returns JSON VALUE of ProductEntry object
-     * @return ProductEntry
+     * adds a product of a user to their food diary
+     * @param productEntry a product with product information
+     * @param locale locale interceptor
+     * @return Responseentity holding productEntry
      */
-
-//    @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public ResponseEntity<Object> addProductToDiary(@RequestParam String productDescription, @RequestParam double quantity, @RequestParam String unit,
-//                                          @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime, Locale locale) {
-//
-//        try {
-//            String language = locale.getLanguage();
-//            description = validateDescription(description);
-//            ProductEntry productEntry = new ProductEntry(productDescription, checkQuantityForNull(quantity), unit, date, time, mealtime, description);
-//            int productId = productRepository.getProductId(language,productEntry.getProductDescription());
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            productRepository.insertProductIntoDiary(language, getUserID(authentication), productId, productEntry);
-//            return ResponseEntity.ok(productEntry);
-//
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quantity cannot be null");
-//        }
-//
-//    }
-
     @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<Object> addProductToDiary(@RequestBody ProductEntry productEntry, Locale locale) {
 
         try {
+            logger.info("/diary-entry/addtodiary url has been called adding product to ");
             String language = locale.getLanguage();
             int productId = productRepository.getProductId(language,productEntry.getProductDescription());
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             productRepository.insertProductIntoDiary(language, getUserID(authentication), productId, productEntry);
+            logger.info("/diary-entry/addtodiary url has been called adding product to " + authentication + "diary");
             return ResponseEntity.ok(productEntry);
 
         } catch (IllegalArgumentException e) {
+            logger.error("/diary-entry/addtodiary url has been called resulted in bad request ");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Illegal quantity ");
     }
 
     }
 
+    /**
+     * removes a product from the diary
+     * @param entry id of product to be removed
+     */
     @PostMapping(value = "/remove/diary-entry", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public void deleteFromDiary(@RequestParam int entry) {
-        System.out.println(entry);
+        logger.info("/remove/diary-entry url has been called removing entry with id: " + entry);
         productRepository.removeDiaryEntryById(entry);
     }
 
+    /**
+     * Collects all the products in a users food diary for the currentdate
+     * @param locale locale interceptor
+     * @return List<ProductEntry> all products for the given date
+     */
     @GetMapping(value = "/product-entries-by-date", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProductEntry> getProductEntriesByDate(Locale locale) {
+
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
-
+        logger.info("/product-entries-by-date url has been called getting diary entries for date" + date);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return productRepository.getDiaryEntriesByDate(locale.getLanguage(),getUserID(authentication), date) ;
     }
 
+    /**
+     * Collects all the products in a users food diary for a given date
+     * @param date date to retrieve
+     * @param locale locale interceptor
+     * @return List<ProductEntry> all products for the given date
+     */
     @GetMapping(value = "/diary-by-date")
     @ResponseBody
     public List<ProductEntry> getProductEntriesBySelectedDate(@RequestParam String date, Locale locale) {
-        System.out.println(date);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("/diary-by-date url has been called getting diary entries for date" + date);
         return productRepository.getDiaryEntriesByDate(locale.getLanguage(),getUserID(authentication), date);
     }
 
+    /**
+     *Gets the most queried product occurence
+     * @param locale locale interceptor
+     * @return diary-entry (String)
+     */
     @GetMapping(value = "/occurences")
     @ResponseBody
     public List<ProductOccurrence> getHistoryItems(Locale locale) {
+        logger.info("/occurences url has been called getting top fiftheen queries products");
         return productRepository.getProductOccurrences(locale.getLanguage());
     }
 
-    private int getUserID(Authentication authentication) {
+    /**
+     * retrieves the user it's id by his username
+     * @param authentication
+     * @return int id of user
+     */
+    public int getUserID(Authentication authentication) {
+        logger.info("/occurences url has been called getting top fiftheen queries products");
         return productRepository.getUserIdByUsername(authentication.getName());
-
     }
 
+    /**
+     * Checks if a given number is equal to zero and throws Illegalargument exception
+     * @param quantity
+     * @return quantity
+     */
     public static double checkQuantityForNull(double quantity) {
-        if (quantity == 0) {
+        if (quantity <= 0) {
+            logger.error("Quantity not equals 0");
             throw new IllegalArgumentException();
         } else {
             return quantity;
         }
-
     }
-
-
-
 }
