@@ -6,25 +6,22 @@ import java.util.Map;
 
 /**
  * @author Hans Zijlstra
+ * Class that returns mealtimes within a hashmap the key corresponts with the english translation
+ * the value correspond with the dutch translation.
  */
 public class Mealtimes {
-    public static void main(String[] args) {
-        System.out.println(mealtimes);
-        for (Map.Entry<String, String> entry : Mealtimes.getMealtimes().entrySet()) {
-            if (entry.getValue().equals("Avondeten")) {
-                System.out.println(entry.getKey());
-            }
-
-        }
-    }
     private static Map<String, String> mealtimes = new HashMap<>();
 
     static {
+        mealtimes.put("Before Breakfast", "Voor Ontbijt");
         mealtimes.put("Breakfast", "Ontbijt");
-        mealtimes.put("Snack", "Tussendoortje");
-        mealtimes.put("Lunch", "Middageten");
-        mealtimes.put("Dinner", "Avondeten");
-
+        mealtimes.put("After Breakfast", "Na Ontbijt");
+        mealtimes.put("Before Lunch", "Voor Lunch");
+        mealtimes.put("Lunch", "Lunch");
+        mealtimes.put("After Lunch", "Na lunch");
+        mealtimes.put("Before Diner", "Voor Dinner");
+        mealtimes.put("Dinner", "Dinner");
+        mealtimes.put("After Diner", "Na Dinner");
     }
 
     public static Map<String, String> getMealtimes() {

@@ -14,7 +14,7 @@ public class NewUser {
     private int id;
     @NotNull
     @Size(min = 3)
-    private String user_code;
+    private String userCode;
     @NotNull
     @Size(min = 3)
     private String password;
@@ -28,12 +28,12 @@ public class NewUser {
         this.id = id;
     }
 
-    public String getUser_code() {
-        return user_code;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setUser_code(String user_code) {
-        this.user_code = user_code;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     public String getPassword() {
@@ -61,7 +61,7 @@ public class NewUser {
     public String toString() {
         return "NewUser{" +
                 "id=" + id +
-                ", user_code='" + user_code + '\'' +
+                ", user_code='" + userCode + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';

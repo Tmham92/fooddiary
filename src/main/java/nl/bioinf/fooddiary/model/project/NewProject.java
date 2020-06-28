@@ -9,8 +9,8 @@ public class NewProject {
     @NotNull
     private String name;
     @NotNull
-    private String project_leader;
-    private Date closing_date;
+    private String projectLeader;
+    private Date closingDate;
 
     public int getId() {
         return id;
@@ -28,23 +28,23 @@ public class NewProject {
         this.name = name;
     }
 
-    public String getProject_leader() {
-        return project_leader;
+    public String getProjectLeader() {
+        return projectLeader;
     }
 
-    public void setProject_leader(String project_leader) {
-        this.project_leader = project_leader;
+    public void setProjectLeader(String projectLeader) {
+        this.projectLeader = projectLeader;
     }
 
     public LocalDate getCreation_date() {
         return LocalDate.now();
     }
 
-    public Date getClosing_date() {
-        return closing_date;
+    public Date getClosingDate() {
+        return closingDate;
     }
 
-    public void setClosing_date(Date closing_date) {
-        this.closing_date = closing_date;
+    public void setClosingDate(Date closingDate) {
+        this.closingDate = closingDate;
     }
 }

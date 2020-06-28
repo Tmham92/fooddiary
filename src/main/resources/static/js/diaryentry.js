@@ -1,8 +1,8 @@
-//author: Hans Zijlstra
+// @Author Hans Zijlstra
 
 $(document).ready(function() {
+    // @Author Hans Zijlstra
     var userLang = navigator.language || navigator.userLanguage;
-    console.log(userLang)
     var diaryTable;
     var descriptions = getDescriptions();
 
@@ -10,8 +10,7 @@ $(document).ready(function() {
 
     getHistoryItems();
 
-    //Select table rows for history items
-
+    //makes rows for history items selectable
     $("#historyTable tbody").on('click', 'tr', function (e) {
         var $row = jQuery(this).closest('tr');
         var $columns = $row.find('td');
@@ -30,11 +29,9 @@ $(document).ready(function() {
 
 
     autocomplete(document.getElementById("productDescription"), descriptions);
-
-
     autocomplete(document.getElementById("productInput"), descriptions);
 
-    // make rows able for selecting
+    // make rows of datatable able for selecting
     $('#diaryTable tbody').on('click', 'tr', function (e) {
        if ( $(this).hasClass('row_selected')) {
            $(this).removeClass('row_selected');
@@ -46,7 +43,8 @@ $(document).ready(function() {
        }
 
     });
-
+    // @Author Hans Zijlstra
+    //Removes selected rows from diaryTable
     $('#btn-remove').click(function(){
         var anSelected = fnGetSelected( diaryTable );
         for (var i = 0; i < anSelected.length; i++) {
@@ -79,7 +77,8 @@ $(document).ready(function() {
     diaryTable.columns( [0] ).visible( false );
 
     getTodaysDiaryEntries(diaryTable);
-
+    // @Author Hans Zijlstra
+    // Fetches products from server for a specific date
     $("#diaryDate").change(function (event) {
         event.preventDefault();
         diaryTable.clear();
@@ -105,7 +104,8 @@ $(document).ready(function() {
 
 
     });
-
+    // @Author Hans Zijlstra
+    // adds a product to the diary of the user
     function addToDiary(data) {
         $.ajax({
             url : "/diary-entry/addtodiary",
@@ -127,11 +127,11 @@ $(document).ready(function() {
         });
 
     }
-
+    // @Author Hans Zijlstra
+    // adds product to diary table on submit
     $("#product-entry").submit(function(event){
         event.preventDefault();
         var data = {};
-
 
         data["productDescription"] = $("#productDescription").val();
         data["mealtime"] = $("#mealtime").val();
@@ -156,7 +156,8 @@ $(document).ready(function() {
         }
 
     });
-
+    // @Author Hans Zijlstra
+    // retrieves product history items
     $("#history-entry").submit(function(event){
         event.preventDefault();
         var data = {};
@@ -403,7 +404,8 @@ function getRecipeGroup() {
 }
 
 
-
+// @Author Hans Zijlstra
+// Retrieves the measurement unit of a product in the database
 function getMeasurementUnit(fieldId, unitId) {
     $.ajax({
         type: 'POST',
@@ -416,6 +418,8 @@ function getMeasurementUnit(fieldId, unitId) {
     })
 }
 
+// @Author Hans Zijlstra
+// retrieves all history items
 function getHistoryItems() {
     $.ajax({
         url: '/occurences',
@@ -438,8 +442,9 @@ function getHistoryItems() {
 
 }
 
+// @Author Hans Zijlstra
+// returns all the names of the product within the database
 function getDescriptions() {
-
     descriptions = [];
     $.ajax({
         url: '/product-description',
@@ -454,6 +459,8 @@ function getDescriptions() {
     return descriptions
 }
 
+// @Author Hans Zijlstra
+// retrieves all products a user has consumed for the current date
 function getTodaysDiaryEntries(diaryTable) {
     $.ajax({
         url: '/product-entries-by-date',
@@ -475,11 +482,8 @@ function getTodaysDiaryEntries(diaryTable) {
 })
 }
 
-
-
-
-
-
+// @Author Hans Zijlstra
+// Autocomplete function takes as input an array of strings to be autocompleted
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/

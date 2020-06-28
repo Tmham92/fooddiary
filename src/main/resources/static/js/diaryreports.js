@@ -1,4 +1,7 @@
+//Author Hans Zijlstra
+
 $(document).ready(function() {
+    //Initiate datatable of users
     var table = $('#userTable').DataTable({
         responsive: true,
         columnDefs: [{
@@ -31,6 +34,7 @@ $(document).ready(function() {
 
     });
 
+    //multiform field function
     function showTab(n) {
         // This function will display the specified tab of the form ...
         var x = document.getElementsByClassName("tab");
@@ -38,6 +42,7 @@ $(document).ready(function() {
         // ... and fix the Previous/Next buttons:
         if (n == 0) {
             document.getElementById("prevBtn").style.display = "none";
+
         } else {
             document.getElementById("prevBtn").style.display = "inline";
         }
@@ -50,6 +55,7 @@ $(document).ready(function() {
         fixStepIndicator(n)
     }
 
+    // A form on submit that creates food diary reports in csv to be downloaded
     $("#regForm").on("submit", function (e) {
         e.preventDefault();
         var rowCount = table.rows({selected: true}).count();
@@ -69,12 +75,23 @@ $(document).ready(function() {
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data),
             success: function (response) {
-                console.log(response)
+                $(".control-buttons-tab").hide()
+                $(".circle-steps").hide()
+
+                for (var i = 0; i < response.length; i++) {
+                    var len = response[i].toString().split("\\").length - 1;
+                    var arr = response[i].toString().split("\\");
+                    var linklink = $('<p>').append($('<a>',{
+                        text: arr[len],
+                        title: 'some title',
+                        href: response[i]
+                    })).appendTo('#regForm');
+                }
             }
         })
     });
 
-
+    // Option button to go to the next tab
     function nextPrev(n) {
         // This function will figure out which tab to display
         var x = document.getElementsByClassName("tab");
@@ -116,7 +133,7 @@ $(document).ready(function() {
     }
 
 
-
+    // Indicator to tell on which tab the user is of the form field process
     function fixStepIndicator(n) {
         // This function removes the "active" class of all steps...
         var i, x = document.getElementsByClassName("step");
@@ -149,7 +166,7 @@ $(document).ready(function() {
     });
 
 
-
+    // Returns all the projects within the database
     function getProjects() {
         $.ajax({
             url : '/projects',
@@ -160,7 +177,7 @@ $(document).ready(function() {
             }
             })
     }
-
+    // Returns all the users within a project
     $('#projectName').on('change', function () {
         $.ajax({
             url: "/project-users",
