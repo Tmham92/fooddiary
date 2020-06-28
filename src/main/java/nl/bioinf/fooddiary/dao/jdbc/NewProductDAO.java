@@ -1,6 +1,6 @@
 package nl.bioinf.fooddiary.dao.jdbc;
 
-import nl.bioinf.fooddiary.dao.IProductDAO;
+import nl.bioinf.fooddiary.dao.NewProductRepository;
 import nl.bioinf.fooddiary.model.newproduct.NewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,14 +22,11 @@ import java.util.List;
  * Class which funtions as a Data Accesss Object to inject or retrieve data from the database.
  */
 @Repository
-public class NewProductDAO implements IProductDAO {
-    private JdbcTemplate jdbcTemplate;
-    private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
+public class NewProductDAO implements NewProductRepository {
 
+    private RowMapper<NewProduct> rowMapper = new NewProductRowMapper();
     @Autowired
-    public NewProductDAO(){
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Method that creates a list from all new products in the database.
@@ -38,7 +35,8 @@ public class NewProductDAO implements IProductDAO {
     @Override
     public List<NewProduct> getAllNewProducts() {
         String sql = "select id, user_id, date, time_of_day, mealtime, description, quantity from unverified_product_entry";
-        return this.jdbcTemplate.query(sql, rowMapper);
+        List<NewProduct> newProductList = jdbcTemplate.query(sql, rowMapper);
+        return newProductList;
     }
 
 
@@ -66,7 +64,7 @@ public class NewProductDAO implements IProductDAO {
         int user_id = getUserIdFromUserCode(newProduct);
         String sql = "INSERT INTO unverified_product_entry " +
                 "(user_id, date, time_of_day, mealtime, description, quantity) values (?,?,?,?,?,?);";
-        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTime_of_day(),
+        jdbcTemplate.update(sql, user_id, newProduct.getDate(), newProduct.getTimeOfDay(),
                 newProduct.getMealtime(), newProduct.getDescription(), newProduct.getQuantity());
     }
 
@@ -103,8 +101,11 @@ public class NewProductDAO implements IProductDAO {
      * @param newProductId (int)
      */
     public void deleteNewProduct(int newProductId) {
-        String sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        String sql = "DELETE FROM unverified_product_picture WHERE unverified_product_id = ?";
         jdbcTemplate.update(sql, newProductId);
+        sql = "DELETE FROM unverified_product_entry WHERE id = ?";
+        jdbcTemplate.update(sql, newProductId);
+
     }
 
     /**
@@ -132,8 +133,10 @@ public class NewProductDAO implements IProductDAO {
 
 
     public void addNewProductPictureLocation(String pictureLocation) {
+
         int unverified_product_id = jdbcTemplate.queryForObject("SELECT MAX(id) FROM unverified_product_entry", Integer.class);
-        String sql = "INSERT INTO unverified_product_picture_location " +
+        System.out.println(unverified_product_id);
+        String sql = "INSERT INTO unverified_product_picture " +
                 "(unverified_product_id,  unverified_product_picture_location) VALUES (?,?);";
         jdbcTemplate.update(sql, unverified_product_id, pictureLocation);
     }

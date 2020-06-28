@@ -59,8 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * Furthermore login request are handled when this method is called
      * @param http (HttpSecurity)
      */
-    // TODO: /data url can now be accessed, at a later stage this should be removed and only visible for Web-Developer. - Tom
-    // TODO: /adduser can be accessed by role USER, should change to only be accessible by ADMIN. -Hugo
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -68,7 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/", "/home", "/*/home", "/images/**", "/css/**", "/js/**", "/contact", "/*/contact", "/**/newproductform", "/newproductform", "/addednewproduct", "/**/addednewproduct"
                         ,"/getnewproducts", "/**/getnewproducts").permitAll()
-                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser", "/project", "/*/project").hasRole("USER")
+                .antMatchers("**/diary-entry", "/diary-entry", "/diary-entry/**", "/product-description", "/adduser", "/*/adduser", "/**/verifyproducts/", "/verifyproducts", "/verifyproducts/**", "/**/verify-recipe-by-admin").authenticated()
+                .antMatchers("*/diary-reports", "diary-reports/*", "/fetch-reports", "/verify-recipe-by-admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

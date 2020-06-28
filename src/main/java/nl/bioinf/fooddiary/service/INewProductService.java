@@ -20,5 +20,4 @@ public interface INewProductService {
     void deleteNewProduct(int newProductId);
 
     void addNewProductPictureLocation(String pictureLocation);
-
 }

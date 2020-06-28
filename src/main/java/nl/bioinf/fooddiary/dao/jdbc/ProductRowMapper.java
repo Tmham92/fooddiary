@@ -11,7 +11,8 @@ import java.sql.SQLException;
  * @author Tom Wagenaar
  * Date: 13-05-2020
  *
- *
+ * Class that maps for each rows from the product table in the database into a product object by using the builder pattern
+ * to construct a product object.
  */
 public class ProductRowMapper implements RowMapper<Product> {
     @Override
@@ -40,7 +41,6 @@ public class ProductRowMapper implements RowMapper<Product> {
 
         Product product = new Product(productCode, productGroup, productDescription1, productMeasurement,
                 productInfoExtra, emptyNutrientValues);
-
 
         return product;
     }

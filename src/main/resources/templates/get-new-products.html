@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title  th:text="#{getproducttitle}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Tobias Ham">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/new-product-form.css}" href="../static/css/new-product-form.css">
+    <link rel="stylesheet" th:href="@{/css/home.css}" href="../static/css/home.css">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/contact.css}" href="../static/css/contact.css">
+    <link rel="stylesheet" th:href="@{/static/css/product-table.css}" href="../static/css/product-table.css">
+
+</head>
+
+<div th:insert="template :: banner"></div>
+<div th:insert="template :: navbar"></div>
+
+<body>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <table class="verifyproducttable" id="overview">
+                <thead>
+                <tr>
+                    <th th:text="#{productid}"></th>
+                    <th th:text="#{userid}"></th>
+                    <th th:text="#{description}"></th>
+                    <th th:text="#{date}"></th>
+                    <th th:text="#{quantity}"></th>
+                    <th th:text="#{mealtime}"></th>
+                    <th th:text="#{verify}"></th>
+                    <th th:text="#{delete}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="newproduct : ${getNewProducts}">
+                    <td><span th:text="${newproduct.id}"> Product ID </span></td>
+                    <td><span th:text="${newproduct.userId}"> User ID </span></td>
+                    <td><span th:text="${newproduct.description}"> Description </span></td>
+                    <td><span th:text="${newproduct.date}"> Date </span></td>
+                    <td><span th:text="${newproduct.quantity}"> Quantity </span></td>
+                    <td><span th:text="${newproduct.mealtime}"> Mealtime </span></td>
+                    <td><form id="verifyProductButton" th:action="@{/verifyproduct}" method="post">
+                        <input type="hidden" th:value="${newproduct.id}" name="productID"/>
+                        <input type="submit" Value="Verify" onclick="return confirm('Verify This Product?')"/>
+                    </form></td>
+                    <td><form id="deleteNewProduct" th:action="@{/delete}" method="post">
+                        <input type="hidden" th:value="${newproduct.id}" name="productID"/>
+                        <input type="submit" action="delete" value="Delete" class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to DELETE this entry?')"/>
+                    </form>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+
+<div th:insert="template :: footer"></div>
+</body>
+</html>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.js"></script>

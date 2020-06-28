@@ -34,6 +34,7 @@ import java.util.*;
 @Controller
 public class DiaryEntryController {
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
+    private final LocalDate currentDate = LocalDate.now();
 
     @Autowired
     private ProductRepository productRepository;
@@ -62,11 +63,7 @@ public class DiaryEntryController {
     @RequestMapping(value = "/{locale}/diary-entry")
     public String  diaryWithLocale(Model model) {
         logger.info("/{locale}/diary-entry url has been called returning /diary-entry");
-        final LocalDate currentDate = LocalDate.now();
-        Date date = new Date();
-        String time = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date).split("\\s+")[1];
         model.addAttribute("ldt", currentDate);
-        model.addAttribute("time", time);
         return "/diary-entry";
     }
 
@@ -103,27 +100,43 @@ public class DiaryEntryController {
      * @return ProductEntry
      */
 
+//    @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public ResponseEntity<Object> addProductToDiary(@RequestParam String productDescription, @RequestParam double quantity, @RequestParam String unit,
+//                                          @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime, Locale locale) {
+//
+//        try {
+//            String language = locale.getLanguage();
+//            description = validateDescription(description);
+//            ProductEntry productEntry = new ProductEntry(productDescription, checkQuantityForNull(quantity), unit, date, time, mealtime, description);
+//            int productId = productRepository.getProductId(language,productEntry.getProductDescription());
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            productRepository.insertProductIntoDiary(language, getUserID(authentication), productId, productEntry);
+//            return ResponseEntity.ok(productEntry);
+//
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quantity cannot be null");
+//        }
+//
+//    }
+
     @PostMapping(value = "/diary-entry/addtodiary", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<Object> addProductToDiary(@RequestParam String productDescription, @RequestParam double quantity, @RequestParam String unit,
-                                          @RequestParam String date, @RequestParam String time, @RequestParam String description, @RequestParam String mealtime, Locale locale) {
+    public ResponseEntity<Object> addProductToDiary(@RequestBody ProductEntry productEntry, Locale locale) {
 
         try {
             String language = locale.getLanguage();
-            description = validateDescription(description);
-            System.out.println(quantity);
-            ProductEntry productEntry = new ProductEntry(productDescription, checkQuantityForNull(quantity), unit, date, time, mealtime, description);
             int productId = productRepository.getProductId(language,productEntry.getProductDescription());
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(productEntry.getProductDescription());
             productRepository.insertProductIntoDiary(language, getUserID(authentication), productId, productEntry);
             return ResponseEntity.ok(productEntry);
 
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quantity cannot be null");
-        }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Illegal quantity ");
+    }
 
     }
+
     @PostMapping(value = "/remove/diary-entry", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public void deleteFromDiary(@RequestParam int entry) {
@@ -154,11 +167,6 @@ public class DiaryEntryController {
     @ResponseBody
     public List<ProductOccurrence> getHistoryItems(Locale locale) {
         return productRepository.getProductOccurrences(locale.getLanguage());
-    }
-
-    private String validateDescription(String description) {
-        return Objects.requireNonNullElse(description, " ");
-
     }
 
     private int getUserID(Authentication authentication) {

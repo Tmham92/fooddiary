@@ -36,9 +36,9 @@ public class NewProductController {
 
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
     @Autowired
-    NewProductService newProductService;
+    private NewProductService newProductService;
     @Autowired
-    PictureStorageService pictureStorageService;
+    private PictureStorageService pictureStorageService;
     @Value("${file.uploadDir}")
     private String uploadDir;
 
@@ -56,7 +56,7 @@ public class NewProductController {
                 "Requesting Locale and opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "redirect:" + locale.getLanguage() + "/newproductform";
+        return "redirect:" + locale.getLanguage() + "new-product-form";
     }
 
 
@@ -72,7 +72,7 @@ public class NewProductController {
                 "Opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "newproductform";
+        return "new-product-form";
     }
 
 
@@ -86,21 +86,21 @@ public class NewProductController {
     @RequestMapping(value = "/addednewproduct", method = RequestMethod.POST)
     public String injectNewProduct(@Valid @ModelAttribute("newproductform")
                                                NewProduct newProduct,
-                                   @RequestParam("newProductPicture") MultipartFile file,
-                                   BindingResult bindingResult) {
+                                   BindingResult bindingResult,
+                                   @RequestParam("newProductPicture") MultipartFile file) {
         logger.info("Submitting NewProduct from newProductForm to database." +
                 "Redirecting user to /addednewproduct url.");
-
         if (bindingResult.hasErrors()) {
             logger.info("Form could not be validated.");
-            return "/newproductform";
+            return "new-product-form";
         }
-        logger.info("Try to upload file to " + uploadDir);
-        System.out.println(file);
+
+
+        String fileName = pictureStorageService.storeFile(file);
+        logger.info("Storing picture in upload Directory");
+        //newProductService.addNewProductPictureLocation(uploadDir + "/" + fileName);
 
         newProductService.addNewProduct(newProduct);
-        uploadFile(file);
-
         return "redirect:/addednewproduct";
     }
 
@@ -114,7 +114,7 @@ public class NewProductController {
     public String addedNewProductWithoutLocale(Locale locale) {
         logger.info("/addednewproduct url has been called without known Locale." +
                 "Requesting Locale and opening web page in right language.");
-        return "redirect:" + locale.getLanguage() + "/addednewproduct";
+        return "redirect:" + locale.getLanguage() + "added-new-product";
     }
 
     /**
@@ -126,7 +126,7 @@ public class NewProductController {
     public String addedNewProductWithLocale() {
         logger.info("/addednewproduct url has been called with known Locale." +
                 "Opening web page in right language.");
-        return "addednewproduct";
+        return "added-new-product";
     }
 
     /**

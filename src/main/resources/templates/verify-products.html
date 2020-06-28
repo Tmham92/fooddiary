@@ -1,0 +1,192 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title th:text="#{verifyproduct}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Tobias Ham">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/new-product-form.css}" href="../static/css/new-product-form.css">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/static/css/verify-products.css}" href="../static/css/verify-products.css">
+    <link rel="stylesheet" th:href="@{/css/diary-entry.css}" href="../static/css/diary-entry.css">
+</head>
+<body>
+    <div th:insert="template :: banner"></div>
+    <div th:insert="template :: navbar"></div>
+
+
+    <div class-="container">
+        </div>
+        <div class="action">
+            <button class="button" data-modal="add-product-group" th:text="#{group-form.addbutton}"></button>
+            <button class="button" data-modal="add-product-description" th:text="#{description-form.addbutton}"></button>
+            <button class="button" data-modal="add-product-info-extra" th:text="#{info-extra-form.addbutton}"></button>
+            <button class="button" data-modal="add-product-measurement" th:text="#{measurement-form.addbutton}"></button>
+            <button class="button" data-modal="add-product-nutrient-values" th:text="#{nutrient-form.addbutton}"></button>
+
+        </div>
+
+        <div id="add-product-group" class="modal">
+            <div class="modal-content">
+                <div class="entry-form">
+                    <a class="close">&times;</a>
+                    <form action="#" method="post" id="verify-groupcode-form" th:action="@{/verifyproducts/productgroupcode}" th:object="${productgroup}">
+                        <h2 th:text="#{group-form.header}"></h2>
+                        <p th:text="#{group-form.text}"></p>
+                        <div class="group-form">
+                            <label th:text="#{group-form.groupcode}"></label>
+
+                            <select th:field="*{groupCode}">
+                                <option th:each="i : ${#numbers.sequence(1, 27)}" th:value="${i}" th:text="#{${i}}">
+                                </option>
+                            </select>
+                        </div>
+                        <button id="product-group-submit" data-modal="add-product-group" type="submit" th:text="#{description-form.submit}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-product-description" class="modal">
+            <div class="modal-content">
+                <div class="entry-form">
+                    <a class="close">&times;</a>
+                    <form action="#" method="post" id="verify-description-form" th:action="@{/verifyproducts/productdescription}" th:object="${productdescription}">
+                        <h2 th:text="#{description-form.header}"></h2>
+                        <p th:text="#{description-form.text}"></p>
+                        <div class="description-form">
+                            <label th:text="#{description-form.dutch}"></label>
+                            <input type="text" th:field="*{descriptionDutch}" id="descriptiondutch" required/>
+                            <td class="form-entry-error" th:if="${#fields.hasErrors('descriptionDutch')}" th:errors="*{descriptionDutch}"></td>
+                            <label th:text="#{description-form.english}"></label>
+                            <input type="text" th:field="*{descriptionEnglish}" id="descriptionenglish" required/>
+                            <td class="form-entry-error" th:if="${#fields.hasErrors('descriptionEnglish')}" th:errors="*{descriptionEnglish}"></td>
+                            <label th:text="#{description-form.synonyms}"></label>
+                            <input type="text" th:field="*{synonymous}" placeholder="_UNKNOWN_SYNONYMOUS_"/>
+                        </div>
+                        <button id="product-description-submit" data-modal="add-product-description" type="submit" th:text="#{description-form.submit}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-product-info-extra" class="modal">
+            <div class="modal-content">
+                <div class="entry-form">
+                    <a class="close">&times;</a>
+                    <form action="#" method="post" id="verify-extra-info-form" th:action="@{/verifyproducts/productextrainfo}" th:object="${productinfoextra}">
+                        <h2 th:text="#{extra-info-form.header}"></h2>
+                        <p th:text="#{extra-info-form.text}"></p>
+                        <div class="description-form">
+                            <label th:text="#{extra-info-form.enriched-with}"></label>
+                            <input type="text" th:field="*{enrichedWith}" placeholder="_UNKNOWN_INFO_"/>
+                            <label th:text="#{extra-info-form.traces-of}"></label>
+                            <input type="text" th:field="*{tracesOf}" placeholder="_UNKNOWN_INFO_"/>
+                        </div>
+                        <button id="product-extra-info-submit" type="submit" th:text="#{description-form.submit}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-product-measurement" class="modal">
+            <div class="modal-content">
+                <div class="entry-form">
+                    <a class="close">&times;</a>
+                    <form action="#" method="post" id="verify-measurement-form" th:action="@{/verifyproducts/productmeasurement}" th:object="${productmeasurement}">
+                        <h2 th:text="#{measurement-form.header}"></h2>
+                        <p th:text="#{measurement-form.text}"></p>
+                        <div class="description-form">
+                            <label th:text="#{measurement-form.measurement-unit}"></label>
+                            <input type="text" th:field="*{measurementUnit}" id=measurementunit placeholder="g" required/>
+                            <label th:text="#{measurement-form.measurement-quantity}"></label>
+                            <input type="text" th:field="*{measurementQuantity}" placeholder="100" id="measurementquantity" required/>
+                            <label th:text="#{measurement-form.measurement-comment}"></label>
+                            <input type="text" th:field="*{measurementComment}" placeholder="Per 100g."/>
+                        </div>
+                        <button id="product-measurement-submit" type="submit" th:text="#{description-form.submit}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-product-nutrient-values" class="modal">
+            <div class="modal-dialog modal-lg"></div>
+            <div class="modal-content wider">
+                <div class="entry-form">
+                    <a class="close">&times;</a>
+                    <h2 th:text="#{nutrient-form.header}"></h2>
+                    <p th:text="#{nutrient-form.text}"></p>
+                    <div class="nutrient-form">
+                        <form action="#" method="post" id="verify-nutrient-values-form" th:action="@{/verifyproducts/nutrientvalues}" th:object="${nutrientDTO}">
+                            <table class="nutrient-value-table">
+                                <thead>
+                                <tr>
+                                    <th th:text="#{nutrient-form.name}"></th>
+                                    <th th:text="#{nutrient-form.abbr}"></th>
+                                    <th th:text="#{nutrient-form.values}"></th><th th:text="#{nutrient-form.unit}"></th>
+                                </thead>
+                                <tbody>
+                                <tr th:each="nutrientValue, iteration : ${nutrientnameslist}">
+                                    <td><span th:text="${nutrientnameslist[__${iteration.index}__].name}" style="width: 150px"></span></td>
+                                    <td><span th:text="${nutrientnameslist[__${iteration.index}__].abbreviation}"></span></td>
+                                    <td class="right"><input th:field="*{values[__${iteration.index}__]}"/></td>
+                                    <td class="right"><span th:text="${nutrientnameslist[__${iteration.index}__].measurementUnit}"></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button id="product-nutrient-submit" type="submit" th:text="#{description-form.submit}"></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="container padding-top">
+        <div>
+            <table class="table w-auto verifyproducttable" id="verifyproducttable">
+                <thead>
+                <tr>
+                    <th th:text="#{attributes}"></th>
+                    <th th:text="#{values}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span th:text="#{group-form.addbutton}"></span></td>
+                    <td><span th:text="${verifiedproduct.productGroup}"></span></td>
+                </tr>
+                <tr>
+                    <td><span th:text="#{description-form.addbutton}"></span></td>
+                    <td><span th:text="${verifiedproduct.productDescription}"></span></td>
+                </tr>
+                <tr>
+                    <td><span th:text="#{info-extra-form.addbutton}"></span></td>
+                    <td><span th:text="${verifiedproduct.productInfoExtra}"></span></td>
+                </tr>
+                <tr>
+                    <td><span th:text="#{measurement-form.addbutton}"></span></td>
+                    <td><span th:text="${verifiedproduct.productMeasurement}"></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <form action="#" method="post" id="verify-productcode"  th:action="@{/verifyproducts/submitproduct}" th:object="${verifiedproduct}">
+                <input type="hidden" th:value="${newProduct.id}" name="newProductID">
+            <button class="button" id="submit-product-to-backend" th:text="#{submit-product.submit}"></button>
+            </form>
+        </div>
+    </div>
+    <div th:insert="template :: footer"></div>
+</body>
+
+
+<script src="/js/unverified-product-form.js"></script>
+<script src="/js/diaryentry.js>"></script>
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>

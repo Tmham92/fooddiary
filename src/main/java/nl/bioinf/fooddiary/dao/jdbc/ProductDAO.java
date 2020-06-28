@@ -2,7 +2,6 @@ package nl.bioinf.fooddiary.dao.jdbc;
 
 
 import nl.bioinf.fooddiary.dao.ProductRepository;
-import nl.bioinf.fooddiary.model.nutrient.NutrientValues;
 import nl.bioinf.fooddiary.model.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Tom Wagenaar
+ * @author Tom Wagenaar, Hans Zijlstra
  *
  * This class represent the Data Access Object or DAO for the product table in the fooddairy database. The DAO allows
  * for isolation of the application layer from the database layer. Both layers can evolve separately without knowing
@@ -26,9 +25,7 @@ import java.util.Map;
 @Repository
 public class ProductDAO implements ProductRepository {
 
-
     private  JdbcTemplate jdbcTemplate;
-
 
     private RowMapper<Product> rowMapper = new ProductRowMapper();
 
@@ -38,7 +35,7 @@ public class ProductDAO implements ProductRepository {
     }
 
     @Override
-    public int getProductId(String lang,String description) {
+    public int getProductId(String lang, String description) {
         String sqlQuery = "select code from product where description_english = ?";
         if (lang.equals("nl")) {
             sqlQuery = "select code from product where description_dutch = ?";
@@ -83,22 +80,19 @@ public class ProductDAO implements ProductRepository {
      * @param productEntry productEntry object containing product data
      * @return List<ProductDescription></> list of productdescriptions
      */
-
-
     @Override
     public int insertProductIntoDiary(String lang,int userId, int productId, ProductEntry productEntry) {
         String mealtime = productEntry.getMealtime();
         if (lang.equals("nl")) {
-            System.out.println(Mealtimes.getMealtimes());
             for (Map.Entry<String, String> entry : Mealtimes.getMealtimes().entrySet()) {
                 if (entry.getValue().equals(productEntry.getMealtime())) {
                     mealtime = entry.getKey();
                 }
             }
         }
-            String sqlQuery = "insert into product_entry(user_id, product_id, date, time_of_day, mealtime, description) VALUES " +
-                    "(?,?,?,?,?,?)";
-            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getDate(), productEntry.getTime(), mealtime,
+            String sqlQuery = "insert into product_entry(user_id, product_id, quantity, date, time_of_day, mealtime, description) VALUES " +
+                    "(?,?,?,?,?,?,?)";
+            return jdbcTemplate.update(sqlQuery, userId, productId, productEntry.getQuantity(), productEntry.getDate(), productEntry.getTime(), mealtime,
                     productEntry.getDescription());
     }
 
@@ -118,9 +112,13 @@ public class ProductDAO implements ProductRepository {
                     description = rs.getString("description_english");
                     mealtime = rs.getString("mealtime");
                 }
-                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
-                        description, rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
-                        rs.getString("date"), rs.getString("time_of_day"), mealtime, rs.getString("description"));
+                return ProductEntry.builder().id(rs.getInt("id")).user_id(rs.getInt("user_id")).product_id(rs.getInt("product_id"))
+                        .productDescription(description).quantity(rs.getDouble("measurement_quantity"))
+                        .unit(rs.getString("measurement_unit")).date(rs.getString("date"))
+                        .time(rs.getString("time_of_day")).mealtime(mealtime).description( rs.getString("description")).build();
+//                return new ProductEntry(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("product_id"),
+//                        description, rs.getDouble("measurement_quantity"), rs.getString("measurement_unit"),
+//                        rs.getString("date"), rs.getString("time_of_day"), mealtime, rs.getString("description"));
             }
         });
     }
@@ -133,18 +131,21 @@ public class ProductDAO implements ProductRepository {
 
     @Override
     public List<ProductOccurrence> getProductOccurrences(String lang) {
-        String sqlQuery = "select product_id, description_dutch, count(product_id) as occurence from product_entry pe " +
+        String sqlQuery = "select product_id, pe.mealtime, description_dutch, description_english, measurement_unit, count(product_id) as occurence from product_entry pe " +
                 "join product p on pe.product_id = p.code  group by pe.product_id order by occurence DESC limit 10";
         return jdbcTemplate.query(sqlQuery, new RowMapper<ProductOccurrence>() {
             @Override
             public ProductOccurrence mapRow(ResultSet rs, int rowNum) throws SQLException {
+                String mealtime = "";
                 String productDescription = "";
                 if(lang.equals("nl")) {
                     productDescription = rs.getString("description_dutch");
+                    mealtime = Mealtimes.getMealtimes().get(rs.getString("mealtime"));
                 } else {
                     productDescription = rs.getString("description_english");
+                    mealtime = rs.getString("mealtime");
                 }
-                return new ProductOccurrence(rs.getInt("product_id"), productDescription, rs.getInt("occurence"));
+                return new ProductOccurrence(rs.getInt("product_id"), productDescription, rs.getInt("occurence"), rs.getString("measurement_unit"), mealtime);
             }
         });
     }
@@ -188,12 +189,6 @@ public class ProductDAO implements ProductRepository {
                 sqlQuery, new Object[] { productId }, String.class);
     }
 
-
-
-
-
-
-    // TODO: !Reminder! Denk even na over of de product_id in recipe niet veranderd moet worden naar product_code - Tom
     /**
      * @author Tom Wagenaar
      * Date: 13-05-2020
@@ -203,10 +198,26 @@ public class ProductDAO implements ProductRepository {
      * @param productDescription, string that is either the description in Dutch or English.
      * @return Product that correspond to the description.
      */
+
     @Override
-    public Product getSpecificProduct(String productDescription) {
+    public Product getSpecificProductByDescription(String productDescription) {
         String sqlQuery = "select * from product where description_dutch = ?";
         return jdbcTemplate.queryForObject(sqlQuery, rowMapper, productDescription);
+    }
+
+    /**
+     * @author Tom Wagenaar
+     * Date: 09-06-2020
+     *
+     * Get a product from the database using a given product code.
+     * @param productCode (int)
+     * @return Product
+     */
+
+    @Override
+    public Product getSpecificProductByProductCode(int productCode) {
+        String sqlQuery = "select * from product where code = ?";
+        return jdbcTemplate.queryForObject(sqlQuery, new Object[]{productCode}, rowMapper);
     }
 
 

@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS product_nutrient;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS nutrient;
-DROP TABLE IF EXISTS unverified_product_picture_location;
+DROP TABLE IF EXISTS unverified_product_picture;
 DROP SCHEMA IF EXISTS fooddiary;
 
 CREATE SCHEMA IF NOT EXISTS fooddiary;
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS project
     name           varchar(50)                        NOT NULL,
     project_leader varchar(50)                        NOT NULL,
     creation_date  date                               NOT NULL,
-    closing_date   date                               NULL
+    closing_date   date                               NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_project
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS product_entry
     id          int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     user_id     int(10),
     product_id  int(25),
-    quantity    varchar(255)                       NOT NULL,
+    quantity    double                      NOT NULL,
     date        date                              NOT NULL,
     time_of_day varchar(25)                        NOT NULL,
     mealtime    varchar(25)                        NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS unverified_product_entry
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-CREATE TABLE IF NOT EXISTS unverified_product_picture_location
+CREATE TABLE IF NOT EXISTS unverified_product_picture
 (
     id                                  int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     unverified_product_id               int(10) NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS product_nutrient
     id             int(25) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     product_code   int(25),
     nutrient_code  varchar(25),
-    nutrient_value varchar(10)                            NOT NULL,
+    nutrient_value double(10)                            NOT NULL,
 
     FOREIGN KEY (product_code) REFERENCES product (code),
     FOREIGN KEY (nutrient_code) REFERENCES nutrient (nutrient_code)

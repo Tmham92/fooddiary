@@ -14,14 +14,17 @@ import nl.bioinf.fooddiary.model.DataInputChecker;
  */
 public class ProductMeasurement {
     // Instance variable declaration
-    private final String measurementUnit;
-    private final int measurementQuantity;
+    private String measurementUnit;
+    private int measurementQuantity;
     private String measurementComment;
 
     private ProductMeasurement(ProductMeasurementBuilder builder) {
         this.measurementUnit = builder.measurementUnit;
         this.measurementQuantity = builder.measurementQuantity;
         this.measurementComment = builder.measurementComment;
+    }
+
+    public ProductMeasurement() {
     }
 
     /**
@@ -59,6 +62,19 @@ public class ProductMeasurement {
         return measurementComment;
     }
 
+    // Setters
+    public void setMeasurementUnit(String measurementUnit) {
+        this.measurementUnit = measurementUnit;
+    }
+
+    public void setMeasurementQuantity(int measurementQuantity) {
+        this.measurementQuantity = measurementQuantity;
+    }
+
+    public void setMeasurementComment(String measurementComment) {
+        this.measurementComment = measurementComment;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -74,8 +90,8 @@ public class ProductMeasurement {
      */
     public static class ProductMeasurementBuilder {
         // Required instance variable
-        private final String measurementUnit;
-        private final int measurementQuantity;
+        private String measurementUnit;
+        private int measurementQuantity;
 
         // Optional instance variable
         private String measurementComment = "_UNKNOWN_COMMENT_";

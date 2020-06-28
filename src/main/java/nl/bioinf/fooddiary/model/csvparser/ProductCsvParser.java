@@ -80,7 +80,7 @@ public class ProductCsvParser {
                 .build();
 
         // Parse the descriptionDutch, descriptionEnglish and synonymous of the product into an object.
-        ProductDescription productDescription = ProductDescription.builder(line[3], line[4])
+        ProductDescription productDescription = ProductDescription.builder(line[3],line[4])
                 .synonymous(line[5])
                 .build();
 

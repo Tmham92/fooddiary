@@ -19,7 +19,7 @@ import java.nio.file.StandardCopyOption;
  * @Author Tobias
  */
 @Service
-public class PictureStorageService {
+public class PictureStorageService implements IPictureStorageService {
 
     private final Path fileStorageLocation;
 
@@ -43,6 +43,7 @@ public class PictureStorageService {
      * @return fileName
      */
 
+    @Override
     public String storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -63,6 +64,7 @@ public class PictureStorageService {
         }
     }
 
+    @Override
     public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();

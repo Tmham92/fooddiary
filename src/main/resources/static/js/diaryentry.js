@@ -1,9 +1,34 @@
 //author: Hans Zijlstra
 
 $(document).ready(function() {
+    var userLang = navigator.language || navigator.userLanguage;
+    console.log(userLang)
     var diaryTable;
     var descriptions = getDescriptions();
+
+    var recipeGroupList = getRecipeGroup();
+
     getHistoryItems();
+
+    //Select table rows for history items
+
+    $("#historyTable tbody").on('click', 'tr', function (e) {
+        var $row = jQuery(this).closest('tr');
+        var $columns = $row.find('td');
+
+        $columns.addClass('row-highlight');
+        var values = [];
+
+        jQuery.each($columns, function(i, item) {
+            values.push(item.innerHTML)
+        });
+        document.getElementById("historyMealtime").value = values[0]
+        document.getElementById("historyProductDescription").value = values[1]
+        document.getElementById("historyUnit").value = values[2]
+    });
+
+
+
     autocomplete(document.getElementById("productDescription"), descriptions);
 
 
@@ -81,13 +106,32 @@ $(document).ready(function() {
 
     });
 
+    function addToDiary(data) {
+        $.ajax({
+            url : "/diary-entry/addtodiary",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                diaryTable.row.add([
+                    response.id,
+                    response.mealtime,
+                    response.productDescription,
+                    response.quantity + response.unit,
+                    response.time,
+                    response.description
+                ]).draw( false );
 
+            }
+        });
+
+    }
 
     $("#product-entry").submit(function(event){
         event.preventDefault();
-
-
         var data = {};
+
 
         data["productDescription"] = $("#productDescription").val();
         data["mealtime"] = $("#mealtime").val();
@@ -97,181 +141,278 @@ $(document).ready(function() {
         data["time"] = $("#time").val();
         data["description"] = $("#description").val();
 
-        console.log(data.productDescription)
 
         if (!descriptions.includes(data.productDescription)) {
-            document.getElementById("productDescription").setCustomValidity("The product you entered does not appear in our database");
-        } else {
-            $.ajax({
-                url : "/diary-entry/addtodiary",
-                type: "POST",
-                dataType: 'json',
-                data: data,
-                success: function (response) {
-                    diaryTable.row.add([
-                        response.id,
-                        response.mealtime,
-                        response.productDescription,
-                        response.quantity + response.unit,
-                        response.time,
-                        response.description
-                    ]).draw( false );
+            var message = '';
+            if (userLang === "nl") {
+                message = "Het ingevoerde product komt niet voor in onze database"
+            } else {
+                message = "The product you entered does not appear in our database"
 
-                }
-            });
+            }
+            document.getElementById("productDescription").setCustomValidity(message);
+        } else {
+            addToDiary(data)
         }
 
     });
+
+    $("#history-entry").submit(function(event){
+        event.preventDefault();
+        var data = {};
+        data["productDescription"] = $("#historyProductDescription").val();
+        data["mealtime"] = $("#historyMealtime").val();
+        data["quantity"] = $("#historyQuantity").val();
+        data["unit"] = $("#historyUnit").val();
+        data["date"] = $("#historyDate").val();
+        data["time"] = $("#historyTime").val();
+        data["description"] = $("#historyDescription").val();
+
+        if (!descriptions.includes(data.productDescription)) {
+            var message = '';
+            if (userLang === "nl") {
+                message = "Het ingevoerde product komt niet voor in onze database"
+            } else {
+                message = "The product you entered does not appear in our database"
+
+            }
+            document.getElementById("historyProductDescription").setCustomValidity(message);
+        } else {
+            addToDiary(data)
+        }
+
+    });
+
+
+
 
     // @Author Tom Wagenaar
     // Variable used to make the input id's distinct from each other.
     var counter = 1;
 
-    // Function that makes a new div consisting of the product the uses wants to submit and a remove product button.
+    // Function that makes a new div consisting of the product the user wants to submit and a remove product button.
     $('#recipeAddProduct').click(function() {
-        //
+
+        // Retrieve the recipe name, the product id, the product quantity and the quantity unit from the recipe form.
+        var recipeGroup = document.getElementById("recipeGroupInput").value;
         var inputProduct = document.getElementById("productInput").value;
         var inputProductQuantity = document.getElementById("productQuantity").value;
         var inputProductQuantityUnit = document.getElementById("productQuantityUnit").value;
 
         inputProduct = inputProduct.trim();
         inputProductQuantity = inputProductQuantity.trim();
-        inputProductQuantityUnit = inputProductQuantityUnit.trim();
 
-        if (!checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptions)) {
-            return false;
+        if (!checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProductQuantity, userLang)) {
+            console.log("Recipe product input isn't correct!")
+        } else {
+            // Create a variable that contains the users input.
+            var recipeProduct = inputProductQuantity + " " + inputProductQuantityUnit + " " + inputProduct;
+
+            // Create a new div that has a inner html that consists out of a input field with the users input and a button
+            // to remove the product from the recipe. At last append the div to the product input div in the diary-entry file
+            var addedProductDiv = document.createElement('div');
+            addedProductDiv.id = "productInput" + counter;
+
+            addedProductDiv.innerHTML = "<input id='recipeProductInput' type='text' placeholder='" + recipeProduct + "' readonly>" +
+                "<input id='recipeRemoveButton' type='button' value='-' onclick='removeProductLine(this)'>";
+
+            document.getElementById('dyanamicProductInput[0]').appendChild(addedProductDiv);
+
+            // Create a new div that has is not shown to the user. This div is made so the input data easily can be passed
+            // on to the back-end. The inner html consists out of tree input fields that hold the users input data.
+            var hiddenProductDataDiv = document.createElement('div');
+            hiddenProductDataDiv.id = "hiddenProductInput" + counter;
+
+            hiddenProductDataDiv.innerHTML =
+                "<input id = 'productInput" + counter + "' type='text' name='recipeInput[]' value='" + inputProduct + "' hidden>" +
+                "<input id='productInputQuantity" + counter + "' type='text' name='recipeInputQuantity[]' value='" + inputProductQuantity + "' hidden>" +
+                "<input id='inputProductQuantityUnit" + counter + "' type='text' name='recipeInputQuantityUnit[]' value='" + inputProductQuantityUnit + "' hidden>";
+
+            document.getElementById('dyanamicProductInput[0]').appendChild(hiddenProductDataDiv);
+
+            // After the users adds the product to the recipe remove the values.
+            document.getElementById("productInput").value = "";
+            document.getElementById("productQuantity").value = "";
+            document.getElementById("productQuantityUnit").value = "";
+
+            counter++;
+            console.log("Added a new product input field in the recipe form.")
         }
-
-
-        var recipeProduct = inputProductQuantity + " " + inputProductQuantityUnit + " " + inputProduct;
-
-        // Make a new div consisting out of a text field with the product the user wants to add to the recipe + a button
-        // to remove the product.
-        var addedProductDiv = document.createElement('div');
-        addedProductDiv.id = "productInput" + counter;
-
-        addedProductDiv.innerHTML = "<input id='recipeProuct"+counter+"' type='text' placeholder='"+recipeProduct+"' style='width: 83%;' readonly>" +
-            "<input type='button' value='-' onclick='removeProductLine(this)' style='width: 15%;margin-left: 5px'>";
-
-        document.getElementById('dyanamicProductInput[0]').appendChild(addedProductDiv);
-
-
-        var hiddenProductData = document.createElement('div');
-        hiddenProductData.id = "hiddenProductInput" + counter;
-
-        hiddenProductData.innerHTML =
-            "<input id = 'productInput"+counter+"' type='text' name='recipeInput[]' value='"+inputProduct+"' hidden>" +
-            "<input id='productInputQuantity"+counter+"' type='text' name='recipeInputQuantity[]' value='"+inputProductQuantity+"' hidden>" +
-            "<input id='inputProductQuantityUnit"+counter+"' type='text' name='recipeInputQuantityUnit[]' value='"+inputProductQuantityUnit+"' hidden>";
-
-
-        document.getElementById('dyanamicProductInput[0]').appendChild(hiddenProductData);
-
-        // Clear the product in the input field
-        document.getElementById("productInput").value = "";
-        document.getElementById("productQuantity").value = "";
-        document.getElementById("productQuantityUnit").value = "";
-
-        counter++;
-        console.log("Added a new product input field in the recipe form.")
     });
 
+    // @Author Tom Wagenaar
+    // Whenever the submit button is clicked in the recipe form, this function will get the data from the form. This data
+    // is then checked, processed and passed on to the back-end using ajax.
+    $("#recipeSubmit").click(function (event) {
+
+        event.preventDefault();
+
+        // Make three lists that will hold the data from the form.
+        var inputProductList = [];
+        var inputProductQuantityList = [];
+        var inputProductQuantityUnitList = [];
+
+        // Get the product, product quantity and product quantity unit data from the form.
+        var formProductInput = document.getElementsByName("recipeInput[]");
+        var formProductQuantity = document.getElementsByName("recipeInputQuantity[]");
+        var formProductQuantityUnit = document.getElementsByName("recipeInputQuantityUnit[]");
+
+        if (checkProductLength(formProductInput, userLang)) {
+            let index;
+
+            // Three for loops that iterate over the data from the form and add it to corresponding lists.
+            for (index = 0; index < formProductInput.length; index++)
+                inputProductList[index] = formProductInput[index].value;
+
+            for (index = 0; index < formProductQuantity.length; index++)
+                inputProductQuantityList[index] = formProductQuantity[index].value;
+
+            for (index = 0; index < formProductQuantityUnit.length; index++)
+                inputProductQuantityUnitList[index] = formProductQuantityUnit[index].value;
+
+            var formData = {};
+
+            // Add a userId that is in the database to to the formData variable. This userId will be changed to the current
+            // user in the back-end, furthermore add the three lists, the recipe group name and a unverified tag to the variable.
+            formData["userID"] = 10;
+            formData["productDescriptionList"] = inputProductList;
+            formData["recipeGroup"] = $("#recipeGroupInput").val();
+            formData["quantity"] = inputProductQuantityList;
+            formData["quantityUnit"] = inputProductQuantityUnitList;
+            formData["verified"] = 0;
+
+            console.log(formData);
+
+            // Do a ajax call, that sends the form data to the RecipeController in the back-end.
+            $.ajax({
+                type: "POST",
+                contentType : 'application/json; charset=utf-8',
+                url: "/diary-entry/add-new-recipe",
+                dataType : 'json',
+                data: JSON.stringify(formData), // Note it is important
+                success :function() {
+
+                }
+            });
+
+
+            // $('#addNewRecipe').modal('hide');
+            // $('#addNewRecipe').modal('toggle');
+        }
+    });
 });
 
 // @Author Tom Wagenaar
-// Function that removes the current product and decreases the counter.
+// Function that removes the current product and decreases the counter by one.
 function removeProductLine(btn) {
     btn.parentNode.remove();
-    counter--;
+    window.counter--;
     console.log("Removed a product input field in the recipe form.")
 }
 
-function checkRecipeInput(inputProduct, inputProductQuantity, inputProductQuantityUnit, descriptions) {
+// @Author Tom Wagenaar
+// function that checks recipe group, the product and the product quantity in the recipe form.
+function checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProductQuantity, userLang) {
 
-    if (!descriptions.includes(inputProduct)) {
-        console.log("This product: " + inputProduct + " isn't in the database!");
-        // document.getElementById("productInput").setCustomValidity("The product you entered does not appear in our database");
-        alert("This product: " + inputProduct + " isn't in the database!");
-        return false;
+
+
+    // Give an error whenever the recipe name is already in the database
+    if (recipeGroupList.includes(recipeGroup)) {
+        if (userLang === "nl") {
+            document.getElementById("errorMessageDiv").innerHTML = "Dit recept: " + recipeGroup + " is al in de database!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            console.log("recipe group is already in the database");
+            return false;
+
+        } else {
+            document.getElementById("errorMessageDiv").innerHTML = "This recipe name: " + recipeGroup + " is already in the database please use another name!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            console.log("recipe group is already in the database");
+            return false;
+        }
+
+    // Give an error message whenever the product isn't in the database.
+    } else if (!window.descriptions.includes(inputProduct)) {
+        if (userLang === "nl") {
+            document.getElementById("errorMessageDiv").innerHTML = "Dit product: " + inputProduct + " zit niet in de database!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        } else {
+            document.getElementById("errorMessageDiv").innerHTML = "This product: " + inputProduct + " isn't in the database!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        }
+
+    // Give an error message whenever the quantity isn't a integer.
+    } else if (!/^\d+$/.test(inputProductQuantity)) {
+        if (userLang === "nl") {
+            document.getElementById("errorMessageDiv").innerHTML = "Product hoeveelheid moet een positief nummer zijn!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        } else {
+            document.getElementById("errorMessageDiv").innerHTML = "Product Quantity must be a positive number!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+
+        }
     }
-
-    if (!/^\d+$/.test(inputProductQuantity)) {
-        alert("Please make sure that the quantity is a positive number!");
-        return false;
-    }
-
-    if (!/\b(?:g|ml|)\b/.test(inputProductQuantityUnit)) {
-        alert("Unit must be either g or ml!")
-        return false;
-    }
-
-
 
     return true;
 }
 
+//@author Tom Wagenaar
+// Do A check whenever the user submits the data, do a check on whenever there a are at least two products added to
+// the recipe.
+function checkProductLength(formProductInput, userLang) {
 
-$("#recipeSubmit").click(function (event) {
+    if (userLang === "nl") {
+        // Give a error message whenever the recipe has less then two products.
+        if (formProductInput.length < 2) {
+            document.getElementById("errorMessageDiv").innerHTML = "Voeg alstublieft meer dan een product toe aan het recept!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        }
+    } else {
+        // Give a error message whenever the recipe has less then two products.
+        if (formProductInput.length < 2) {
+            document.getElementById("errorMessageDiv").innerHTML = "Please add more then two products to the recipe!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        }
+    }
 
-    event.preventDefault();
+    return true;
+}
 
-    var inputList = [];
-    var inputQuantity = [];
-    var inputQuantityUnit = [];
-
-    var inputFields = document.getElementsByName("recipeInput[]");
-    var inputFieldsQuantity = document.getElementsByName("recipeInputQuantity[]");
-    var inputFieldsQuantityUnit = document.getElementsByName("recipeInputQuantityUnit[]");
-
-
-    for (var i = 0; i < inputFields.length; i++)
-        inputList[i] = inputFields[i].value;
-
-    for (var i = 0; i < inputFieldsQuantity.length; i++)
-        inputQuantity[i] = inputFieldsQuantity[i].value;
-
-    for (var i = 0; i < inputFieldsQuantityUnit.length; i++)
-        inputQuantityUnit[i] = inputFieldsQuantityUnit[i].value;
-
-    var data = {};
-
-    data["userID"] = 1;
-    data["productDescriptionList"] = inputList;
-    data["recipeGroup"] = $("#recipeGroupInput").val();
-    data["quantity"] = inputQuantity;
-    data["quantityUnit"] = inputQuantityUnit;
-    data["verified"] = 0;
-
-    console.log(data);
-
+// @Author Tom Wagenaar
+// Retrieve every group name from the database.
+function getRecipeGroup() {
+    let recipeGroupList = [];
 
     $.ajax({
-        type: "POST",
-        contentType : 'application/json; charset=utf-8',
-        dataType : 'json',
-        url: "/diary-entry/add-new-recipe",
-        data: JSON.stringify(data), // Note it is important
-        success :function(response) {
-            console.log(response);
+        url: '/diary-entry/get-recipe-group',
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                var obj = data[i];
+                recipeGroupList.push(obj)
+            }
         }
     });
 
+    return recipeGroupList;
+}
 
 
-});
 
-
-function getMeasurementUnit(value) {
+function getMeasurementUnit(fieldId, unitId) {
     $.ajax({
         type: 'POST',
         url: '/diary-entry/product-measurement',
         dataType: 'json',
-        data: 'productDescription=' + $('#productDescription').val(),
+        data: 'productDescription=' + $("#" + fieldId).val(),
         success: function (response) {
-            $("#unit").val(response.productUnit)
-
+            unitId.val(response.productUnit)
         }
-
     })
 }
 
@@ -285,16 +426,15 @@ function getHistoryItems() {
             for (var i = 0; i < data.length; i++) {
                 obj = data[i];
                 history_data += '<tr>';
-                history_data += '<th scope="row"></th>';
-                history_data += '<td>'+obj.product_id+'</td>';
-                history_data+= '<td>'+obj.productDescription+'</td>';
+                history_data += '<td>'+obj.mealtime+'</td>';
+                history_data += '<td>'+obj.productDescription+'</td>';
+                history_data += '<td>'+obj.meassurementUnit+'</td>';
                 history_data += '</tr>';
 
             }
             $("#historyTable").append(history_data);
         }
     });
-
 
 }
 
@@ -372,7 +512,19 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
-                    getMeasurementUnit(inp.value)
+
+                    // In the API there are two input fields that use the autocomplete function, therefore this if
+                    // else statement is used to determine which input field is used. When the user clicks on a product
+                    // corresponding input field id and the input field that gets the measurement unit are passed on.
+                    if (inp.id === "productDescription") {
+                        var unitId = $("#unit");
+                        getMeasurementUnit(inp.id, unitId);
+                    } else {
+                        var recipeId = $("#productQuantityUnit");
+                        getMeasurementUnit(inp.id, recipeId);
+                    }
+
+
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
