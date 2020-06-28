@@ -1,6 +1,7 @@
 package nl.bioinf.fooddiary.dao;
 
 import nl.bioinf.fooddiary.model.recipe.Recipe;
+import nl.bioinf.fooddiary.model.recipe.SingleRecipeProduct;
 
 import java.util.List;
 
@@ -10,8 +11,6 @@ import java.util.List;
  *
  * Interface that supports the RecipeDAO class, this interface is used to insert new recipes in the recipe table, get
  * all the recipe names from the recipe table and get the current user.
- *
- * TODO: refactor the getCurrentUser to a own Interface / Repository!
  */
 public interface RecipeRepository {
 
@@ -19,5 +18,5 @@ public interface RecipeRepository {
 
     List<String> getRecipeGroup();
 
-    int getCurrentUser();
+    List<SingleRecipeProduct> getAllRecipes();
 }

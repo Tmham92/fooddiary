@@ -20,8 +20,6 @@ import java.util.List;
  * in such a way to give the class atomic construction, easy combination of parameters and very readable client code. In
  * the builder method the userID and productDescriptionsList aren't checker, because they are foreign keys to other tables.
  */
-
-
 public class Recipe {
     @NotNull
     @Min(0)
@@ -78,11 +76,6 @@ public class Recipe {
         recipeGroup = recipeGroup.trim();
         DataInputChecker.checkInputLength(recipeGroup, 255, "recipeGroup");
 
-//        // Check the quantity on null input, change it to an integer and check the quantity value.
-//        DataInputChecker.checkStringInputNull(quantity, "quantity");
-//        int checkedQuantity = DataInputChecker.changeStringToInt(quantity, "quantity");
-//        DataInputChecker.checkInputSize(checkedQuantity, 9999, "quantity");
-
         return new RecipeBuilder(userID, productDescriptionsList, recipeGroup, quantity, unit, verified);
     }
 
@@ -101,7 +94,6 @@ public class Recipe {
 
     public int getVerified() { return verified; }
 
-    // Setter for verified.
     public void setUserID(int userID) { this.userID = userID; }
 
     public void setVerified(int verified) { this.verified = verified; }

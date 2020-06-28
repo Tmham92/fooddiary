@@ -202,7 +202,7 @@ $(document).ready(function() {
         inputProduct = inputProduct.trim();
         inputProductQuantity = inputProductQuantity.trim();
 
-        if (!checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProductQuantity)) {
+        if (!checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProductQuantity, userLang)) {
             console.log("Recipe product input isn't correct!")
         } else {
             // Create a variable that contains the users input.
@@ -257,7 +257,7 @@ $(document).ready(function() {
         var formProductQuantity = document.getElementsByName("recipeInputQuantity[]");
         var formProductQuantityUnit = document.getElementsByName("recipeInputQuantityUnit[]");
 
-        if (checkProductLength(formProductInput)) {
+        if (checkProductLength(formProductInput, userLang)) {
             let index;
 
             // Three for loops that iterate over the data from the form and add it to corresponding lists.
@@ -312,26 +312,49 @@ function removeProductLine(btn) {
 
 // @Author Tom Wagenaar
 // function that checks recipe group, the product and the product quantity in the recipe form.
-function checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProductQuantity) {
+function checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProductQuantity, userLang) {
+
+
 
     // Give an error whenever the recipe name is already in the database
     if (recipeGroupList.includes(recipeGroup)) {
-        document.getElementById("errorMessageDiv").innerHTML = "This recipe name: " + recipeGroup + " is already in the database please use another name!";
-        document.getElementById("errorMessageDiv").style.border = "solid";
-        console.log("recipe group is already in the database");
-        return false;
+        if (userLang === "nl") {
+            document.getElementById("errorMessageDiv").innerHTML = "Dit recept: " + recipeGroup + " is al in de database!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            console.log("recipe group is already in the database");
+            return false;
+
+        } else {
+            document.getElementById("errorMessageDiv").innerHTML = "This recipe name: " + recipeGroup + " is already in the database please use another name!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            console.log("recipe group is already in the database");
+            return false;
+        }
 
     // Give an error message whenever the product isn't in the database.
     } else if (!window.descriptions.includes(inputProduct)) {
-        document.getElementById("errorMessageDiv").innerHTML = "This product: " + inputProduct + " isn't in the database!";
-        document.getElementById("errorMessageDiv").style.border = "solid";
-        return false;
+        if (userLang === "nl") {
+            document.getElementById("errorMessageDiv").innerHTML = "Dit product: " + inputProduct + " zit niet in de database!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        } else {
+            document.getElementById("errorMessageDiv").innerHTML = "This product: " + inputProduct + " isn't in the database!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        }
 
     // Give an error message whenever the quantity isn't a integer.
     } else if (!/^\d+$/.test(inputProductQuantity)) {
-        document.getElementById("errorMessageDiv").innerHTML = "Product Quantity must be a positive number!";
-        document.getElementById("errorMessageDiv").style.border = "solid";
-        return false;
+        if (userLang === "nl") {
+            document.getElementById("errorMessageDiv").innerHTML = "Product hoeveelheid moet een positief nummer zijn!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        } else {
+            document.getElementById("errorMessageDiv").innerHTML = "Product Quantity must be a positive number!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+
+        }
     }
 
     return true;
@@ -340,13 +363,22 @@ function checkRecipeInput(recipeGroup, recipeGroupList, inputProduct, inputProdu
 //@author Tom Wagenaar
 // Do A check whenever the user submits the data, do a check on whenever there a are at least two products added to
 // the recipe.
-function checkProductLength(formProductInput) {
+function checkProductLength(formProductInput, userLang) {
 
-    // Give a error message whenever the recipe has less then two products.
-    if (formProductInput.length < 2) {
-        document.getElementById("errorMessageDiv").innerHTML = "Please add more then two products to the recipe!";
-        document.getElementById("errorMessageDiv").style.border = "solid";
-        return false;
+    if (userLang === "nl") {
+        // Give a error message whenever the recipe has less then two products.
+        if (formProductInput.length < 2) {
+            document.getElementById("errorMessageDiv").innerHTML = "Voeg alstublieft meer dan een product toe aan het recept!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        }
+    } else {
+        // Give a error message whenever the recipe has less then two products.
+        if (formProductInput.length < 2) {
+            document.getElementById("errorMessageDiv").innerHTML = "Please add more then two products to the recipe!";
+            document.getElementById("errorMessageDiv").style.border = "solid";
+            return false;
+        }
     }
 
     return true;
