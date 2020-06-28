@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class NewProjectDAO implements INewProjectService {
+public class NewProjectDAO implements NewProjectRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +47,7 @@ public class GetNewProductController {
 
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
-        return "redirect:" + locale.getLanguage() + "/getnewproducts";
+        return "redirect:" + locale.getLanguage() + "get-new-products";
     }
 
     /**
@@ -62,7 +61,7 @@ public class GetNewProductController {
         logger.info("{locale}/getnewproducts is being called. Open /getnewproducts in requested language");
         List<NewProduct> newProducts = newProductService.getAllNewProducts();
         model.addAttribute("getNewProducts", newProducts);
-          return "/getnewproducts";
+          return "get-new-products";
     }
 
     /**

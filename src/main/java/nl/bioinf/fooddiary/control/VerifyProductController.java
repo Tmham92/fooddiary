@@ -21,7 +21,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * @author Tobias Ham
@@ -64,7 +63,7 @@ public class VerifyProductController {
         logger.info("/verifyproduct url has been called without locale, Open /verifyproducts in requested language.");
         redirectAttributes.addFlashAttribute("newProduct", newProduct);
 
-        return "redirect:" + locale.getLanguage() + "/verifyproducts";
+        return "redirect:" + locale.getLanguage() + "verify-products";
     }
 
     /**
@@ -90,7 +89,7 @@ public class VerifyProductController {
         if (newProduct.getId() != null) {
             //verifyProductService.getProductPicture(newProduct);
         }
-        return "verifyproducts";
+        return "verify-products";
     }
 
 
