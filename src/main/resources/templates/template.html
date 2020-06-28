@@ -41,16 +41,16 @@
                         <a class="nav-link" th:href="@{'/diary-entry'}" th:text="#{navbar.diary}"></a>
                     </li>
 
-                    <!-- TODO: Only accessible by admins -->
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
+
+                    <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="nav-link" th:href="@{'/verify-recipe-by-admin'}" th:text="#{navbar.verifyrecipe}"></a>
                     </li>
 
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="nav-link" th:href="@{'/add-user'}" th:text="#{navbar.adduser}"></a>
                     </li>
 
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="nav-link" th:href="@{'/project'}" th:text="#{navbar.project}"></a>
                     </li>
 
@@ -60,8 +60,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" th:href="@{'/new-product-form'}" th:text="#{navbar.newproductform}"></a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" th:href="@{'/get-new-products'}" th:text="#{navbar.getnewproducts}"></a>
+                            <div class="dropdown-divider" sec:authorize="hasAuthority('ROLE_ADMIN')"></div>
+                            <a class="dropdown-item" sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{'/get-new-products'}" th:text="#{navbar.getnewproducts}"></a>
                         </div>
                     </li>
 
