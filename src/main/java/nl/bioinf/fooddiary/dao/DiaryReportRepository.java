@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * @author Hans Zijlstra
  */
-public interface DiaryReportDAO {
+public interface DiaryReportRepository {
+
 
     List<String> getProjects();
 
