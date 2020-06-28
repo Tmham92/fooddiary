@@ -32,7 +32,7 @@ public class AddUserController {
      * Shows the add-user-form on the /adduser url page.
      * @param locale loads the web page in the current language setting
      * @param model New-user-form used for filling in account information for new accounts
-     * @return returns the locale + adduser.html page
+     * @return returns the locale + add-user.html page
      */
     @RequestMapping(value = {"/adduser"}, method = RequestMethod.GET)
     public String newUserFormWithoutLocale(Locale locale, Model model) {
@@ -40,13 +40,13 @@ public class AddUserController {
         NewUser newUser = new NewUser();
         logger.info("/adding the new-user-form to the attributes");
         model.addAttribute("newuserform", newUser);
-        return "redirect:" + locale.getLanguage() + "/adduser";
+        return "redirect:" + locale.getLanguage() + "add-user";
     }
 
     /**
      * Shows the add-user-form on the /adduser url page.
      * @param model New-user-form used for filling in account information for new accounts
-     * @return returns the adduser.html page
+     * @return returns the add-user.html page
      */
     @RequestMapping(value = "/{locale}/adduser", method = RequestMethod.GET)
     public String newUserFormWithLocale(Model model) {
@@ -54,7 +54,7 @@ public class AddUserController {
         NewUser newUser = new NewUser();
         logger.info("/adding the new-user-form to the attributes");
         model.addAttribute("newuserform", newUser);
-        return "/adduser";
+        return "add-user";
     }
 
     /**

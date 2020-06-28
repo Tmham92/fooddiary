@@ -1,25 +1,19 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Verify Product</title>
+    <title th:text="#{verifyproduct}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Tobias Ham">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/newproductform.css}" href="../static/css/newproductform.css">
+    <link rel="stylesheet" th:href="@{/static/css/new-product-form.css}" href="../static/css/new-product-form.css">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" href="../static/css/navbar.css">
     <link rel="stylesheet" th:href="@{/css/main.css}" href="../static/css/main.css">
-    <link rel="stylesheet" th:href="@{/css/verifyproducts.css}" href="../static/css/verifyproducts.css">
+    <link rel="stylesheet" th:href="@{/static/css/verify-products.css}" href="../static/css/verify-products.css">
     <link rel="stylesheet" th:href="@{/css/diary-entry.css}" href="../static/css/diary-entry.css">
 </head>
 <body>
-    <div class="banner-image">
-        <div class="banner-text">
-            <h1>Food Diary</h1>
-            <p><strong>Simple and Resourceful</strong></p>
-        </div>
-    </div>
-
+    <div th:insert="template :: banner"></div>
     <div th:insert="template :: navbar"></div>
 
 
@@ -163,7 +157,7 @@
                 <tbody>
                 <tr>
                     <td><span th:text="#{group-form.addbutton}"></span></td>
-                    <td><span th:text="${verifiedproduct.productGroup}" th:if="${#fields.hasErrors('productgroup')}" th:errors="*{productgroup}"></span></td>
+                    <td><span th:text="${verifiedproduct.productGroup}"></span></td>
                 </tr>
                 <tr>
                     <td><span th:text="#{description-form.addbutton}"></span></td>
@@ -190,8 +184,9 @@
     <div th:insert="template :: footer"></div>
 </body>
 
-<script src="//code.jquery.com/jquery.min.js"></script>
-<script src="/js/diaryentry.js>"></script>
+
 <script src="/js/unverified-product-form.js"></script>
+<script src="/js/diaryentry.js>"></script>
+<script src="//code.jquery.com/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>

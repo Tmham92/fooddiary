@@ -56,7 +56,7 @@ public class NewProductController {
                 "Requesting Locale and opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "redirect:" + locale.getLanguage() + "/newproductform";
+        return "redirect:" + locale.getLanguage() + "new-product-form";
     }
 
 
@@ -72,7 +72,7 @@ public class NewProductController {
                 "Opening web page with requested language");
         NewProduct newProduct = new NewProduct();
         model.addAttribute("newproductform", newProduct);
-        return "newproductform";
+        return "new-product-form";
     }
 
 
@@ -92,8 +92,14 @@ public class NewProductController {
                 "Redirecting user to /addednewproduct url.");
         if (bindingResult.hasErrors()) {
             logger.info("Form could not be validated.");
-            return "/newproductform";
+            return "new-product-form";
         }
+
+
+        String fileName = pictureStorageService.storeFile(file);
+        logger.info("Storing picture in upload Directory");
+        //newProductService.addNewProductPictureLocation(uploadDir + "/" + fileName);
+
         newProductService.addNewProduct(newProduct);
         return "redirect:/addednewproduct";
     }
@@ -108,7 +114,7 @@ public class NewProductController {
     public String addedNewProductWithoutLocale(Locale locale) {
         logger.info("/addednewproduct url has been called without known Locale." +
                 "Requesting Locale and opening web page in right language.");
-        return "redirect:" + locale.getLanguage() + "/addednewproduct";
+        return "redirect:" + locale.getLanguage() + "added-new-product";
     }
 
     /**
@@ -120,7 +126,7 @@ public class NewProductController {
     public String addedNewProductWithLocale() {
         logger.info("/addednewproduct url has been called with known Locale." +
                 "Opening web page in right language.");
-        return "addednewproduct";
+        return "added-new-product";
     }
 
     /**

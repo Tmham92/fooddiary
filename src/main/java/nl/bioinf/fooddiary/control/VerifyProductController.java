@@ -21,10 +21,13 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
+ * @author Tobias Ham
  *
+ * VerifyProduct controller that serves the /verifyproducts url. When called a product object is created which
+ * requires information from different forms. The forms fill up the product Object.
+ * When the product is finished it can will be added to the database and removed from the unverified table.
  */
 
 @Controller
@@ -45,6 +48,14 @@ public class VerifyProductController {
     private NutrientValuesDTO nutrientValuesDTO = new NutrientValuesDTO();
 
 
+    /**
+     * Get method which catches the url call.
+     * It will redirect the user to the /verifyproducts page with the proper Locale.
+     * @param newProduct (NewProduct)
+     * @param locale (Locale)
+     * @param redirectAttributes (RedirectAttributes)
+     * @return
+     */
     @RequestMapping(value = {"/verifyproducts"}, method = RequestMethod.GET)
     public String verifyproductWithoutLocale(@ModelAttribute("newProduct") NewProduct newProduct,
                                              Locale locale,
@@ -52,10 +63,16 @@ public class VerifyProductController {
         logger.info("/verifyproduct url has been called without locale, Open /verifyproducts in requested language.");
         redirectAttributes.addFlashAttribute("newProduct", newProduct);
 
-        return "redirect:" + locale.getLanguage() + "/verifyproducts";
+        return "redirect:" + locale.getLanguage() + "verify-products";
     }
 
-
+    /**
+     * Get method which catches the url call.
+     * This method initialises all attributes needed by thymeleaf to be able to verify a product.
+     * @param newProduct (NewProduct)
+     * @param model (Model)
+     * @return
+     */
     @RequestMapping(value = "/{locale}/verifyproducts", method = RequestMethod.GET)
     public String  contactWithLocale(@ModelAttribute("newProduct") NewProduct newProduct, Model model) {
         logger.info("/verifyproduct url has been called, Open /verifyproducts in requested language.");
@@ -69,10 +86,19 @@ public class VerifyProductController {
         model.addAttribute("nutrientnameslist", nutrientNamesList);
         model.addAttribute("nutrientDTO", nutrientValuesDTO);
         model.addAttribute("newproduct", newProduct);
-        return "verifyproducts";
+        if (newProduct.getId() != null) {
+            //verifyProductService.getProductPicture(newProduct);
+        }
+        return "verify-products";
     }
 
 
+    /**
+     * Post method which creates a productGroup object and add this object to the Product Object.
+     * @param productGroup
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/verifyproducts/productgroupcode", method = RequestMethod.POST)
     public String createVerifiedProductGroupCode(@ModelAttribute("productgroup") ProductGroup productGroup,
                                                  Model model) {
@@ -86,7 +112,14 @@ public class VerifyProductController {
         return "redirect:/verifyproducts";
     }
 
-
+    /**
+     * Post method which checks whether the ProductDescription object is finished and validated.
+     * The ProductDiscription Object will be added to the Product Object.
+     * @param productDescription
+     * @param bindingResult
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/verifyproducts/productdescription", method = RequestMethod.POST)
     public String createVerifiedProductDescription(@Valid @ModelAttribute("productdescription") ProductDescription productDescription,
                                                    BindingResult bindingResult,
@@ -106,7 +139,13 @@ public class VerifyProductController {
         return "redirect:/verifyproducts";
     }
 
-
+    /**
+     * Post method which checks whether the ProductExtraInfo object is finished and validated.
+     * The ProductExtraInfo Object will be added to the Product Object.
+     * @param productInfoExtra
+     * @param model
+     * @return
+     */
     @RequestMapping(value= "/verifyproducts/productextrainfo", method = RequestMethod.POST)
     public String createVerifiedProductExtraInfo(@ModelAttribute("productextrainfo") ProductInfoExtra productInfoExtra,
                                                  Model model) {
@@ -124,7 +163,13 @@ public class VerifyProductController {
         return "redirect:/verifyproducts";
     }
 
-
+    /**
+     * Post method which checks whether the ProductMeasurement object is finished and validated.
+     * The ProductMeasurement Object will be added to the Product Object.
+     * @param productMeasurement
+     * @param model
+     * @return
+     */
     @RequestMapping(value= "/verifyproducts/productmeasurement", method = RequestMethod.POST)
     public String createVerifiedProductMeasurement(@ModelAttribute("productmeasurement") ProductMeasurement productMeasurement,
                                                    Model model) {
@@ -142,7 +187,13 @@ public class VerifyProductController {
         return "redirect:/verifyproducts";
     }
 
-
+    /**
+     * Post method which checks whether the NutrientValues object is finished and validated.
+     * The NutrientValues Object will be added to the Product Object.
+     * @param nutrientValuesDTO
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value="/verifyproducts/nutrientvalues", method = RequestMethod.POST)
     public String createVerifiedNutrientList(@ModelAttribute("nutrientDTO") @Validated NutrientValuesDTO nutrientValuesDTO,
                                              BindingResult bindingResult) {
@@ -152,13 +203,18 @@ public class VerifyProductController {
         }
         logger.info("Creating nutrient value list");
         nutrientValues = verifyProductService.createNutrientValueList(nutrientValuesDTO.getValues());
-
-
         verifiedProduct.setNutrientValues(nutrientValues);
         return "redirect:/verifyproducts";
     }
 
-
+    /**
+     * Post method which sets a product ID for the Product Object.
+     * The Product object will be sent to the database.
+     * @param product
+     * @param productID
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value="/verifyproducts/submitproduct", method = RequestMethod.POST)
     public String addProductCodeToProduct(@ModelAttribute("verifiedproduct") Product product,
                                           @RequestParam("newProductID") Integer productID,
