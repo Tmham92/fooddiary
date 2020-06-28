@@ -1,18 +1,24 @@
 package nl.bioinf.fooddiary.service;
 
-import nl.bioinf.fooddiary.dao.jdbc.NewProjectDAO;
+import nl.bioinf.fooddiary.dao.jdbc.ProjectDAO;
 import nl.bioinf.fooddiary.model.project.NewProject;
+import nl.bioinf.fooddiary.model.project.NewProjectUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NewProjectService implements INewProjectService{
+public class ProjectService implements IProjectService {
 
     @Autowired
-    private NewProjectDAO newProjectDAO;
+    private ProjectDAO projectDAO;
 
     @Override
     public void addNewProject(NewProject newProject) {
-        newProjectDAO.addNewProject(newProject);
+        projectDAO.addNewProject(newProject);
+    }
+
+    @Override
+    public void addProjectUser(NewProjectUser newProjectUser) {
+        projectDAO.addProjectUser(newProjectUser);
     }
 }

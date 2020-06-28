@@ -2,13 +2,13 @@ package nl.bioinf.fooddiary.control;
 
 import nl.bioinf.fooddiary.FooddiaryApplication;
 import nl.bioinf.fooddiary.model.project.NewProject;
-import nl.bioinf.fooddiary.service.NewProjectService;
+import nl.bioinf.fooddiary.model.project.NewProjectUser;
+import nl.bioinf.fooddiary.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class ProjectController {
     private static final Logger logger = LoggerFactory.getLogger(FooddiaryApplication.class);
 
     @Autowired
-    NewProjectService newProjectService;
+    ProjectService projectService;
 
     /**
      * Shows the add-user-form on the /adduser url page.
@@ -35,6 +35,9 @@ public class ProjectController {
         NewProject newProject = new NewProject();
         logger.info("/adding the new project form to the attributes");
         model.addAttribute("newprojectform", newProject);
+
+        NewProjectUser newProjectUser = new NewProjectUser();
+        model.addAttribute("newprojectuserform", newProjectUser);
         return "redirect:" + locale.getLanguage() + "/project";
     }
 
@@ -49,6 +52,9 @@ public class ProjectController {
         NewProject newProject = new NewProject();
         logger.info("/adding the new project form to the attributes");
         model.addAttribute("newprojectform", newProject);
+
+        NewProjectUser newProjectUser = new NewProjectUser();
+        model.addAttribute("newprojectuserform", newProjectUser);
         return "/project";
     }
 
@@ -57,11 +63,20 @@ public class ProjectController {
      * @param newProject the user data from the new-user-form
      * @return redirects to /adduser to reload the page
      */
-    @RequestMapping(value = "/project", method = RequestMethod.POST)
+    @RequestMapping(value = "/new-project", method = RequestMethod.POST)
     public String injectNewProject(@ModelAttribute("newprojectform")
-                                @Validated NewProject newProject, BindingResult bindingResult) {
+                                @Validated NewProject newProject) {
         logger.info("submitted the new-user-form");
-        newProjectService.addNewProject(newProject);
+        projectService.addNewProject(newProject);
+        logger.info("redirect to /project url");
+        return "redirect:/project";
+    }
+
+    @RequestMapping(value = "/new-project-user", method = RequestMethod.POST)
+    public String test(@ModelAttribute("newprojectuserform")
+                                   @Validated NewProjectUser newProjectUser) {
+        logger.info("submitted the new-user-form");
+        projectService.addProjectUser(newProjectUser);
         logger.info("redirect to /project url");
         return "redirect:/project";
     }
