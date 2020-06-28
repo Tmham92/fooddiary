@@ -51,7 +51,7 @@
 //            assertEquals(e.getMessage(), msg);
 //        }
 //    }
-//
+
 //    @ParameterizedTest
 //    @ValueSource(doubles = {0, -1, -1.5, -100})
 //    public void InsertProductWithInvalidQuantityValue(double quantity) {
@@ -66,7 +66,7 @@
 //
 //        }
 //    }
-//
+
 //    @Test
 //    public void addToDiaryTest() {
 //        mockProductDAO.insertProductIntoDiary(1, 1, new ProductEntry(1, 1, 1, "Aardappelen rauw", 200, "g", "31-01-2020", "12:01", "ontbijt", ""));
@@ -74,9 +74,4 @@
 //
 //
 //    }
-//
-//
-//
-//
-//
 //}

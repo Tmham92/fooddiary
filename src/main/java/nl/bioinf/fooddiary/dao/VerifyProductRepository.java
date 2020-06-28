@@ -5,6 +5,9 @@ import nl.bioinf.fooddiary.model.product.Product;
 
 import java.util.List;
 
+/**
+ @Author Tobias Ham
+ */
 public interface VerifyProductRepository {
 
     String getGroupCodeDescription(int groupcode);
@@ -22,4 +25,6 @@ public interface VerifyProductRepository {
     int getHighestProductCode();
 
     void deleteVerifiedProductFromUnverified(Integer id);
+
+    String getProductPicture(int productId);
 }

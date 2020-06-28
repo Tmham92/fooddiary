@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS product_nutrient;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS nutrient;
-DROP TABLE IF EXISTS unverified_product_picture_location;
+DROP TABLE IF EXISTS unverified_product_picture;
 DROP SCHEMA IF EXISTS fooddiary;
 
 CREATE SCHEMA IF NOT EXISTS fooddiary;
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS unverified_product_entry
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-CREATE TABLE IF NOT EXISTS unverified_product_picture_location
+CREATE TABLE IF NOT EXISTS unverified_product_picture
 (
     id                                  int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     unverified_product_id               int(10) NOT NULL,

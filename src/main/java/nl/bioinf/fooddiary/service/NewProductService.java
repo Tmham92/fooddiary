@@ -16,6 +16,7 @@ import java.util.List;
  */
 @Service
 public class NewProductService implements INewProductService {
+
     @Autowired
     private NewProductDAO newProductDAO;
 
@@ -42,4 +43,6 @@ public class NewProductService implements INewProductService {
     @Override
     public void addNewProductPictureLocation(String pictureLocation) { newProductDAO.addNewProductPictureLocation(pictureLocation);
     }
+
+
 }
